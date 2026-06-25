@@ -143,7 +143,16 @@ export default function TeaserText({
   };
 
   return (
-    <div className="flex flex-col items-center justify-center text-center max-w-3xl px-4 py-8 mx-auto" id="teaser-text-container">
+    <div 
+      className="flex flex-col items-center justify-center text-center max-w-3xl px-4 py-8 mx-auto" 
+      id="teaser-text-container"
+      style={{
+        paddingBottom: "0px",
+        paddingRight: "16px",
+        paddingTop: "26px",
+        paddingLeft: "16px"
+      }}
+    >
 
       {/* Typing Text Box */}
       <div className="min-h-[110px] xs:min-h-[130px] sm:min-h-[150px] flex items-center justify-center mb-8 w-full">
@@ -165,7 +174,7 @@ export default function TeaserText({
           const part2 = fullText.substring(typedLength);
           return (
             <p className={`${isCustomQuoteSize ? "" : quoteSize} leading-relaxed tracking-wide italic font-light drop-shadow-sm select-text whitespace-pre-wrap`} style={finalQuoteStyle}>
-              <span>{part1}</span>
+              <span style={{ fontSize: "31px", textAlign: "center" }}>{part1}</span>
               <span className="cursor-blink inline-block w-[2px] h-[1.1em] mx-0.5 align-middle animate-blink" style={{ backgroundColor: accentColor }} />
               <span className="opacity-0 select-none pointer-events-none" aria-hidden="true">{part2}</span>
             </p>
