@@ -93,7 +93,7 @@ export default function CountdownTimer({
 
   return (
     <div className="flex items-center justify-center gap-4 sm:gap-6 select-none w-full" id="countdown-timer" style={{ fontFamily: serifFont }}>
-      <div className="text-center w-full">
+      <div className="w-full flex flex-col items-center justify-center text-center">
         {isEditMode ? (
           <p 
             contentEditable
