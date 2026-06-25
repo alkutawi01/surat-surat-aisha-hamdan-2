@@ -34,17 +34,31 @@ async function startServer() {
 
       let content = fs.readFileSync(appPath, "utf8");
       
-      // Regex to find and replace the BACKUP_CONFIG_B64 string
-      const regex = /const BACKUP_CONFIG_B64\s*=\s*["`'][A-Za-z0-9+/=]+["`'];?/;
-      if (!regex.test(content)) {
-        const looseRegex = /const BACKUP_CONFIG_B64\s*=\s*["`'][^"`']*["`'];?/;
-        if (looseRegex.test(content)) {
-          content = content.replace(looseRegex, `const BACKUP_CONFIG_B64 = "${b64Config}";`);
+      // Robust string find-and-replace for the BACKUP_CONFIG_B64 variable
+      const startMarker = 'const BACKUP_CONFIG_B64 = "';
+      const startIndex = content.indexOf(startMarker);
+      
+      if (startIndex === -1) {
+        // Try loose check for single quotes or spaces
+        const looseStartMarker = "const BACKUP_CONFIG_B64 = '";
+        const looseStartIndex = content.indexOf(looseStartMarker);
+        if (looseStartIndex !== -1) {
+          const endIndex = content.indexOf("'", looseStartIndex + looseStartMarker.length);
+          if (endIndex !== -1) {
+            content = content.substring(0, looseStartIndex + looseStartMarker.length) + b64Config + content.substring(endIndex);
+          } else {
+            return res.status(500).json({ success: false, error: "Could not find closing quote for BACKUP_CONFIG_B64 in App.tsx" });
+          }
         } else {
-          return res.status(500).json({ success: false, error: "Could not locate BACKUP_CONFIG_B64 variable in App.tsx" });
+          return res.status(500).json({ success: false, error: "Could not find BACKUP_CONFIG_B64 declaration in App.tsx" });
         }
       } else {
-        content = content.replace(regex, `const BACKUP_CONFIG_B64 = "${b64Config}";`);
+        const endIndex = content.indexOf('"', startIndex + startMarker.length);
+        if (endIndex !== -1) {
+          content = content.substring(0, startIndex + startMarker.length) + b64Config + content.substring(endIndex);
+        } else {
+          return res.status(500).json({ success: false, error: "Could not find closing double quote for BACKUP_CONFIG_B64 in App.tsx" });
+        }
       }
 
       fs.writeFileSync(appPath, content, "utf8");

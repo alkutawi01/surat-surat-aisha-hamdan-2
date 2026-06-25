@@ -582,6 +582,9 @@ export default function AdminPanel({
                       const result = await response.json();
                       if (result && result.success) {
                         localStorage.setItem("active_backup_b64", configStr);
+                        if (typeof window !== "undefined" && (window as any).updateBackupConfigMemory) {
+                          (window as any).updateBackupConfigMemory(configStr);
+                        }
                         alert("✅ BERJAYA!\n\nReka bentuk terkini anda telah ditulis terus ke dalam fail kod asal di pelayan!\n\nVersi ini kini adalah tetapan asal kekal yang mutlak. Sesiapa sahaja yang membuka laman web ini akan melihat reka bentuk ini, dan menekan butang 'Tetapan Asal' tidak akan mengembalikan reka bentuk lama lagi.");
                         setIsSavingConfig(false);
                         return;
