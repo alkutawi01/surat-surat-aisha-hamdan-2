@@ -14,9 +14,9 @@ export const DEFAULT_WEBSITE_STYLES: WebsiteStyles = {
   showCursiveVibe: true,
   borderThickness: "18px",
   logoText: "Maktabah Alkutawi",
-  logoType: 'text',
-  logoImageUrl: "",
-  logoSize: "36px",
+  logoType: 'image',
+  logoImageUrl: "https://i.postimg.cc/GmXHQzTZ/maktabah-kutawiyyah-(1).png",
+  logoSize: "64px",
   logoWeight: "semibold",
   logoStyle: "normal",
   
@@ -93,9 +93,9 @@ export const DEFAULT_WEBSITE_STYLES: WebsiteStyles = {
   logoUnderCursiveSize: "64px",
 
   // Background Audio
-  audioUrl: "",
-  audioTitle: "Latar Suasana (Ambient Audio)",
-  audioEnabled: false,
+  audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+  audioTitle: "Semusim Cinta di Mu'tah (OST)",
+  audioEnabled: true,
 
   // Google Sheets integration
   googleSheetsWebhookUrl: "",
