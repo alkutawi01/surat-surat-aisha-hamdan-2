@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { BetaReader, WebsiteStyles, CustomBlock, LandingTexts } from "../types";
-import { X, Trash2, Download, Search, Users, Database, Palette, Check, RotateCcw, Sliders, Sparkles, Plus, Layers, LayoutGrid, Trash, Image, FileText, Music } from "lucide-react";
+import { X, Trash2, Download, Search, Users, Database, Palette, Check, RotateCcw, Sliders, Sparkles, Plus, Layers, LayoutGrid, Trash, Image, FileText, Music, RefreshCw } from "lucide-react";
 
 interface AdminPanelProps {
   isOpen: boolean;
@@ -536,6 +536,88 @@ export default function AdminPanel({
         {activeTab === "design" && (
           <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6">
             
+            {/* Pindahan Reka Bentuk & Konfigurasi Laman */}
+            <div className="bg-[#5a0600]/30 p-4 rounded-xl border border-[#d7b9b9]/25 space-y-3 text-left">
+              <div className="flex items-center gap-2 border-b border-[#d7b9b9]/15 pb-2">
+                <RefreshCw size={16} className="text-[#d7b9b9] animate-spin-slow" />
+                <h4 className="text-sm font-serif font-medium text-white">
+                  Pindahkan Reka Bentuk ke Firebase Hosting (Domain Berbeza)
+                </h4>
+              </div>
+              <p className="text-xs text-[#d7b9b9]/80 font-serif leading-relaxed">
+                Reka bentuk, petikan novel, dan semua teks yang anda sunting disimpan secara tempatan di dalam pelayar (<em>localStorage</em>) anda.
+                Sebab itulah apabila anda membuka domain baharu di Firebase Hosting, ia kembali menjadi versi asal (default).
+                Gunakan butang eksport di bawah untuk menyalin reka bentuk anda dari AI Studio, dan tampalkannya di laman web langsung anda!
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-3 pt-1">
+                <button
+                  type="button"
+                  onClick={() => {
+                    try {
+                      const config = {
+                        custom_landing_texts: localStorage.getItem("custom_landing_texts") || "{}",
+                        custom_novel_quotes: localStorage.getItem("custom_novel_quotes") || "[]",
+                        custom_website_styles: localStorage.getItem("custom_website_styles") || "{}",
+                        custom_website_blocks: localStorage.getItem("custom_website_blocks") || "[]",
+                      };
+                      const configStr = btoa(unescape(encodeURIComponent(JSON.stringify(config))));
+                      navigator.clipboard.writeText(configStr);
+                      alert("✅ Kod konfigurasi reka bentuk berjaya disalin! \n\nSila buka Admin Panel di laman Firebase Hosting anda, tampalkan kod tersebut di bahagian Import, dan klik 'Import & Terapkan'.");
+                    } catch (err) {
+                      alert("Gagal mengeksport konfigurasi: " + err);
+                    }
+                  }}
+                  className="px-4 py-2 bg-[#d7b9b9] hover:bg-[#c5a7a7] text-[#1c0200] font-serif text-[11px] uppercase tracking-wider font-semibold rounded transition-all cursor-pointer flex items-center justify-center gap-1.5"
+                >
+                  <Download size={13} />
+                  <span>Salin Kod Reka Bentuk</span>
+                </button>
+              </div>
+
+              {/* Import Area */}
+              <div className="space-y-2 pt-3 border-t border-[#d7b9b9]/10 flex flex-col">
+                <label className="text-[10px] uppercase tracking-wider text-[#d7b9b9]/70 block font-semibold">Tampal Kod Reka Bentuk di Laman Web Firebase Anda</label>
+                <div className="flex flex-col sm:flex-row gap-2">
+                  <input
+                    type="text"
+                    id="import-config-input"
+                    placeholder="Tampal kod konfigurasi yang disalin di sini..."
+                    className="flex-1 bg-black/40 border border-[#d7b9b9]/20 rounded px-2.5 py-1.5 font-mono text-[10px] text-white placeholder:text-white/20 focus:outline-none focus:border-[#d7b9b9]/50"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const inputEl = document.getElementById("import-config-input") as HTMLInputElement;
+                      const val = inputEl?.value?.trim();
+                      if (!val) {
+                        alert("Sila tampalkan kod konfigurasi terlebih dahulu.");
+                        return;
+                      }
+                      try {
+                        const decodedStr = decodeURIComponent(escape(atob(val)));
+                        const parsed = JSON.parse(decodedStr);
+                        
+                        if (parsed.custom_landing_texts) localStorage.setItem("custom_landing_texts", parsed.custom_landing_texts);
+                        if (parsed.custom_novel_quotes) localStorage.setItem("custom_novel_quotes", parsed.custom_novel_quotes);
+                        if (parsed.custom_website_styles) localStorage.setItem("custom_website_styles", parsed.custom_website_styles);
+                        if (parsed.custom_website_blocks) localStorage.setItem("custom_website_blocks", parsed.custom_website_blocks);
+                        
+                        alert("🎉 Reka bentuk berjaya diimport! Halaman akan memuatkan semula gaya baharu.");
+                        window.location.reload();
+                      } catch (err) {
+                        alert("Gagal mengimport. Pastikan kod yang disalin diletakkan dengan betul.");
+                      }
+                    }}
+                    className="px-4 py-1.5 bg-emerald-800 hover:bg-emerald-700 text-white font-serif text-[11px] uppercase tracking-wider font-semibold rounded transition-all cursor-pointer flex items-center justify-center gap-1.5"
+                  >
+                    <Check size={13} />
+                    <span>Import & Terapkan</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
             {/* Quick Registration Form Toggle / Editor Assist */}
             {setIsBetaPopupOpen && (
               <div className="bg-[#5a0600]/30 p-4 rounded-xl border border-[#d7b9b9]/25 flex flex-col sm:flex-row items-center justify-between gap-4">
