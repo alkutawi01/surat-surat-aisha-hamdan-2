@@ -45,6 +45,9 @@ export default function AdminPanel({
     message: string;
   } | null>(null);
 
+  const [overwriteConfigCode, setOverwriteConfigCode] = useState<string>("");
+  const [isSavingConfig, setIsSavingConfig] = useState<boolean>(false);
+
   // Load readers from localStorage
   const loadReaders = () => {
     try {
@@ -536,6 +539,85 @@ export default function AdminPanel({
         {activeTab === "design" && (
           <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6">
             
+            {/* Jadikan Perubahan Sebagai Tetapan Asal */}
+            <div className="bg-[#5a0600]/40 p-4 rounded-xl border-2 border-emerald-500/30 space-y-3 text-left">
+              <div className="flex items-center gap-2 border-b border-emerald-500/20 pb-2">
+                <Sparkles size={16} className="text-emerald-400" />
+                <h4 className="text-sm font-serif font-medium text-white">
+                  Jadikan Perubahan Sebagai Tetapan Asal (Overwrite & Kekal)
+                </h4>
+              </div>
+              <p className="text-xs text-[#d7b9b9]/80 font-serif leading-relaxed">
+                Reka bentuk, petikan novel, dan semua teks yang disunting biasanya disimpan secara tempatan (<em>localStorage</em>) pada laptop anda. 
+                Sebab itulah apabila anda bertukar ke laptop baharu, tetapan tersebut hilang.
+              </p>
+              <p className="text-xs text-[#d7b9b9]/80 font-serif leading-relaxed">
+                Klik butang di bawah untuk menjadikan versi reka bentuk semasa anda sebagai <strong>tetapan asal (default) yang mutlak</strong> di dalam kod fail.
+              </p>
+
+              <button
+                type="button"
+                disabled={isSavingConfig}
+                onClick={async () => {
+                  try {
+                    setIsSavingConfig(true);
+                    const config = {
+                      custom_landing_texts: localStorage.getItem("custom_landing_texts") || "{}",
+                      custom_novel_quotes: localStorage.getItem("custom_novel_quotes") || "[]",
+                      custom_website_styles: localStorage.getItem("custom_website_styles") || "{}",
+                      custom_website_blocks: localStorage.getItem("custom_website_blocks") || "[]",
+                    };
+                    const configStr = btoa(unescape(encodeURIComponent(JSON.stringify(config))));
+                    
+                    // Try to save directly to the full-stack server
+                    try {
+                      const response = await fetch("/api/save-config", {
+                        method: "POST",
+                        headers: {
+                          "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ b64Config: configStr }),
+                      });
+                      
+                      const result = await response.json();
+                      if (result && result.success) {
+                        localStorage.setItem("active_backup_b64", configStr);
+                        alert("✅ BERJAYA!\n\nReka bentuk terkini anda telah ditulis terus ke dalam fail kod asal di pelayan!\n\nVersi ini kini adalah tetapan asal kekal yang mutlak. Sesiapa sahaja yang membuka laman web ini akan melihat reka bentuk ini, dan menekan butang 'Tetapan Asal' tidak akan mengembalikan reka bentuk lama lagi.");
+                        setIsSavingConfig(false);
+                        return;
+                      }
+                    } catch (netErr) {
+                      console.warn("Direct save to server failed, falling back to manual code display:", netErr);
+                    }
+                    
+                    // Fallback to modal with the code
+                    setOverwriteConfigCode(configStr);
+                  } catch (err) {
+                    alert("Gagal menjana konfigurasi: " + err);
+                  } finally {
+                    setIsSavingConfig(false);
+                  }
+                }}
+                className={`w-full px-4 py-2 text-white font-serif text-[11px] uppercase tracking-wider font-semibold rounded transition-all flex items-center justify-center gap-1.5 shadow-md shadow-emerald-950/40 hover:scale-[1.01] ${
+                  isSavingConfig 
+                    ? "bg-emerald-800 cursor-not-allowed opacity-75" 
+                    : "bg-emerald-600 hover:bg-emerald-500 cursor-pointer"
+                }`}
+              >
+                {isSavingConfig ? (
+                  <>
+                    <RefreshCw size={13} className="animate-spin" />
+                    <span>Menulis ke Fail Kod...</span>
+                  </>
+                ) : (
+                  <>
+                    <Check size={13} />
+                    <span>Jadikan Perubahan Sebagai Tetapan Asal</span>
+                  </>
+                )}
+              </button>
+            </div>
+
             {/* Pindahan Reka Bentuk & Konfigurasi Laman */}
             <div className="bg-[#5a0600]/30 p-4 rounded-xl border border-[#d7b9b9]/25 space-y-3 text-left">
               <div className="flex items-center gap-2 border-b border-[#d7b9b9]/15 pb-2">
@@ -2151,6 +2233,72 @@ export default function AdminPanel({
                 className="px-4 py-1.5 bg-[#d7b9b9] hover:bg-[#c5a059] text-[#430400] font-semibold rounded transition-all cursor-pointer"
               >
                 Selesai
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Overwrite Default Config Sub-modal */}
+      {overwriteConfigCode && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/95 backdrop-blur-md p-4 animate-fade-in" id="admin-overwrite-submodal">
+          <div className="bg-[#1c0200] w-full max-w-lg rounded-xl border border-emerald-500/30 shadow-2xl p-6 flex flex-col gap-4 text-white">
+            <div className="flex items-center gap-2 border-b border-emerald-500/20 pb-3">
+              <Sparkles className="text-emerald-400 animate-pulse" size={18} />
+              <h3 className="font-serif text-sm font-semibold uppercase tracking-wider text-emerald-400">
+                Jadikan Perubahan Sebagai Tetapan Asal
+              </h3>
+            </div>
+            
+            <p className="font-serif text-xs text-white/80 leading-relaxed bg-black/20 p-3 rounded">
+              Langkah ini membolehkan anda menetapkan reka bentuk terkini sebagai <strong>tetapan asal (default) yang mutlak dalam kod sumber</strong>. Dengan ini, sesiapa sahaja yang membuka laman web ini (dari mana-mana komputer atau peranti baharu) akan terus melihat reka bentuk terkini anda secara automatik!
+            </p>
+
+            <div className="space-y-2">
+              <label className="text-[10px] uppercase tracking-wider text-[#d7b9b9]/75 block font-bold">Kod Konfigurasi Utama Anda:</label>
+              <textarea
+                readOnly
+                value={overwriteConfigCode}
+                onClick={(e) => (e.target as HTMLTextAreaElement).select()}
+                className="w-full h-24 bg-black/50 border border-emerald-500/20 rounded p-2.5 font-mono text-[9px] text-emerald-300 focus:outline-none focus:border-emerald-500/50 resize-none select-all"
+              />
+            </div>
+
+            <div className="bg-emerald-950/20 border border-emerald-500/20 p-3 rounded text-xs leading-relaxed space-y-2">
+              <p className="font-semibold text-emerald-400 flex items-center gap-1">
+                👉 Arahan untuk AI Agent:
+              </p>
+              <p className="text-[11px] text-[#d7b9b9]">
+                Sila salin kod di atas, kemudian tampalkannya terus kepada saya (AI Agent) di ruang sembang dengan arahan:
+              </p>
+              <div className="bg-black/40 p-2.5 rounded font-mono text-[10px] text-emerald-200 select-all border border-emerald-500/10">
+                Sila gunakan kod ini untuk mengemas kini tetapan asal kekal saya:
+                <br />
+                <span className="text-white/60 text-[9px] break-all block mt-1">{overwriteConfigCode.substring(0, 30)}...</span>
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-3 font-serif text-xs pt-2">
+              <button 
+                onClick={() => setOverwriteConfigCode("")}
+                className="px-4 py-1.5 border border-[#d7b9b9]/20 hover:bg-white/5 rounded text-white/80 transition-all cursor-pointer"
+              >
+                Tutup
+              </button>
+              <button 
+                onClick={() => {
+                  try {
+                    navigator.clipboard.writeText(overwriteConfigCode);
+                    alert("✅ Kod konfigurasi berjaya disalin! Sila berikan kod ini kepada saya (AI Coding Agent) di ruang sembang di sebelah kiri untuk dikemaskini terus ke dalam fail kod asal.");
+                    setOverwriteConfigCode("");
+                  } catch (err) {
+                    alert("Gagal menyalin: " + err);
+                  }
+                }}
+                className="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded transition-all cursor-pointer flex items-center gap-1 shadow-md shadow-emerald-950/40"
+              >
+                <Check size={12} />
+                Salin Kod & Tutup
               </button>
             </div>
           </div>

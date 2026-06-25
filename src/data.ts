@@ -14,9 +14,9 @@ export const DEFAULT_WEBSITE_STYLES: WebsiteStyles = {
   showCursiveVibe: true,
   borderThickness: "18px",
   logoText: "Maktabah Alkutawi",
-  logoType: 'image',
-  logoImageUrl: "https://i.postimg.cc/GmXHQzTZ/maktabah-kutawiyyah-(1).png",
-  logoSize: "64px",
+  logoType: 'text',
+  logoImageUrl: "",
+  logoSize: "36px",
   logoWeight: "semibold",
   logoStyle: "normal",
   
@@ -93,9 +93,9 @@ export const DEFAULT_WEBSITE_STYLES: WebsiteStyles = {
   logoUnderCursiveSize: "64px",
 
   // Background Audio
-  audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
-  audioTitle: "Semusim Cinta di Mu'tah (OST)",
-  audioEnabled: true,
+  audioUrl: "",
+  audioTitle: "Latar Suasana (Ambient Audio)",
+  audioEnabled: false,
 
   // Google Sheets integration
   googleSheetsWebhookUrl: "",
@@ -106,7 +106,7 @@ export const DEFAULT_WEBSITE_STYLES: WebsiteStyles = {
   embedIframeTitle: "Pratonton Karya",
   embedIframeWidth: "max-w-2xl",
   embedIframeHeight: "480px",
-  embedIframePlayOnly: true,
+  embedIframePlayOnly: false,
 };
 
 export const DEFAULT_LANDING_TEXTS: LandingTexts = {

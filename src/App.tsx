@@ -79,7 +79,7 @@ const renderBrandIcon = (
 };
 
 // Base64 backup configuration provided by the user from Admin Panel
-const BACKUP_CONFIG_B64 = "eyJjdXN0b21fbGFuZGluZ190ZXh0cyI6IntcInVwcGVyVGFnXCI6XCJcIixcInNlY3JldFRpdGxlXCI6XCJTZWJ1YWggUmFoc2lhIFlhbmcgQmVsdW0gQmVybmFtYVwiLFwibWFpbkhvb2tMaW5lMVwiOlwiU2V0aWFwIGxlbWJhcmFuIGFkYWxhaFwiLFwibWFpbkhvb2tJdGFsaWNcIjpcImppd2FcIixcIm1haW5Ib29rTGluZTJcIjpcInlhbmcgZGlwaW5qYW1rYW4uXCIsXCJjdXJzaXZlVmliZVwiOlwiSW1hbi4gQ2ludGEuIFNhc3RlcmEuXCIsXCJiZXRhVGl0bGVcIjpcInBlbWJhY2EgYmV0YVwiLFwiYmV0YURlc2NcIjpcIkRhZnRhciBuYW1hIGFuZGEgdW50dWsgbWVuamFkaSBzZWJhaGFnaWFuIGRhcmlwYWRhIDEwIG9yYW5nIHBlbWJhY2EgYmV0YSB5YW5nIGJlcnBlbHVhbmcgbWVtYmFjYSBzZWJhaGFnaWFuIGRyYWYgbm92ZWwgaW5pLlwiLFwibGF1bmNoVGV4dFwiOlwic2FoLm1hbGlhbnMuZ3JvdXBcIixcInB1Ymxpc2hlck5hbWVcIjpcIk1ha3RhYmFoIEt1dGF3aXl5YWhcIixcImZvcm1OYW1lTGFiZWxcIjpcIk1haW5hIFBlbnVoXCIsXCJmb3JtRW1haWxMYWJlbFwiOlwiQWxhbWF0IEUtbWVsXCIsXCJmb3JtUGhvbmVMYWJlbFwiOlwiTm8uIFRlbGVmb25cIixcImZvcm1SZWFzb25MYWJlbFwiOlwiSGFzcmF0IFBlbWJhY2FcIixcImZvcm1CdG5UZXh0XCI6XCJTZXJ0YWkgS2FtaVwiLFwiY291bnRkb3duTGFiZWxcIjpcIm1haGFrYXJ5YSBkYWxhbSBwZW1iaW5hYW5cIixcImluc3lhbGxhaFRleHRcIjpcIkluc3lhaC1BbGxhaFwifSIsImN1c3RvbV9ub3ZlbF9xdW90ZXMiOm51bGwsImN1c3RvbV93ZWJzaXRlX3N0eWxlcyI6bnVsbCwiY3VzdG9tX3dlYnNpdGVfYmxvY2tzIjoiW10ifQ==";
+const BACKUP_CONFIG_B64 = "eyJjdXN0b21fbGFuZGluZ190ZXh0cyI6IntcInVwcGVyVGFnXCI6XCJcIixcInNlY3JldFRpdGxlXCI6XCJTZWJ1YWggUmFoc2lhIFlhbmcgQmVsdW0gQmVybmFtYVwiLFwibWFpbkhvb2tMaW5lMVwiOlwiU2V0aWFwIGxlbWJhcmFuIGFkYWxhaFwiLFwibWFpbkhvb2tJdGFsaWNcIjpcImppd2FcIixcIm1haW5Ib29rTGluZTJcIjpcInlhbmcgZGlwaW5qYW1rYW4uXCIsXCJjdXJzaXZlVmliZVwiOlwiSW1hbi4gQ2ludGEuIFNhc3RlcmEuXCIsXCJiZXRhVGl0bGVcIjpcInBlbWJhY2EgYmV0YVwiLFwiYmV0YURlc2NcIjpcIkRhZnRhciBuYW1hIGFuZGEgdW50dWsgbWVuamFkaSBzZWJhaGFnaWFuIGRhcmlwYWRhIDEwIG9yYW5nIHBlbWJhY2EgYmV0YSB5YW5nIGJlcnBlbHVhbmcgbWVtYmFjYSBzZWJhaGFnaWFuIGRyYWYgbm92ZWwgaW5pLlwiLFwibGF1bmNoVGV4dFwiOlwic2FoLm1hbGlhbnMuZ3JvdXBcIixcInB1Ymxpc2hlck5hbWVcIjpcIk1ha3RhYmFoIEt1dGF3aXl5YWhcIixcImZvcm1OYW1lTGFiZWxcIjpcIk5hbWEgUGVudWhcIixcImZvcm1FbWFpbExhYmVsXCI6XCJBbGFtYXQgRS1tZWxcIixcImZvcm1QaG9uZUxhYmVsXCI6XCJOby4gVGVsZWZvblwiLFwiZm9ybVJlYXNvbkxhYmVsXCI6XCJIYXNyYXQgUGVtYmFjYVwiLFwiZm9ybUJ0blRleHRcIjpcIlNlcnRhaSBLYW1pXCIsXCJjb3VudGRvd25MYWJlbFwiOlwibWFoYWthcnlhIGRhbGFtIHBlbWJpbmFhblwiLFwiaW5zeWFsbGFoVGV4dFwiOlwiSW5zeWFoLUFsbGFoXCJ9IiwiY3VzdG9tX25vdmVsX3F1b3RlcyI6bnVsbCwiY3VzdG9tX3dlYnNpdGVfc3R5bGVzIjpudWxsLCJjdXN0b21fd2Vic2l0ZV9ibG9ja3MiOiJbXSJ9";
 
 let backupConfig: {
   landingTexts: any;
@@ -111,29 +111,16 @@ if (typeof window !== "undefined") {
       if (backupConfig) {
         if (backupConfig.landingTexts) {
           localStorage.setItem("custom_landing_texts", JSON.stringify(backupConfig.landingTexts));
-        } else {
-          localStorage.removeItem("custom_landing_texts");
         }
         if (backupConfig.novelQuotes) {
           localStorage.setItem("custom_novel_quotes", JSON.stringify(backupConfig.novelQuotes));
-        } else {
-          localStorage.removeItem("custom_novel_quotes");
         }
         if (backupConfig.websiteStyles) {
           localStorage.setItem("custom_website_styles", JSON.stringify(backupConfig.websiteStyles));
-        } else {
-          localStorage.removeItem("custom_website_styles");
         }
         if (backupConfig.websiteBlocks) {
           localStorage.setItem("custom_website_blocks", JSON.stringify(backupConfig.websiteBlocks));
-        } else {
-          localStorage.removeItem("custom_website_blocks");
         }
-      } else {
-        localStorage.removeItem("custom_landing_texts");
-        localStorage.removeItem("custom_novel_quotes");
-        localStorage.removeItem("custom_website_styles");
-        localStorage.removeItem("custom_website_blocks");
       }
       localStorage.setItem("active_backup_b64", BACKUP_CONFIG_B64);
     }
@@ -457,12 +444,20 @@ export default function App() {
   };
 
   const handleResetToDefaults = () => {
-    setLandingTexts(DEFAULT_LANDING_TEXTS);
-    setQuotes(NOVEL_QUOTES);
-    setWebsiteStyles(DEFAULT_WEBSITE_STYLES);
-    localStorage.setItem("custom_landing_texts", JSON.stringify(DEFAULT_LANDING_TEXTS));
-    localStorage.setItem("custom_novel_quotes", JSON.stringify(NOVEL_QUOTES));
-    localStorage.setItem("custom_website_styles", JSON.stringify(DEFAULT_WEBSITE_STYLES));
+    const defaultTexts = backupConfig?.landingTexts ? { ...DEFAULT_LANDING_TEXTS, ...backupConfig.landingTexts } : DEFAULT_LANDING_TEXTS;
+    const defaultQuotes = backupConfig?.novelQuotes || NOVEL_QUOTES;
+    const defaultStyles = backupConfig?.websiteStyles ? { ...DEFAULT_WEBSITE_STYLES, ...backupConfig.websiteStyles } : DEFAULT_WEBSITE_STYLES;
+    const defaultBlocks = backupConfig?.websiteBlocks || [];
+
+    setLandingTexts(defaultTexts);
+    setQuotes(defaultQuotes);
+    setWebsiteStyles(defaultStyles);
+    setCustomBlocks(defaultBlocks);
+
+    localStorage.setItem("custom_landing_texts", JSON.stringify(defaultTexts));
+    localStorage.setItem("custom_novel_quotes", JSON.stringify(defaultQuotes));
+    localStorage.setItem("custom_website_styles", JSON.stringify(defaultStyles));
+    localStorage.setItem("custom_website_blocks", JSON.stringify(defaultBlocks));
     setResetConfirmOpen(false);
   };
 

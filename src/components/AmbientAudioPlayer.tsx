@@ -126,7 +126,7 @@ export default function AmbientAudioPlayer({
 
   return (
     <div 
-      className="fixed bottom-4 left-4 z-40 bg-[#1f0200]/90 backdrop-blur-md border border-white/10 rounded-full px-4 py-2 flex items-center gap-3 shadow-2xl transition-all duration-300 hover:border-white/20 hover:scale-[1.02]"
+      className="fixed bottom-4 left-4 z-40 bg-[#1f0200]/90 backdrop-blur-md border border-white/10 rounded-xl px-4 py-2.5 flex items-center gap-3 shadow-2xl transition-all duration-300 hover:border-white/20 hover:scale-[1.02]"
       style={{ fontFamily: bodyFont }}
       id="ambient-audio-widget"
     >
