@@ -48,6 +48,45 @@ try {
   console.error("Gagal menyahkod konfigurasi sandaran:", e);
 }
 
+// Auto-sync local storage dengan BACKUP_CONFIG_B64 jika terdapat perubahan pada kod
+if (typeof window !== "undefined") {
+  try {
+    const currentSavedB64 = localStorage.getItem("active_backup_b64");
+    if (currentSavedB64 !== BACKUP_CONFIG_B64) {
+      if (backupConfig) {
+        if (backupConfig.landingTexts) {
+          localStorage.setItem("custom_landing_texts", JSON.stringify(backupConfig.landingTexts));
+        } else {
+          localStorage.removeItem("custom_landing_texts");
+        }
+        if (backupConfig.novelQuotes) {
+          localStorage.setItem("custom_novel_quotes", JSON.stringify(backupConfig.novelQuotes));
+        } else {
+          localStorage.removeItem("custom_novel_quotes");
+        }
+        if (backupConfig.websiteStyles) {
+          localStorage.setItem("custom_website_styles", JSON.stringify(backupConfig.websiteStyles));
+        } else {
+          localStorage.removeItem("custom_website_styles");
+        }
+        if (backupConfig.websiteBlocks) {
+          localStorage.setItem("custom_website_blocks", JSON.stringify(backupConfig.websiteBlocks));
+        } else {
+          localStorage.removeItem("custom_website_blocks");
+        }
+      } else {
+        localStorage.removeItem("custom_landing_texts");
+        localStorage.removeItem("custom_novel_quotes");
+        localStorage.removeItem("custom_website_styles");
+        localStorage.removeItem("custom_website_blocks");
+      }
+      localStorage.setItem("active_backup_b64", BACKUP_CONFIG_B64);
+    }
+  } catch (err) {
+    console.error("Gagal menyegerakkan konfigurasi sandaran ke LocalStorage:", err);
+  }
+}
+
 export default function App() {
   const [isAdminOpen, setIsAdminOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
