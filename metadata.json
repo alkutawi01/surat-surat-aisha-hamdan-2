@@ -1,0 +1,8 @@
+{
+  "name": "Teaser: Surat-surat Aisha Hamdan",
+  "description": "Halaman pendaratan minimalis, elegan, dan puitis untuk novel baharu Izzat Anas yang bakal dilancarkan pada 1 Januari 2027.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
