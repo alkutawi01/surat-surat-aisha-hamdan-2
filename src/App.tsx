@@ -23,6 +23,31 @@ const AVAILABLE_FONTS = [
   { name: "Sacramento (Handwriting)", value: "Sacramento" },
 ];
 
+// Base64 backup configuration provided by the user from Admin Panel
+const BACKUP_CONFIG_B64 = "eyJjdXN0b21fbGFuZGluZ190ZXh0cyI6IntcInVwcGVyVGFnXCI6XCJcIixcInNlY3JldFRpdGxlXCI6XCJTZWJ1YWggUmFoc2lhIFlhbmcgQmVsdW0gQmVybmFtYVwiLFwibWFpbkhvb2tMaW5lMVwiOlwiU2V0aWFwIGxlbWJhcmFuIGFkYWxhaFwiLFwibWFpbkhvb2tJdGFsaWNcIjpcImppd2FcIixcIm1haW5Ib29rTGluZTJcIjpcInlhbmcgZGlwaW5qYW1rYW4uXCIsXCJjdXJzaXZlVmliZVwiOlwiSW1hbi4gQ2ludGEuIFNhc3RlcmEuXCIsXCJiZXRhVGl0bGVcIjpcInBlbWJhY2EgYmV0YVwiLFwiYmV0YURlc2NcIjpcIkRhZnRhciBuYW1hIGFuZGEgdW50dWsgbWVuamFkaSBzZWJhaGFnaWFuIGRhcmlwYWRhIDEwIG9yYW5nIHBlbWJhY2EgYmV0YSB5YW5nIGJlcnBlbHVhbmcgbWVtYmFjYSBzZWJhaGFnaWFuIGRyYWYgbm92ZWwgaW5pLlwiLFwibGF1bmNoVGV4dFwiOlwic2FoLm1hbGlhbnMuZ3JvdXBcIixcInB1Ymxpc2hlck5hbWVcIjpcIk1ha3RhYmFoIEt1dGF3aXl5YWhcIixcImZvcm1OYW1lTGFiZWxcIjpcIk1haW5hIFBlbnVoXCIsXCJmb3JtRW1haWxMYWJlbFwiOlwiQWxhbWF0IEUtbWVsXCIsXCJmb3JtUGhvbmVMYWJlbFwiOlwiTm8uIFRlbGVmb25cIixcImZvcm1SZWFzb25MYWJlbFwiOlwiSGFzcmF0IFBlbWJhY2FcIixcImZvcm1CdG5UZXh0XCI6XCJTZXJ0YWkgS2FtaVwiLFwiY291bnRkb3duTGFiZWxcIjpcIm1haGFrYXJ5YSBkYWxhbSBwZW1iaW5hYW5cIixcImluc3lhbGxhaFRleHRcIjpcIkluc3lhaC1BbGxhaFwifSIsImN1c3RvbV9ub3ZlbF9xdW90ZXMiOm51bGwsImN1c3RvbV93ZWJzaXRlX3N0eWxlcyI6bnVsbCwiY3VzdG9tX3dlYnNpdGVfYmxvY2tzIjoiW10ifQ==";
+
+let backupConfig: {
+  landingTexts: any;
+  novelQuotes: any;
+  websiteStyles: any;
+  websiteBlocks: any;
+} | null = null;
+
+try {
+  const decodedStr = typeof window !== "undefined" 
+    ? decodeURIComponent(escape(window.atob(BACKUP_CONFIG_B64))) 
+    : "{}";
+  const parsed = JSON.parse(decodedStr);
+  backupConfig = {
+    landingTexts: parsed.custom_landing_texts ? JSON.parse(parsed.custom_landing_texts) : null,
+    novelQuotes: parsed.custom_novel_quotes ? JSON.parse(parsed.custom_novel_quotes) : null,
+    websiteStyles: parsed.custom_website_styles ? JSON.parse(parsed.custom_website_styles) : null,
+    websiteBlocks: parsed.custom_website_blocks ? JSON.parse(parsed.custom_website_blocks) : null,
+  };
+} catch (e) {
+  console.error("Gagal menyahkod konfigurasi sandaran:", e);
+}
+
 export default function App() {
   const [isAdminOpen, setIsAdminOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -105,8 +130,11 @@ export default function App() {
         const parsed = JSON.parse(saved);
         return { ...DEFAULT_LANDING_TEXTS, ...parsed };
       } catch (e) {
-        return DEFAULT_LANDING_TEXTS;
+        // Fallback to backup if json is corrupt
       }
+    }
+    if (backupConfig?.landingTexts) {
+      return { ...DEFAULT_LANDING_TEXTS, ...backupConfig.landingTexts };
     }
     return DEFAULT_LANDING_TEXTS;
   });
@@ -114,24 +142,62 @@ export default function App() {
   // Load custom quotes
   const [quotes, setQuotes] = useState<Quote[]>(() => {
     const saved = localStorage.getItem("custom_novel_quotes");
-    return saved ? JSON.parse(saved) : NOVEL_QUOTES;
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {}
+    }
+    if (backupConfig?.novelQuotes) {
+      return backupConfig.novelQuotes;
+    }
+    return NOVEL_QUOTES;
   });
 
   // Load custom website styles
   const [websiteStyles, setWebsiteStyles] = useState<WebsiteStyles>(() => {
     const saved = localStorage.getItem("custom_website_styles");
-    return saved ? JSON.parse(saved) : DEFAULT_WEBSITE_STYLES;
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {}
+    }
+    if (backupConfig?.websiteStyles) {
+      return { ...DEFAULT_WEBSITE_STYLES, ...backupConfig.websiteStyles };
+    }
+    return DEFAULT_WEBSITE_STYLES;
   });
 
   // Load custom blocks
   const [customBlocks, setCustomBlocks] = useState<CustomBlock[]>(() => {
     const saved = localStorage.getItem("custom_website_blocks");
-    try {
-      return saved ? JSON.parse(saved) : [];
-    } catch (e) {
-      return [];
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {}
     }
+    if (backupConfig?.websiteBlocks) {
+      return backupConfig.websiteBlocks;
+    }
+    return [];
   });
+
+  // Populate empty local storage with backup configuration on first load
+  useEffect(() => {
+    if (backupConfig) {
+      if (!localStorage.getItem("custom_landing_texts") && backupConfig.landingTexts) {
+        localStorage.setItem("custom_landing_texts", JSON.stringify(backupConfig.landingTexts));
+      }
+      if (!localStorage.getItem("custom_novel_quotes") && backupConfig.novelQuotes) {
+        localStorage.setItem("custom_novel_quotes", JSON.stringify(backupConfig.novelQuotes));
+      }
+      if (!localStorage.getItem("custom_website_styles") && backupConfig.websiteStyles) {
+        localStorage.setItem("custom_website_styles", JSON.stringify(backupConfig.websiteStyles));
+      }
+      if (!localStorage.getItem("custom_website_blocks") && backupConfig.websiteBlocks) {
+        localStorage.setItem("custom_website_blocks", JSON.stringify(backupConfig.websiteBlocks));
+      }
+    }
+  }, []);
 
   const handleCustomBlocksChange = (updated: CustomBlock[]) => {
     setCustomBlocks(updated);
