@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+// Versi pembetulan deployment ke Firebase Hosting - Trigerred
 import CountdownTimer from "./components/CountdownTimer";
 import TeaserText from "./components/TeaserText";
 import BetaRegistration from "./components/BetaRegistration";
