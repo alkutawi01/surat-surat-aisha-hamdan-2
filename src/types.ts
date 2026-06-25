@@ -109,10 +109,18 @@ export interface WebsiteStyles {
   launchFont?: string;
   launchSize?: string;
   launchColor?: string;
+  launchIcon?: string;
+  launchIconUrl?: string;
+  launchIconSize?: string;
+  launchIconYOffset?: string;
   
   publisherFont?: string;
   publisherSize?: string;
   publisherColor?: string;
+  publisherIcon?: string;
+  publisherIconUrl?: string;
+  publisherIconSize?: string;
+  publisherIconYOffset?: string;
 
   // New features
   headerBgColor?: string;
@@ -145,6 +153,7 @@ export interface WebsiteStyles {
   embedIframeTitle?: string;
   embedIframeWidth?: string; // e.g., 'max-w-md', 'max-w-lg', 'max-w-xl', 'max-w-2xl', 'max-w-3xl', 'max-w-full'
   embedIframeHeight?: string; // e.g., '320px', '400px', '480px', '600px'
+  embedIframePlayOnly?: boolean;
 }
 
 export interface CustomBlock {

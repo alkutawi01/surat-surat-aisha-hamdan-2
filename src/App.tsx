@@ -5,7 +5,7 @@ import TeaserText from "./components/TeaserText";
 import BetaRegistration from "./components/BetaRegistration";
 import AmbientAudioPlayer from "./components/AmbientAudioPlayer";
 import AdminPanel from "./components/AdminPanel";
-import { Scroll, KeyRound, Sparkles, Cloud, Database, RefreshCw, Check, RotateCcw, X, Settings, Palette, Sliders } from "lucide-react";
+import { Scroll, KeyRound, Sparkles, Cloud, Database, RefreshCw, Check, RotateCcw, X, Settings, Palette, Sliders, BookOpen, Library, Book, Bookmark, Compass, Feather, Globe, Heart, Award, PenTool } from "lucide-react";
 import { DEFAULT_LANDING_TEXTS, NOVEL_QUOTES, DEFAULT_WEBSITE_STYLES } from "./data";
 import { LandingTexts, Quote, WebsiteStyles, CustomBlock } from "./types";
 import { sanitizeText } from "./utils/sanitize";
@@ -22,6 +22,61 @@ const AVAILABLE_FONTS = [
   { name: "Great Vibes (Kaligrafi)", value: "Great Vibes" },
   { name: "Sacramento (Handwriting)", value: "Sacramento" },
 ];
+
+const renderBrandIcon = (
+  iconName: string | undefined, 
+  defaultIcon: string, 
+  size: number, 
+  color: string, 
+  className?: string, 
+  customImageUrl?: string,
+  customHeight?: string,
+  customYOffset?: string
+) => {
+  const transformStyle = customYOffset ? `translateY(${customYOffset})` : undefined;
+
+  if (customImageUrl && customImageUrl.trim() !== "") {
+    const finalHeight = customHeight || `${size + 12}px`;
+    return (
+      <img 
+        src={customImageUrl} 
+        alt="Brand Logo" 
+        className={`${className} object-contain`} 
+        style={{ 
+          height: finalHeight, 
+          width: 'auto', 
+          maxWidth: '120px',
+          transform: transformStyle
+        }}
+        referrerPolicy="no-referrer"
+        onError={(e) => {
+          // If custom image fails to load, fallback to standard icon
+          e.currentTarget.style.display = 'none';
+        }}
+      />
+    );
+  }
+
+  const name = iconName || defaultIcon;
+  const iconSize = customHeight ? (parseInt(customHeight) || size) : size;
+  const iconStyle = { color, transform: transformStyle };
+
+  switch (name.toLowerCase()) {
+    case "scroll": return <Scroll size={iconSize} className={className} style={iconStyle} />;
+    case "library": return <Library size={iconSize} className={className} style={iconStyle} />;
+    case "bookopen": return <BookOpen size={iconSize} className={className} style={iconStyle} />;
+    case "book": return <Book size={iconSize} className={className} style={iconStyle} />;
+    case "bookmark": return <Bookmark size={iconSize} className={className} style={iconStyle} />;
+    case "compass": return <Compass size={iconSize} className={className} style={iconStyle} />;
+    case "feather": return <Feather size={iconSize} className={className} style={iconStyle} />;
+    case "globe": return <Globe size={iconSize} className={className} style={iconStyle} />;
+    case "heart": return <Heart size={iconSize} className={className} style={iconStyle} />;
+    case "award": return <Award size={iconSize} className={className} style={iconStyle} />;
+    case "pentool": return <PenTool size={iconSize} className={className} style={iconStyle} />;
+    case "sparkles": return <Sparkles size={iconSize} className={className} style={iconStyle} />;
+    default: return <BookOpen size={iconSize} className={className} style={iconStyle} />;
+  }
+};
 
 // Base64 backup configuration provided by the user from Admin Panel
 const BACKUP_CONFIG_B64 = "eyJjdXN0b21fbGFuZGluZ190ZXh0cyI6IntcInVwcGVyVGFnXCI6XCJcIixcInNlY3JldFRpdGxlXCI6XCJTZWJ1YWggUmFoc2lhIFlhbmcgQmVsdW0gQmVybmFtYVwiLFwibWFpbkhvb2tMaW5lMVwiOlwiU2V0aWFwIGxlbWJhcmFuIGFkYWxhaFwiLFwibWFpbkhvb2tJdGFsaWNcIjpcImppd2FcIixcIm1haW5Ib29rTGluZTJcIjpcInlhbmcgZGlwaW5qYW1rYW4uXCIsXCJjdXJzaXZlVmliZVwiOlwiSW1hbi4gQ2ludGEuIFNhc3RlcmEuXCIsXCJiZXRhVGl0bGVcIjpcInBlbWJhY2EgYmV0YVwiLFwiYmV0YURlc2NcIjpcIkRhZnRhciBuYW1hIGFuZGEgdW50dWsgbWVuamFkaSBzZWJhaGFnaWFuIGRhcmlwYWRhIDEwIG9yYW5nIHBlbWJhY2EgYmV0YSB5YW5nIGJlcnBlbHVhbmcgbWVtYmFjYSBzZWJhaGFnaWFuIGRyYWYgbm92ZWwgaW5pLlwiLFwibGF1bmNoVGV4dFwiOlwic2FoLm1hbGlhbnMuZ3JvdXBcIixcInB1Ymxpc2hlck5hbWVcIjpcIk1ha3RhYmFoIEt1dGF3aXl5YWhcIixcImZvcm1OYW1lTGFiZWxcIjpcIk1haW5hIFBlbnVoXCIsXCJmb3JtRW1haWxMYWJlbFwiOlwiQWxhbWF0IEUtbWVsXCIsXCJmb3JtUGhvbmVMYWJlbFwiOlwiTm8uIFRlbGVmb25cIixcImZvcm1SZWFzb25MYWJlbFwiOlwiSGFzcmF0IFBlbWJhY2FcIixcImZvcm1CdG5UZXh0XCI6XCJTZXJ0YWkgS2FtaVwiLFwiY291bnRkb3duTGFiZWxcIjpcIm1haGFrYXJ5YSBkYWxhbSBwZW1iaW5hYW5cIixcImluc3lhbGxhaFRleHRcIjpcIkluc3lhaC1BbGxhaFwifSIsImN1c3RvbV9ub3ZlbF9xdW90ZXMiOm51bGwsImN1c3RvbV93ZWJzaXRlX3N0eWxlcyI6bnVsbCwiY3VzdG9tX3dlYnNpdGVfYmxvY2tzIjoiW10ifQ==";
@@ -91,6 +146,7 @@ export default function App() {
   const [isAdminOpen, setIsAdminOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const [fogEnabled, setFogEnabled] = useState(true);
 
   // States for custom modals and dialogs
@@ -147,6 +203,7 @@ export default function App() {
   });
 
   useEffect(() => {
+    setIsMounted(true);
     const handleResize = () => {
       setWindowSize({ width: window.innerWidth, height: window.innerHeight });
     };
@@ -156,6 +213,22 @@ export default function App() {
 
   // Scroll tracking state to fade out fog
   const [scrollPosition, setScrollPosition] = useState(0);
+
+  // Helper to dynamically scale spacings down by 40% on mobile screens (width < 640px)
+  const getResponsiveSpacing = (spacingValue: string | undefined, defaultValue: string) => {
+    const rawValue = spacingValue || defaultValue;
+    if (windowSize.width >= 640) return rawValue;
+
+    // Reduce by 40% (multiply by 0.6) on mobile
+    const match = rawValue.match(/^([\d.]+)([a-zA-Z%]*)$/);
+    if (match) {
+      const num = parseFloat(match[1]);
+      const unit = match[2];
+      const reducedNum = Math.round(num * 0.6);
+      return `${reducedNum}${unit}`;
+    }
+    return rawValue;
+  };
 
   // States for scroll-triggered beta registration popup
   const [isBetaPopupOpen, setIsBetaPopupOpen] = useState(false);
@@ -197,7 +270,7 @@ export default function App() {
     const saved = localStorage.getItem("custom_website_styles");
     if (saved) {
       try {
-        return JSON.parse(saved);
+        return { ...DEFAULT_WEBSITE_STYLES, ...JSON.parse(saved) };
       } catch (e) {}
     }
     if (backupConfig?.websiteStyles) {
@@ -269,8 +342,11 @@ export default function App() {
       
       if (totalHeight - (visibleHeight + currentScroll) <= threshold) {
         if (!hasAutoOpened) {
-          setIsBetaPopupOpen(true);
           setHasAutoOpened(true);
+          // Delay popup by 5 seconds from the moment user scrolls and hits the footer
+          setTimeout(() => {
+            setIsBetaPopupOpen(true);
+          }, 5000);
         }
       }
     };
@@ -463,6 +539,9 @@ export default function App() {
       id="app-root"
     >
       
+      {/* Classical Paper/Parchment Texture overlay */}
+      <div className="paper-texture" />
+      
       {/* Floating Admin Control Bar */}
       {isAdmin && (
         <div className="sticky top-0 left-0 right-0 bg-black/85 backdrop-blur-md border-b px-4 py-3 z-50 flex flex-wrap items-center justify-between gap-4 animate-fade-in shadow-xl text-xs" style={{ borderColor: `${websiteStyles.accentColor}25` }}>
@@ -551,11 +630,11 @@ export default function App() {
           <div className="flex items-center justify-center gap-2">
             {isEditMode ? (
               <>
-                <div
+                 <div
                   contentEditable
                   suppressContentEditableWarning
                   onBlur={(e) => handleTextChange("upperTag", sanitizeText(e.currentTarget.innerText || ""))}
-                  className="tracking-[0.3em] uppercase font-semibold text-white/95 border-b border-dashed outline-none cursor-pointer inline-block whitespace-pre-wrap"
+                  className="tracking-[0.3em] font-semibold text-white/95 border-b border-dashed outline-none cursor-pointer inline-block whitespace-pre-wrap"
                   style={{ 
                     fontFamily: websiteStyles.upperTagFont || websiteStyles.serifFont,
                     fontSize: websiteStyles.upperTagSize || "11px",
@@ -577,7 +656,7 @@ export default function App() {
               </>
             ) : (
               <div 
-                className="tracking-[0.3em] uppercase font-semibold inline-block whitespace-pre-wrap"
+                className="tracking-[0.3em] font-semibold inline-block whitespace-pre-wrap"
                 style={{
                   fontFamily: websiteStyles.upperTagFont || websiteStyles.serifFont,
                   fontSize: websiteStyles.upperTagSize || "11px",
@@ -654,7 +733,7 @@ export default function App() {
       <main 
         className={`relative flex-1 flex flex-col pb-6 sm:pb-12 px-6 z-10 max-w-5xl mx-auto w-full ${alignContainerClass}`} 
         id="landing-main"
-        style={{ paddingTop: websiteStyles.spacingPageTop || "112px" }}
+        style={{ paddingTop: getResponsiveSpacing(websiteStyles.spacingPageTop, "112px") }}
       >
         
         {/* Elemen Tambahan di ATAS Logo */}
@@ -662,7 +741,7 @@ export default function App() {
           <div 
             className={`w-full flex flex-col z-20 ${alignContainerClass} animate-fade-in`} 
             id="above-logo-container"
-            style={{ marginBottom: websiteStyles.spacingAboveLogo || "24px" }}
+            style={{ marginBottom: getResponsiveSpacing(websiteStyles.spacingAboveLogo, "24px") }}
           >
             {isEditMode ? (
               <div className="w-full flex flex-col items-center gap-2 p-3 border border-dashed border-[#d7b9b9]/20 rounded bg-black/30 max-w-lg mx-auto">
@@ -714,7 +793,7 @@ export default function App() {
                 )}
                 {landingTexts.aboveLogoText && (
                   <p 
-                    className="text-xs tracking-wider opacity-80 max-w-md whitespace-pre-wrap mx-auto text-center"
+                    className={`text-xs tracking-wider max-w-md whitespace-pre-wrap mx-auto text-center fade-in-mount ${isMounted ? 'fade-in-mount-active' : ''}`}
                     style={{ 
                       fontFamily: websiteStyles.aboveLogoFont || websiteStyles.bodyFont,
                       fontSize: websiteStyles.aboveLogoSize || "12px",
@@ -733,7 +812,7 @@ export default function App() {
         <div 
           className={`w-full flex flex-col mt-2 z-20 ${alignContainerClass}`} 
           id="brand-logo-container"
-          style={{ marginBottom: websiteStyles.spacingLogo || "48px" }}
+          style={{ marginBottom: getResponsiveSpacing(websiteStyles.spacingLogo, "48px") }}
         >
           <div className="relative">
             {/* If logo is image but has an error loading, fallback gracefully to styled text logo */}
@@ -832,8 +911,8 @@ export default function App() {
             id="below-logo-container" 
             style={{ 
               animationDelay: "300ms",
-              marginTop: websiteStyles.spacingBelowLogo || "24px",
-              marginBottom: websiteStyles.spacingBelowLogo || "24px"
+              marginTop: getResponsiveSpacing(websiteStyles.spacingBelowLogo, "24px"),
+              marginBottom: getResponsiveSpacing(websiteStyles.spacingBelowLogo, "24px")
             }}
           >
             {isEditMode ? (
@@ -886,7 +965,7 @@ export default function App() {
                 )}
                 {landingTexts.belowLogoText && (
                   <p 
-                    className="text-base sm:text-lg leading-relaxed max-w-xl opacity-90 font-serif whitespace-pre-wrap mx-auto text-center"
+                    className={`text-base sm:text-lg leading-relaxed max-w-xl font-serif whitespace-pre-wrap mx-auto text-center fade-in-mount ${isMounted ? 'fade-in-mount-active' : ''}`}
                     style={{ 
                       fontFamily: websiteStyles.belowLogoFont || websiteStyles.serifFont,
                       fontSize: websiteStyles.belowLogoSize || "16px",
@@ -901,13 +980,16 @@ export default function App() {
           </div>
         )}
 
+        {/* Elegant low-opacity divider */}
+        <div className="w-full max-w-xs sm:max-w-md mx-auto my-5 opacity-15 border-t border-dashed z-20" style={{ borderColor: websiteStyles.accentColor || "#d7b9b9" }} />
+
         {/* Centerpiece Typing quotes */}
         <div 
           className="w-full animate-fade-in opacity-0 relative group max-w-2xl mx-auto" 
           style={{ 
             animationDelay: "400ms",
-            marginTop: websiteStyles.spacingQuotes || "24px",
-            marginBottom: websiteStyles.spacingQuotes || "24px",
+            marginTop: getResponsiveSpacing(websiteStyles.spacingQuotes, "24px"),
+            marginBottom: getResponsiveSpacing(websiteStyles.spacingQuotes, "24px"),
             textAlign: websiteStyles.alignText as any
           }} 
           id="centerpiece-typing"
@@ -944,7 +1026,7 @@ export default function App() {
               className={`animate-fade-in opacity-0 ${alignTextClass}`} 
               style={{ 
                 animationDelay: "600ms",
-                marginBottom: websiteStyles.spacingCursive || "24px"
+                marginBottom: getResponsiveSpacing(websiteStyles.spacingCursive, "24px")
               }} 
               id="cursive-vibe"
             >
@@ -1002,7 +1084,7 @@ export default function App() {
             id="cursive-logo-container"
           >
             {websiteStyles.logoUnderCursiveUrl ? (
-              <div className="relative group inline-block cursor-pointer" onClick={() => isEditMode && setEditingStyleElement({ key: "cursive", name: "Getaran Puitis" })}>
+              <div className="relative group inline-block cursor-pointer" onClick={() => isEditMode && setEditingStyleElement({ key: "cursiveLogo", name: "Lambang Teks Puitis" })}>
                 <img 
                   src={websiteStyles.logoUnderCursiveUrl} 
                   alt="Lambang Getaran Puitis" 
@@ -1013,7 +1095,7 @@ export default function App() {
               </div>
             ) : isEditMode ? (
               <div 
-                onClick={() => setEditingStyleElement({ key: "cursive", name: "Getaran Puitis" })}
+                onClick={() => setEditingStyleElement({ key: "cursiveLogo", name: "Lambang Teks Puitis" })}
                 className="border border-dashed border-[#d7b9b9]/35 hover:border-[#d7b9b9]/60 hover:bg-white/5 rounded-lg p-3 font-serif text-[11px] text-white/50 max-w-xs text-center mx-auto cursor-pointer transition-all"
               >
                 + Letakkan URL logo/lambang di bawah teks puitis di sini (Klik)
@@ -1044,7 +1126,7 @@ export default function App() {
                 {isEditMode && (
                   <button
                     type="button"
-                    onClick={() => setEditingStyleElement({ key: "cursive", name: "Getaran Puitis & Kandungan Terbenam" })}
+                    onClick={() => setEditingStyleElement({ key: "embed", name: "Kandungan Terbenam (Iframe)" })}
                     className="p-1 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/40 hover:text-white transition-all cursor-pointer shadow select-none"
                     title="Sunting Kandungan Terbenam"
                   >
@@ -1069,6 +1151,40 @@ export default function App() {
               if (src.includes("drive.google.com") && src.includes("/view")) {
                 src = src.replace("/view", "/preview");
               }
+              
+              if (websiteStyles.embedIframePlayOnly) {
+                return (
+                  <div className="flex flex-col items-center justify-center gap-2 select-none">
+                    <div className="relative w-16 h-16 rounded-full overflow-hidden bg-black/90 border-2 border-[#d7b9b9] hover:border-white shadow-[0_0_20px_rgba(215,185,185,0.25)] transition-all duration-300 hover:scale-110 flex items-center justify-center cursor-pointer group">
+                      {/* Ambient pulse background */}
+                      <div className="absolute inset-0 bg-gradient-to-tr from-black to-transparent z-0" />
+                      <div className="absolute inset-0 rounded-full border border-white/10 pointer-events-none animate-pulse" />
+                      <div className="absolute inset-0 rounded-full border border-[#d7b9b9]/30 pointer-events-none animate-ping opacity-50 duration-1000" />
+                      
+                      <iframe 
+                        src={src} 
+                        style={{
+                          position: "absolute",
+                          width: "600px",
+                          height: "450px",
+                          left: "50%",
+                          top: "50%",
+                          transform: "translate(-50%, -50%)",
+                          border: "none",
+                          pointerEvents: "auto",
+                        }}
+                        allow="autoplay"
+                        referrerPolicy="no-referrer"
+                        title={websiteStyles.embedIframeTitle || "Kandungan Terbenam"}
+                      />
+                    </div>
+                    <span className="text-[10px] uppercase tracking-widest font-mono font-medium" style={{ color: websiteStyles.accentColor }}>
+                      Mainkan Audio Pratonton
+                    </span>
+                  </div>
+                );
+              }
+
               return (
                 <div className="w-full relative group flex justify-center">
                   <div className="absolute -inset-0.5 bg-gradient-to-r from-[#d7b9b9]/10 to-transparent rounded-2xl blur opacity-30 transition duration-1000 group-hover:opacity-50" />
@@ -1174,7 +1290,16 @@ export default function App() {
       >
         <div className="flex flex-col sm:flex-row items-center justify-between w-full gap-6">
           <div className="flex items-center gap-2" id="footer-launch-info">
-            <Scroll size={14} className="opacity-70" style={{ color: websiteStyles.accentColor }} />
+            {renderBrandIcon(
+              websiteStyles.launchIcon, 
+              "Scroll", 
+              14, 
+              websiteStyles.launchColor || websiteStyles.accentColor, 
+              "opacity-70 shrink-0", 
+              websiteStyles.launchIconUrl,
+              websiteStyles.launchIconSize,
+              websiteStyles.launchIconYOffset
+            )}
             {isEditMode ? (
               <div className="flex items-center gap-1.5">
                 <div
@@ -1214,33 +1339,31 @@ export default function App() {
             )}
           </div>
 
-          <div className="flex items-center gap-6" id="footer-actions">
+          <div className="flex items-center gap-4" id="footer-actions">
             
-            {/* Visitor/Admin Fog Manual Toggle when not logged in */}
-            {!isAdmin && (
+            {/* Fog Manual Toggle - ONLY show if isAdmin */}
+            {isAdmin && (
               <button
                 onClick={() => setFogEnabled(!fogEnabled)}
-                className="text-[10px] uppercase tracking-[0.2em] font-medium transition-colors cursor-pointer p-1 opacity-60 hover:opacity-100"
-                style={{ color: websiteStyles.accentColor, fontFamily: websiteStyles.bodyFont }}
-                title={fogEnabled ? "Singkirkan Kabus Misteri" : "Kembalikan Kabus Misteri"}
+                className="flex items-center justify-center p-1.5 transition-colors cursor-pointer opacity-60 hover:opacity-100 hover:text-white rounded-full hover:bg-white/5"
+                style={{ color: websiteStyles.accentColor }}
+                title={fogEnabled ? "Singkirkan Kabus Misteri (Sapu Kabus)" : "Kembalikan Kabus Misteri (Pasang Kabus)"}
                 id="btn-visitor-fog-toggle"
               >
-                {fogEnabled ? "Sapu Kabus" : "Pasang Kabus"}
+                <Cloud size={12} />
               </button>
             )}
 
-            {!isAdmin && <span className="opacity-20 text-white/30">•</span>}
+            {isAdmin && <span className="opacity-20 text-white/30">•</span>}
 
             {/* Discreet Admin Lock Button */}
             <button 
               onClick={handleAdminAccess}
-              className="flex items-center gap-1.5 hover:text-white transition-colors cursor-pointer opacity-60 hover:opacity-100 p-1"
-              style={{ fontFamily: websiteStyles.bodyFont }}
+              className="flex items-center justify-center p-1.5 hover:text-white transition-colors cursor-pointer opacity-60 hover:opacity-100 rounded-full hover:bg-white/5"
               title="Akses Urus Data"
               id="btn-admin-access"
             >
               <KeyRound size={12} className="opacity-80" style={{ color: websiteStyles.accentColor }} />
-              <span className="text-[10px] uppercase tracking-[0.2em] font-medium">Urus Data</span>
             </button>
 
             <span className="opacity-20 text-white/30">|</span>
@@ -1248,17 +1371,27 @@ export default function App() {
             {/* Publisher Brand with hidden admin trigger */}
             <div 
               onDoubleClick={handleAdminAccess}
-              className="flex items-center gap-1.5 cursor-pointer hover:text-white transition-colors select-none"
+              className="flex items-center gap-2 cursor-pointer hover:text-white transition-colors select-none"
               title="Dwi-klik untuk akses pentadbir"
               id="brand-publisher"
             >
+              {renderBrandIcon(
+                websiteStyles.publisherIcon, 
+                "Library", 
+                12, 
+                websiteStyles.publisherColor || websiteStyles.accentColor, 
+                "opacity-75 shrink-0", 
+                websiteStyles.publisherIconUrl,
+                websiteStyles.publisherIconSize,
+                websiteStyles.publisherIconYOffset
+              )}
               {isEditMode ? (
                 <div className="flex items-center gap-1.5">
                   <div
                     contentEditable
                     suppressContentEditableWarning
                     onBlur={(e) => handleTextChange("publisherName", sanitizeText(e.currentTarget.innerText || ""))}
-                    className="font-semibold tracking-widest uppercase border-b border-dashed hover:bg-white/5 px-1 rounded focus:outline-none inline-block outline-none whitespace-pre-wrap"
+                    className="font-semibold tracking-widest border-b border-dashed hover:bg-white/5 px-1 rounded focus:outline-none inline-block outline-none whitespace-pre-wrap"
                     style={{ 
                       fontFamily: websiteStyles.publisherFont || websiteStyles.serifFont,
                       fontSize: websiteStyles.publisherSize || "11px",
@@ -1279,7 +1412,7 @@ export default function App() {
                 </div>
               ) : (
                 <div 
-                  className="font-semibold tracking-widest uppercase inline-block whitespace-pre-wrap"
+                  className="font-semibold tracking-widest inline-block whitespace-pre-wrap"
                   style={{ 
                     fontFamily: websiteStyles.publisherFont || websiteStyles.serifFont,
                     fontSize: websiteStyles.publisherSize || "11px",
@@ -1361,7 +1494,6 @@ export default function App() {
                   if (e.key === "Enter") handleAdminSubmit();
                 }}
               />
-              <p className="text-[10px] text-[#d7b9b9]/40 mt-0.5">Kata laluan pentadbir: <strong className="font-mono">Bismillah@01</strong></p>
             </div>
 
             {/* Action Choice / Mode Switch */}
@@ -1445,10 +1577,10 @@ export default function App() {
       {isBetaPopupOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/45 backdrop-blur-[2px] p-4 animate-fade-in animate-duration-300" id="beta-popup-overlay">
           <div 
-            className="relative w-full max-w-lg rounded-xl overflow-hidden shadow-2xl border animate-slide-up"
+            className="relative w-full max-w-lg rounded-sm overflow-hidden"
             style={{ 
-              backgroundColor: websiteStyles.bgColor,
-              borderColor: `${websiteStyles.accentColor}30`
+              backgroundColor: "transparent",
+              border: "none"
             }}
           >
             {/* Close Button */}
@@ -1462,7 +1594,7 @@ export default function App() {
             </button>
 
             {/* Registration Form Component */}
-            <div className="p-1 max-h-[85vh] overflow-y-auto">
+            <div className="p-1 max-h-[85vh] overflow-y-auto no-scrollbar">
               <BetaRegistration 
                 title={landingTexts.betaTitle} 
                 description={landingTexts.betaDesc} 
@@ -1642,121 +1774,308 @@ export default function App() {
                   </>
                 )}
 
-                {/* Specific cursive vibe fields: Logo/Lambang di bawah tulisan & Iframe Embed */}
-                {key === 'cursive' && (
-                  <div className="space-y-4">
-                    <div className="bg-black/25 p-3.5 rounded-lg border border-white/5 space-y-3.5">
-                      <h4 className="text-[10px] uppercase tracking-wider font-semibold text-[#d7b9b9] border-b border-white/5 pb-1 flex items-center gap-1">
-                        <Sparkles size={11} /> Lambang / Logo Di Bawah Teks Puitis
-                      </h4>
-                      
-                      <div className="flex flex-col gap-1.5">
-                        <span className="text-[10px] text-white/70 block">Pautan Imej Lambang (.png/jpg/svg)</span>
+                {/* Specific logo/lambang under cursive fields */}
+                {key === 'cursiveLogo' && (
+                  <div className="bg-black/25 p-3.5 rounded-lg border border-white/5 space-y-3.5">
+                    <h4 className="text-[10px] uppercase tracking-wider font-semibold text-[#d7b9b9] border-b border-white/5 pb-1 flex items-center gap-1">
+                      <Sparkles size={11} /> Lambang / Logo Di Bawah Teks Puitis
+                    </h4>
+                    
+                    <div className="flex flex-col gap-1.5">
+                      <span className="text-[10px] text-white/70 block">Pautan Imej Lambang (.png/jpg/svg)</span>
+                      <input 
+                        type="text"
+                        value={websiteStyles.logoUnderCursiveUrl || ""}
+                        onChange={(e) => handleFieldChange('logoUnderCursiveUrl', e.target.value)}
+                        placeholder="Masukkan URL imej lambang"
+                        className="w-full bg-black/40 border border-[#d7b9b9]/25 rounded px-2.5 py-1.5 font-mono text-xs text-white focus:outline-none focus:border-[#d7b9b9]/50"
+                      />
+                    </div>
+
+                    <div className="flex flex-col gap-1.5">
+                      <div className="flex justify-between items-center">
+                        <span className="text-[10px] text-white/70">Tinggi Lambang</span>
+                        <span className="text-[10px] font-mono text-[#d7b9b9] bg-black/40 px-1.5 py-0.5 rounded border border-white/5">{websiteStyles.logoUnderCursiveSize || "64px"}</span>
+                      </div>
+                      <div className="flex items-center gap-3 bg-black/20 p-2 rounded border border-white/5">
+                        <input 
+                          type="range"
+                          min="20"
+                          max="250"
+                          value={parseInt(websiteStyles.logoUnderCursiveSize || "64") || 64}
+                          onChange={(e) => handleFieldChange('logoUnderCursiveSize', `${e.target.value}px`)}
+                          className="flex-1 accent-[#d7b9b9] h-1 bg-white/10 rounded cursor-pointer"
+                        />
                         <input 
                           type="text"
-                          value={websiteStyles.logoUnderCursiveUrl || ""}
-                          onChange={(e) => handleFieldChange('logoUnderCursiveUrl', e.target.value)}
-                          placeholder="Masukkan URL imej lambang"
-                          className="w-full bg-black/40 border border-[#d7b9b9]/25 rounded px-2.5 py-1.5 font-mono text-xs text-white focus:outline-none focus:border-[#d7b9b9]/50"
+                          value={websiteStyles.logoUnderCursiveSize || "64px"}
+                          onChange={(e) => handleFieldChange('logoUnderCursiveSize', e.target.value)}
+                          placeholder="64px"
+                          className="w-14 bg-black/40 border border-white/10 rounded px-1 text-center font-mono text-[10px] py-0.5 focus:outline-none"
                         />
                       </div>
+                    </div>
+                  </div>
+                )}
 
+                {/* Specific Iframe Embed fields */}
+                {key === 'embed' && (
+                  <div className="bg-black/25 p-3.5 rounded-lg border border-white/5 space-y-3.5">
+                    <h4 className="text-[10px] uppercase tracking-wider font-semibold text-[#d7b9b9] border-b border-white/5 pb-1 flex items-center gap-1.5">
+                      <Scroll size={11} className="text-[#d7b9b9]" /> Kandungan Terbenam (Iframe Embed)
+                    </h4>
+                    
+                    <div className="flex items-center justify-between bg-black/10 p-2 rounded border border-white/5">
+                      <span className="text-[10px] text-white/70">Aktifkan Kandungan Terbenam</span>
+                      <button
+                        type="button"
+                        onClick={() => handleFieldChange('embedIframeEnabled', !websiteStyles.embedIframeEnabled)}
+                        className={`px-2.5 py-0.5 rounded text-[10px] uppercase tracking-wider border font-semibold transition-all cursor-pointer ${
+                          websiteStyles.embedIframeEnabled ? "bg-[#d7b9b9] text-[#430400] border-[#d7b9b9]" : "border-white/10 text-white/55 hover:bg-white/5"
+                        }`}
+                      >
+                        {websiteStyles.embedIframeEnabled ? "Aktif" : "Mati"}
+                      </button>
+                    </div>
+
+                    <div className="flex flex-col gap-1.5">
+                      <span className="text-[10px] text-white/70">Tajuk Bahagian</span>
+                      <input 
+                        type="text"
+                        value={websiteStyles.embedIframeTitle || ""}
+                        onChange={(e) => handleFieldChange('embedIframeTitle', e.target.value)}
+                        placeholder="Cth: Pratonton Karya"
+                        className="w-full bg-black/40 border border-[#d7b9b9]/25 rounded px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#d7b9b9]/50"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3">
                       <div className="flex flex-col gap-1.5">
-                        <div className="flex justify-between items-center">
-                          <span className="text-[10px] text-white/70">Tinggi Lambang</span>
-                          <span className="text-[10px] font-mono text-[#d7b9b9] bg-black/40 px-1.5 py-0.5 rounded border border-white/5">{websiteStyles.logoUnderCursiveSize || "64px"}</span>
-                        </div>
-                        <div className="flex items-center gap-3 bg-black/20 p-2 rounded border border-white/5">
-                          <input 
-                            type="range"
-                            min="20"
-                            max="250"
-                            value={parseInt(websiteStyles.logoUnderCursiveSize || "64") || 64}
-                            onChange={(e) => handleFieldChange('logoUnderCursiveSize', `${e.target.value}px`)}
-                            className="flex-1 accent-[#d7b9b9] h-1 bg-white/10 rounded cursor-pointer"
-                          />
-                          <input 
-                            type="text"
-                            value={websiteStyles.logoUnderCursiveSize || "64px"}
-                            onChange={(e) => handleFieldChange('logoUnderCursiveSize', e.target.value)}
-                            placeholder="64px"
-                            className="w-14 bg-black/40 border border-white/10 rounded px-1 text-center font-mono text-[10px] py-0.5 focus:outline-none"
-                          />
-                        </div>
+                        <span className="text-[10px] text-white/70">Kelebaran (Width)</span>
+                        <select
+                          value={websiteStyles.embedIframeWidth || "max-w-2xl"}
+                          onChange={(e) => handleFieldChange('embedIframeWidth', e.target.value)}
+                          className="w-full bg-black/40 border border-[#d7b9b9]/25 rounded px-2 py-1 font-serif text-[11px] text-white focus:outline-none focus:border-[#d7b9b9]/50"
+                        >
+                          <option value="max-w-sm" className="bg-[#120101]">Kecil (max-w-sm)</option>
+                          <option value="max-w-md" className="bg-[#120101]">Sederhana Kecil</option>
+                          <option value="max-w-lg" className="bg-[#120101]">Sederhana</option>
+                          <option value="max-w-xl" className="bg-[#120101]">Sederhana Luas</option>
+                          <option value="max-w-2xl" className="bg-[#120101]">Lalai Seimbang</option>
+                          <option value="max-w-3xl" className="bg-[#120101]">Lebar</option>
+                          <option value="max-w-5xl" className="bg-[#120101]">Sangat Lebar</option>
+                          <option value="max-w-full" className="bg-[#120101]">Penuh</option>
+                        </select>
+                      </div>
+                      <div className="flex flex-col gap-1.5">
+                        <span className="text-[10px] text-white/70">Ketinggian (Height)</span>
+                        <input 
+                          type="text"
+                          value={websiteStyles.embedIframeHeight || "480px"}
+                          onChange={(e) => handleFieldChange('embedIframeHeight', e.target.value)}
+                          placeholder="Cth: 480px"
+                          className="w-full bg-black/40 border border-[#d7b9b9]/25 rounded px-2 py-1 font-mono text-[11px] text-white focus:outline-none focus:border-[#d7b9b9]/50"
+                        />
                       </div>
                     </div>
 
-                    <div className="bg-black/25 p-3.5 rounded-lg border border-white/5 space-y-3.5">
-                      <h4 className="text-[10px] uppercase tracking-wider font-semibold text-[#d7b9b9] border-b border-white/5 pb-1 flex items-center gap-1.5">
-                        <Scroll size={11} className="text-[#d7b9b9]" /> Kandungan Terbenam (Iframe Embed)
-                      </h4>
+                    <div className="flex items-center gap-2 py-1">
+                      <input
+                        type="checkbox"
+                        id="embedIframePlayOnly"
+                        checked={websiteStyles.embedIframePlayOnly || false}
+                        onChange={(e) => handleFieldChange("embedIframePlayOnly", e.target.checked)}
+                        className="w-3.5 h-3.5 rounded bg-black/40 border border-[#d7b9b9]/30 text-[#d7b9b9] focus:ring-0 focus:ring-offset-0 cursor-pointer"
+                      />
+                      <label htmlFor="embedIframePlayOnly" className="text-xs text-white/90 cursor-pointer select-none font-serif">
+                        Kecilkan pemain (Hanya tunjukkan butang PLAY bulat)
+                      </label>
+                    </div>
+
+                    <div className="flex flex-col gap-1.5">
+                      <span className="text-[10px] text-white/70">Kod Iframe / Pautan Terus</span>
+                      <textarea 
+                        value={websiteStyles.embedIframeCode || ""}
+                        onChange={(e) => handleFieldChange('embedIframeCode', e.target.value)}
+                        placeholder='Cth: <iframe src="https://drive.google.com/.../preview"></iframe>'
+                        rows={3}
+                        className="w-full bg-black/40 border border-[#d7b9b9]/25 rounded px-2.5 py-1.5 font-mono text-[10px] text-white focus:outline-none focus:border-[#d7b9b9]/50 resize-none leading-normal"
+                      />
+                      <p className="text-[9px] text-[#d7b9b9]/60 leading-normal font-serif">
+                        Tampal kod iframe atau URL fail Google Drive preview anda. Sistem menyelaraskan paparan automatik supaya sentiasa responsif di mobile.
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {/* Specific Icon Selectors for Launch & Publisher */}
+                {key === 'launch' && (
+                  <div className="flex flex-col gap-3 bg-black/25 p-3 rounded-lg border border-white/5">
+                    <div className="flex flex-col gap-1">
+                      <span className="text-[10px] text-[#d7b9b9]/80 uppercase tracking-wider font-semibold">Pautan Logo Imej Tersuai</span>
+                      <input 
+                        type="text"
+                        value={websiteStyles.launchIconUrl || ""}
+                        onChange={(e) => handleFieldChange('launchIconUrl', e.target.value)}
+                        placeholder="Cth: https://pautan-logo-anda.png"
+                        className="w-full bg-black/40 border border-[#d7b9b9]/25 rounded px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#d7b9b9]/50 font-sans"
+                      />
+                      <p className="text-[9px] text-white/40 leading-normal font-serif">
+                        Tampal URL gambar logo sah.malians.group anda (PNG telus disyorkan). Jika kosong, ia akan memapar semula ikon di bawah.
+                      </p>
+                    </div>
+
+                    {/* Sizing & Offset Y */}
+                    <div className="border-t border-white/5 pt-2 flex flex-col gap-2.5">
+                      <span className="text-[10px] text-[#d7b9b9]/80 uppercase tracking-wider font-semibold">Ubah Saiz & Kedudukan Vertikal</span>
                       
-                      <div className="flex items-center justify-between bg-black/10 p-2 rounded border border-white/5">
-                        <span className="text-[10px] text-white/70">Aktifkan Kandungan Terbenam</span>
-                        <button
-                          type="button"
-                          onClick={() => handleFieldChange('embedIframeEnabled', !websiteStyles.embedIframeEnabled)}
-                          className={`px-2.5 py-0.5 rounded text-[10px] uppercase tracking-wider border font-semibold transition-all cursor-pointer ${
-                            websiteStyles.embedIframeEnabled ? "bg-[#d7b9b9] text-[#430400] border-[#d7b9b9]" : "border-white/10 text-white/55 hover:bg-white/5"
-                          }`}
-                        >
-                          {websiteStyles.embedIframeEnabled ? "Aktif" : "Mati"}
-                        </button>
-                      </div>
-
-                      <div className="flex flex-col gap-1.5">
-                        <span className="text-[10px] text-white/70">Tajuk Bahagian</span>
+                      {/* Size */}
+                      <div className="flex flex-col gap-1">
+                        <div className="flex justify-between items-center text-[10px]">
+                          <span className="text-white/50">Saiz / Tinggi Logo</span>
+                          <span className="font-mono text-white/80 bg-black/30 px-1 py-0.5 rounded">{websiteStyles.launchIconSize || '24px'}</span>
+                        </div>
                         <input 
-                          type="text"
-                          value={websiteStyles.embedIframeTitle || ""}
-                          onChange={(e) => handleFieldChange('embedIframeTitle', e.target.value)}
-                          placeholder="Cth: Pratonton Karya"
-                          className="w-full bg-black/40 border border-[#d7b9b9]/25 rounded px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#d7b9b9]/50"
+                          type="range"
+                          min="8"
+                          max="80"
+                          value={parseInt(websiteStyles.launchIconSize || "24") || 24}
+                          onChange={(e) => handleFieldChange('launchIconSize', `${e.target.value}px`)}
+                          className="w-full accent-[#d7b9b9] h-1 bg-white/10 rounded-lg cursor-pointer"
                         />
                       </div>
 
-                      <div className="grid grid-cols-2 gap-3">
-                        <div className="flex flex-col gap-1.5">
-                          <span className="text-[10px] text-white/70">Kelebaran (Width)</span>
-                          <select
-                            value={websiteStyles.embedIframeWidth || "max-w-2xl"}
-                            onChange={(e) => handleFieldChange('embedIframeWidth', e.target.value)}
-                            className="w-full bg-black/40 border border-[#d7b9b9]/25 rounded px-2 py-1 font-serif text-[11px] text-white focus:outline-none focus:border-[#d7b9b9]/50"
+                      {/* Y-Offset */}
+                      <div className="flex flex-col gap-1">
+                        <div className="flex justify-between items-center text-[10px]">
+                          <span className="text-white/50">Kedudukan Vertikal (Saras)</span>
+                          <span className="font-mono text-white/80 bg-black/30 px-1 py-0.5 rounded">{websiteStyles.launchIconYOffset || '0px'}</span>
+                        </div>
+                        <input 
+                          type="range"
+                          min="-25"
+                          max="25"
+                          value={parseInt(websiteStyles.launchIconYOffset || "0") || 0}
+                          onChange={(e) => handleFieldChange('launchIconYOffset', `${e.target.value}px`)}
+                          className="w-full accent-[#d7b9b9] h-1 bg-white/10 rounded-lg cursor-pointer"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="border-t border-white/5 pt-2 flex flex-col gap-1.5">
+                      <span className="text-[10px] text-[#d7b9b9]/80 uppercase tracking-wider font-semibold">Ikon Alternatif (Jika tiada Imej)</span>
+                      <div className="grid grid-cols-4 gap-2">
+                        {[
+                          { name: "Scroll", value: "Scroll" },
+                          { name: "Feather", value: "Feather" },
+                          { name: "Compass", value: "Compass" },
+                          { name: "Globe", value: "Globe" },
+                          { name: "Sparkles", value: "Sparkles" },
+                          { name: "PenTool", value: "PenTool" },
+                          { name: "BookOpen", value: "BookOpen" },
+                          { name: "Book", value: "Book" }
+                        ].map((ic) => (
+                          <button
+                            key={ic.value}
+                            type="button"
+                            onClick={() => handleFieldChange('launchIcon', ic.value)}
+                            className={`flex flex-col items-center justify-center p-2 rounded border gap-1 transition-all cursor-pointer ${
+                              (websiteStyles.launchIcon || "Scroll") === ic.value
+                                ? 'bg-[#d7b9b9]/20 border-[#d7b9b9] text-[#d7b9b9]'
+                                : 'border-white/5 text-white/60 hover:bg-white/5'
+                            }`}
+                            title={ic.name}
                           >
-                            <option value="max-w-sm" className="bg-[#120101]">Kecil (max-w-sm)</option>
-                            <option value="max-w-md" className="bg-[#120101]">Sederhana Kecil</option>
-                            <option value="max-w-lg" className="bg-[#120101]">Sederhana</option>
-                            <option value="max-w-xl" className="bg-[#120101]">Sederhana Luas</option>
-                            <option value="max-w-2xl" className="bg-[#120101]">Lalai Seimbang</option>
-                            <option value="max-w-3xl" className="bg-[#120101]">Lebar</option>
-                            <option value="max-w-5xl" className="bg-[#120101]">Sangat Lebar</option>
-                            <option value="max-w-full" className="bg-[#120101]">Penuh</option>
-                          </select>
+                            {renderBrandIcon(ic.value, "Scroll", 16, (websiteStyles.launchIcon || "Scroll") === ic.value ? websiteStyles.accentColor : "#ffffff")}
+                            <span className="text-[8px] tracking-tight">{ic.name}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {key === 'publisher' && (
+                  <div className="flex flex-col gap-3 bg-black/25 p-3 rounded-lg border border-white/5">
+                    <div className="flex flex-col gap-1">
+                      <span className="text-[10px] text-[#d7b9b9]/80 uppercase tracking-wider font-semibold">Pautan Logo Imej Tersuai</span>
+                      <input 
+                        type="text"
+                        value={websiteStyles.publisherIconUrl || ""}
+                        onChange={(e) => handleFieldChange('publisherIconUrl', e.target.value)}
+                        placeholder="Cth: https://pautan-logo-anda.png"
+                        className="w-full bg-black/40 border border-[#d7b9b9]/25 rounded px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#d7b9b9]/50 font-sans"
+                      />
+                      <p className="text-[9px] text-white/40 leading-normal font-serif">
+                        Tampal URL gambar logo Maktabah Kutawiyyah anda. Pada asalnya disetkan ke logo transparent daripada postimg.cc anda.
+                      </p>
+                    </div>
+
+                    {/* Sizing & Offset Y */}
+                    <div className="border-t border-white/5 pt-2 flex flex-col gap-2.5">
+                      <span className="text-[10px] text-[#d7b9b9]/80 uppercase tracking-wider font-semibold">Ubah Saiz & Kedudukan Vertikal</span>
+                      
+                      {/* Size */}
+                      <div className="flex flex-col gap-1">
+                        <div className="flex justify-between items-center text-[10px]">
+                          <span className="text-white/50">Saiz / Tinggi Logo</span>
+                          <span className="font-mono text-white/80 bg-black/30 px-1 py-0.5 rounded">{websiteStyles.publisherIconSize || '24px'}</span>
                         </div>
-                        <div className="flex flex-col gap-1.5">
-                          <span className="text-[10px] text-white/70">Ketinggian (Height)</span>
-                          <input 
-                            type="text"
-                            value={websiteStyles.embedIframeHeight || "480px"}
-                            onChange={(e) => handleFieldChange('embedIframeHeight', e.target.value)}
-                            placeholder="Cth: 480px"
-                            className="w-full bg-black/40 border border-[#d7b9b9]/25 rounded px-2 py-1 font-mono text-[11px] text-white focus:outline-none focus:border-[#d7b9b9]/50"
-                          />
-                        </div>
+                        <input 
+                          type="range"
+                          min="8"
+                          max="80"
+                          value={parseInt(websiteStyles.publisherIconSize || "24") || 24}
+                          onChange={(e) => handleFieldChange('publisherIconSize', `${e.target.value}px`)}
+                          className="w-full accent-[#d7b9b9] h-1 bg-white/10 rounded-lg cursor-pointer"
+                        />
                       </div>
 
-                      <div className="flex flex-col gap-1.5">
-                        <span className="text-[10px] text-white/70">Kod Iframe / Pautan Terus</span>
-                        <textarea 
-                          value={websiteStyles.embedIframeCode || ""}
-                          onChange={(e) => handleFieldChange('embedIframeCode', e.target.value)}
-                          placeholder='Cth: <iframe src="https://drive.google.com/.../preview"></iframe>'
-                          rows={3}
-                          className="w-full bg-black/40 border border-[#d7b9b9]/25 rounded px-2.5 py-1.5 font-mono text-[10px] text-white focus:outline-none focus:border-[#d7b9b9]/50 resize-none leading-normal"
+                      {/* Y-Offset */}
+                      <div className="flex flex-col gap-1">
+                        <div className="flex justify-between items-center text-[10px]">
+                          <span className="text-white/50">Kedudukan Vertikal (Saras)</span>
+                          <span className="font-mono text-white/80 bg-black/30 px-1 py-0.5 rounded">{websiteStyles.publisherIconYOffset || '0px'}</span>
+                        </div>
+                        <input 
+                          type="range"
+                          min="-25"
+                          max="25"
+                          value={parseInt(websiteStyles.publisherIconYOffset || "0") || 0}
+                          onChange={(e) => handleFieldChange('publisherIconYOffset', `${e.target.value}px`)}
+                          className="w-full accent-[#d7b9b9] h-1 bg-white/10 rounded-lg cursor-pointer"
                         />
-                        <p className="text-[9px] text-[#d7b9b9]/60 leading-normal font-serif">
-                          Tampal kod iframe atau URL fail Google Drive preview anda. Sistem menyelaraskan paparan automatik supaya sentiasa responsif di mobile.
-                        </p>
+                      </div>
+                    </div>
+
+                    <div className="border-t border-white/5 pt-2 flex flex-col gap-1.5">
+                      <span className="text-[10px] text-[#d7b9b9]/80 uppercase tracking-wider font-semibold">Ikon Alternatif (Jika tiada Imej)</span>
+                      <div className="grid grid-cols-4 gap-2">
+                        {[
+                          { name: "Library", value: "Library" },
+                          { name: "Book", value: "Book" },
+                          { name: "BookOpen", value: "BookOpen" },
+                          { name: "Bookmark", value: "Bookmark" },
+                          { name: "Award", value: "Award" },
+                          { name: "Heart", value: "Heart" },
+                          { name: "Globe", value: "Globe" },
+                          { name: "Sparkles", value: "Sparkles" }
+                        ].map((ic) => (
+                          <button
+                            key={ic.value}
+                            type="button"
+                            onClick={() => handleFieldChange('publisherIcon', ic.value)}
+                            className={`flex flex-col items-center justify-center p-2 rounded border gap-1 transition-all cursor-pointer ${
+                              (websiteStyles.publisherIcon || "Library") === ic.value
+                                ? 'bg-[#d7b9b9]/20 border-[#d7b9b9] text-[#d7b9b9]'
+                                : 'border-white/5 text-white/60 hover:bg-white/5'
+                            }`}
+                            title={ic.name}
+                          >
+                            {renderBrandIcon(ic.value, "Library", 16, (websiteStyles.publisherIcon || "Library") === ic.value ? websiteStyles.accentColor : "#ffffff")}
+                            <span className="text-[8px] tracking-tight">{ic.name}</span>
+                          </button>
+                        ))}
                       </div>
                     </div>
                   </div>

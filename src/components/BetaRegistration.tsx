@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { motion } from "motion/react";
 import { BetaReader } from "../types";
 import { Send, CheckCircle2, Loader2, Sparkles, Palette } from "lucide-react";
 import { sanitizeText } from "../utils/sanitize";
@@ -171,12 +172,14 @@ export default function BetaRegistration({
     fontFamily: bodyFont
   };
 
+  // Render glassmorphic translucent container with smooth entrance animation
   return (
-    <div 
-      className="w-full max-w-lg mx-auto p-8 sm:p-10 rounded-sm border shadow-2xl relative overflow-hidden transition-all duration-500" 
+    <motion.div 
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.2, duration: 0.8, ease: "easeOut" }}
+      className="w-full max-w-lg mx-auto p-8 sm:p-10 rounded-sm border border-white/10 backdrop-blur-xl bg-white/5 shadow-xl relative overflow-hidden transition-all duration-500" 
       style={{ 
-        backgroundColor: formBgColor, 
-        borderColor: `${accentColor}25`,
         fontFamily: bodyFont
       }}
       id="beta-registration-box"
@@ -437,6 +440,6 @@ export default function BetaRegistration({
           </button>
         </form>
       )}
-    </div>
+    </motion.div>
   );
 }

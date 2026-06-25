@@ -63,10 +63,18 @@ export const DEFAULT_WEBSITE_STYLES: WebsiteStyles = {
   launchFont: "Inter",
   launchSize: "11px",
   launchColor: "#ffffff",
+  launchIcon: "Scroll",
+  launchIconUrl: "",
+  launchIconSize: "14px",
+  launchIconYOffset: "0px",
 
   publisherFont: "Inter",
   publisherSize: "10px",
   publisherColor: "#ffffff",
+  publisherIcon: "Library",
+  publisherIconUrl: "https://i.postimg.cc/GmXHQzTZ/maktabah-kutawiyyah-(1).png",
+  publisherIconSize: "24px",
+  publisherIconYOffset: "0px",
 
   headerBgColor: "#430400",
   globalAlignment: "center",
@@ -98,6 +106,7 @@ export const DEFAULT_WEBSITE_STYLES: WebsiteStyles = {
   embedIframeTitle: "Pratonton Karya",
   embedIframeWidth: "max-w-2xl",
   embedIframeHeight: "480px",
+  embedIframePlayOnly: true,
 };
 
 export const DEFAULT_LANDING_TEXTS: LandingTexts = {

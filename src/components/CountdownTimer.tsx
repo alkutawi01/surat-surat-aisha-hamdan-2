@@ -110,15 +110,15 @@ export default function CountdownTimer({
         )}
         {(() => {
           const isCustomCountdownSize = countdownSize && (countdownSize.includes('px') || countdownSize.includes('rem') || countdownSize.includes('em') || countdownSize.includes('pt'));
-          const digitClass = isCustomCountdownSize ? "" : (countdownSize || "text-xl sm:text-2xl");
+          const digitClass = isCustomCountdownSize ? "" : (countdownSize || "text-base sm:text-xl md:text-2xl");
           const finalNumStyle = {
             fontFamily: countdownFont || serifFont,
             fontSize: isCustomCountdownSize ? countdownSize : undefined,
             color: countdownColor || "#ffffff"
           };
           return (
-            <div className="flex items-center justify-center gap-3 sm:gap-4 text-white w-full">
-              <div className="flex items-baseline">
+            <div className="flex items-center justify-center gap-1.5 xs:gap-2 sm:gap-4 text-white w-full flex-nowrap">
+              <div className="flex items-baseline shrink-0 whitespace-nowrap">
                 <span className={`font-light tracking-tight ${digitClass}`} style={finalNumStyle}>{formatNum(timeLeft.days)}</span>
                 {isEditMode ? (
                   <span 
@@ -135,8 +135,8 @@ export default function CountdownTimer({
                   <span className="text-[9px] uppercase tracking-wider ml-0.5" style={{ color: `${accentColor}95`, fontFamily: bodyFont }}>{daysLabel}</span>
                 )}
               </div>
-              <span className="text-xs select-none opacity-30" style={{ color: accentColor }}>•</span>
-              <div className="flex items-baseline">
+              <span className="text-xs select-none opacity-30 shrink-0" style={{ color: accentColor }}>•</span>
+              <div className="flex items-baseline shrink-0 whitespace-nowrap">
                 <span className={`font-light tracking-tight ${digitClass}`} style={finalNumStyle}>{formatNum(timeLeft.hours)}</span>
                 {isEditMode ? (
                   <span 
@@ -153,8 +153,8 @@ export default function CountdownTimer({
                   <span className="text-[9px] uppercase tracking-wider ml-0.5" style={{ color: `${accentColor}95`, fontFamily: bodyFont }}>{hoursLabel}</span>
                 )}
               </div>
-              <span className="text-xs select-none opacity-30" style={{ color: accentColor }}>•</span>
-              <div className="flex items-baseline">
+              <span className="text-xs select-none opacity-30 shrink-0" style={{ color: accentColor }}>•</span>
+              <div className="flex items-baseline shrink-0 whitespace-nowrap">
                 <span className={`font-light tracking-tight ${digitClass}`} style={finalNumStyle}>{formatNum(timeLeft.minutes)}</span>
                 {isEditMode ? (
                   <span 
@@ -171,8 +171,8 @@ export default function CountdownTimer({
                   <span className="text-[9px] uppercase tracking-wider ml-0.5" style={{ color: `${accentColor}95`, fontFamily: bodyFont }}>{minutesLabel}</span>
                 )}
               </div>
-              <span className="text-xs select-none opacity-30" style={{ color: accentColor }}>•</span>
-              <div className="flex items-baseline">
+              <span className="text-xs select-none opacity-30 shrink-0" style={{ color: accentColor }}>•</span>
+              <div className="flex items-baseline shrink-0 whitespace-nowrap">
                 <span className={`font-light tracking-tight ${digitClass}`} style={{ ...finalNumStyle, color: countdownColor || accentColor }}>{formatNum(timeLeft.seconds)}</span>
                 {isEditMode ? (
                   <span 

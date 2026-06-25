@@ -1711,6 +1711,19 @@ export default function AdminPanel({
                 </div>
               </div>
 
+              <div className="flex items-center gap-2 py-1">
+                <input
+                  type="checkbox"
+                  id="embedIframePlayOnly"
+                  checked={styles.embedIframePlayOnly || false}
+                  onChange={(e) => handleStyleFieldChange("embedIframePlayOnly", e.target.checked)}
+                  className="w-3.5 h-3.5 rounded bg-black/40 border border-[#d7b9b9]/30 text-[#d7b9b9] focus:ring-0 focus:ring-offset-0 cursor-pointer"
+                />
+                <label htmlFor="embedIframePlayOnly" className="text-xs text-white/90 cursor-pointer select-none font-serif">
+                  Kecilkan pemain (Hanya tunjukkan butang PLAY bulat)
+                </label>
+              </div>
+
               <div className="space-y-1.5 pt-1">
                 <label className="text-[10px] uppercase tracking-wider text-[#d7b9b9]/75 block">Kod Iframe (Embed Code) atau Pautan Terus</label>
                 <textarea

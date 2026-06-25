@@ -20,7 +20,7 @@ export default function TeaserText({
   isEditMode, 
   onQuoteChange,
   serifFont = "EB Garamond",
-  quoteSize = "text-xl sm:text-2xl lg:text-3xl",
+  quoteSize = "text-base xs:text-lg sm:text-2xl lg:text-3xl",
   accentColor = "#d7b9b9",
   bodyFont = "Inter",
   quoteFont,
@@ -146,7 +146,7 @@ export default function TeaserText({
     <div className="flex flex-col items-center justify-center text-center max-w-3xl px-4 py-8 mx-auto" id="teaser-text-container">
 
       {/* Typing Text Box */}
-      <div className="min-h-[180px] sm:min-h-[150px] flex items-center justify-center mb-8 w-full">
+      <div className="min-h-[110px] xs:min-h-[130px] sm:min-h-[150px] flex items-center justify-center mb-8 w-full">
         {isEditMode ? (
           <p 
             contentEditable
