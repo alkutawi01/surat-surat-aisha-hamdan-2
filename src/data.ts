@@ -115,6 +115,30 @@ export const DEFAULT_WEBSITE_STYLES: WebsiteStyles = {
   copyrightFont: "Inter",
   copyrightSize: "10px",
   copyrightColor: "rgba(255, 255, 255, 0.4)",
+
+  // Nama pada tab pelayar
+  tabTitle: "Iman. Cinta. Sastera.",
+
+  // Tetapan Khusus Skrin Telefon (Mobile Overrides) Default
+  mobileSpacingPageTop: "40px",
+  mobileSpacingAboveLogo: "16px",
+  mobileSpacingLogo: "28px",
+  mobileSpacingBelowLogo: "16px",
+  mobileSpacingQuotes: "16px",
+  mobileSpacingCursive: "16px",
+  mobileSpacingBlocks: "20px",
+  mobileLogoSize: "26px",
+  mobileCursiveSize: "28px",
+  mobileFormTitleSize: "20px",
+  mobileFormDescSize: "12px",
+  mobileUpperTagSize: "10px",
+  mobileCountdownSize: "14px",
+  mobileCountdownLabelSize: "8px",
+  mobileQuoteSize: "text-lg",
+  mobileHookSize: "text-lg sm:text-xl",
+  mobileAboveLogoSize: "12px",
+  mobileBelowLogoSize: "13px",
+  mobileFooterSize: "11px",
 };
 
 export const DEFAULT_LANDING_TEXTS: LandingTexts = {

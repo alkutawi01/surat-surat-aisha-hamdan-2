@@ -164,6 +164,72 @@ export interface WebsiteStyles {
   copyrightFont?: string;
   copyrightSize?: string;
   copyrightColor?: string;
+
+  // Nama pada tab pelayar
+  tabTitle?: string;
+
+  // Tetapan Khusus Skrin Telefon (Mobile Overrides)
+  mobileSerifFont?: string;
+  mobileBodyFont?: string;
+  mobileBgColor?: string;
+  mobileTextColor?: string;
+  mobileAccentColor?: string;
+  mobileFormBgColor?: string;
+  mobileQuoteSize?: string;
+  mobileHookSize?: string;
+  mobileBorderThickness?: string;
+  mobileLogoSize?: string;
+  mobileUpperTagFont?: string;
+  mobileUpperTagSize?: string;
+  mobileUpperTagColor?: string;
+  mobileCountdownFont?: string;
+  mobileCountdownSize?: string;
+  mobileCountdownColor?: string;
+  mobileCountdownLabelFont?: string;
+  mobileCountdownLabelSize?: string;
+  mobileCountdownLabelColor?: string;
+  mobileLogoFont?: string;
+  mobileLogoColor?: string;
+  mobileQuoteFont?: string;
+  mobileQuoteColor?: string;
+  mobileCursiveFont?: string;
+  mobileCursiveSize?: string;
+  mobileCursiveColor?: string;
+  mobileFormTitleFont?: string;
+  mobileFormTitleSize?: string;
+  mobileFormTitleColor?: string;
+  mobileFormDescFont?: string;
+  mobileFormDescSize?: string;
+  mobileFormDescColor?: string;
+  mobileFooterFont?: string;
+  mobileFooterSize?: string;
+  mobileFooterColor?: string;
+  mobileAboveLogoFont?: string;
+  mobileAboveLogoSize?: string;
+  mobileAboveLogoColor?: string;
+  mobileBelowLogoFont?: string;
+  mobileBelowLogoSize?: string;
+  mobileBelowLogoColor?: string;
+  mobileLaunchFont?: string;
+  mobileLaunchSize?: string;
+  mobileLaunchColor?: string;
+  mobilePublisherFont?: string;
+  mobilePublisherSize?: string;
+  mobilePublisherColor?: string;
+  mobileHeaderBgColor?: string;
+  mobileGlobalAlignment?: 'left' | 'center' | 'right';
+  mobileSpacingPageTop?: string;
+  mobileSpacingAboveLogo?: string;
+  mobileSpacingLogo?: string;
+  mobileSpacingBelowLogo?: string;
+  mobileSpacingQuotes?: string;
+  mobileSpacingCursive?: string;
+  mobileSpacingBlocks?: string;
+  mobileLogoUnderCursiveSize?: string;
+  mobileFooterBgColor?: string;
+  mobileCopyrightFont?: string;
+  mobileCopyrightSize?: string;
+  mobileCopyrightColor?: string;
 }
 
 export interface CustomBlock {
@@ -188,4 +254,7 @@ export interface CustomBlock {
   sliderInterval?: number; // e.g. 5000 for 5 seconds
   isCarousel?: boolean;
   carouselInterval?: number; // e.g. 7 for 7 seconds
+  mobileTitleSize?: string;
+  mobileContentSize?: string;
+  mobilePadding?: string;
 }

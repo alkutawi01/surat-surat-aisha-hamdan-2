@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 // Versi pembetulan deployment ke Firebase Hosting - Trigerred
 import CountdownTimer from "./components/CountdownTimer";
 import TeaserText from "./components/TeaserText";
@@ -238,10 +238,18 @@ export default function App() {
   };
 
   // Helper to dynamically scale custom font sizes down by 25% on mobile screens (width < 640px)
-  const getResponsiveFontSize = (sizeValue: string | undefined, defaultValue?: string) => {
+  const getResponsiveFontSize = (sizeValue: string | undefined, defaultValue?: string, styleKey?: keyof WebsiteStyles) => {
     const rawValue = sizeValue || defaultValue;
     if (!rawValue) return undefined;
     if (windowSize.width >= 640) return rawValue;
+
+    // If a mobile-specific override is defined in rawWebsiteStyles, do NOT scale it down
+    if (styleKey) {
+      const mobileKey = `mobile${(styleKey as string).charAt(0).toUpperCase()}${(styleKey as string).slice(1)}` as keyof WebsiteStyles;
+      if (rawWebsiteStyles[mobileKey] !== undefined && rawWebsiteStyles[mobileKey] !== "") {
+        return rawValue; // Return as-is because it is already the explicit mobile value
+      }
+    }
 
     // Reduce by 25% (multiply by 0.75) on mobile, keeping minimum at 10px (or 8px for labels)
     const match = rawValue.match(/^([\d.]+)([a-zA-Z%]*)$/);
@@ -289,8 +297,8 @@ export default function App() {
     return NOVEL_QUOTES;
   });
 
-  // Load custom website styles
-  const [websiteStyles, setWebsiteStyles] = useState<WebsiteStyles>(() => {
+  // Load custom website styles (raw config state with both desktop and mobile overrides)
+  const [rawWebsiteStyles, setRawWebsiteStyles] = useState<WebsiteStyles>(() => {
     const saved = localStorage.getItem("custom_website_styles");
     if (saved) {
       try {
@@ -302,6 +310,27 @@ export default function App() {
     }
     return DEFAULT_WEBSITE_STYLES;
   });
+
+  // Dynamically compute the resolved styles depending on screen width (desktop vs mobile)
+  const websiteStyles = useMemo(() => {
+    const isMobile = windowSize.width < 640;
+    const resolved = { ...rawWebsiteStyles };
+    if (isMobile) {
+      Object.keys(rawWebsiteStyles).forEach((k) => {
+        const key = k as keyof WebsiteStyles;
+        const mobileKey = `mobile${key.charAt(0).toUpperCase()}${key.slice(1)}` as keyof WebsiteStyles;
+        if (rawWebsiteStyles[mobileKey] !== undefined && rawWebsiteStyles[mobileKey] !== "") {
+          resolved[key] = rawWebsiteStyles[mobileKey] as any;
+        }
+      });
+    }
+    return resolved;
+  }, [rawWebsiteStyles, windowSize.width]);
+
+  // Dynamically update browser tab title
+  useEffect(() => {
+    document.title = websiteStyles.tabTitle || "Iman. Cinta. Sastera.";
+  }, [websiteStyles.tabTitle]);
 
   // Load custom blocks
   const [customBlocks, setCustomBlocks] = useState<CustomBlock[]>(() => {
@@ -419,7 +448,7 @@ export default function App() {
   };
 
   const handleStylesChange = (updated: WebsiteStyles) => {
-    setWebsiteStyles(updated);
+    setRawWebsiteStyles(updated);
     localStorage.setItem("custom_website_styles", JSON.stringify(updated));
   };
 
@@ -427,7 +456,7 @@ export default function App() {
     const defaultStyles = backupConfig?.websiteStyles 
       ? { ...DEFAULT_WEBSITE_STYLES, ...backupConfig.websiteStyles } 
       : DEFAULT_WEBSITE_STYLES;
-    setWebsiteStyles(defaultStyles);
+    setRawWebsiteStyles(defaultStyles);
     localStorage.setItem("custom_website_styles", JSON.stringify(defaultStyles));
   };
 
@@ -492,7 +521,7 @@ export default function App() {
 
     setLandingTexts(defaultTexts);
     setQuotes(defaultQuotes);
-    setWebsiteStyles(defaultStyles);
+    setRawWebsiteStyles(defaultStyles);
     setCustomBlocks(defaultBlocks);
 
     localStorage.setItem("custom_landing_texts", JSON.stringify(defaultTexts));
@@ -674,7 +703,7 @@ export default function App() {
                   className="tracking-[0.3em] font-semibold text-white/95 border-b border-dashed outline-none cursor-pointer inline-block whitespace-pre-wrap"
                   style={{ 
                     fontFamily: websiteStyles.upperTagFont || websiteStyles.serifFont,
-                    fontSize: getResponsiveFontSize(websiteStyles.upperTagSize || "11px"),
+                    fontSize: getResponsiveFontSize(websiteStyles.upperTagSize || "11px", undefined, "upperTagSize"),
                     color: websiteStyles.upperTagColor || websiteStyles.accentColor,
                     borderBottomColor: `${websiteStyles.accentColor}50`
                   }}
@@ -696,7 +725,7 @@ export default function App() {
                 className="tracking-[0.3em] font-semibold inline-block whitespace-pre-wrap"
                 style={{
                   fontFamily: websiteStyles.upperTagFont || websiteStyles.serifFont,
-                  fontSize: getResponsiveFontSize(websiteStyles.upperTagSize || "11px"),
+                  fontSize: getResponsiveFontSize(websiteStyles.upperTagSize || "11px", undefined, "upperTagSize"),
                   color: websiteStyles.upperTagColor || websiteStyles.accentColor
                 }}
               >
@@ -716,10 +745,10 @@ export default function App() {
                 isEditMode={isEditMode}
                 onLabelChange={(val) => handleTextChange("countdownLabel", val)}
                 countdownFont={websiteStyles.countdownFont}
-                countdownSize={getResponsiveFontSize(websiteStyles.countdownSize)}
+                countdownSize={getResponsiveFontSize(websiteStyles.countdownSize, undefined, "countdownSize")}
                 countdownColor={websiteStyles.countdownColor}
                 countdownLabelFont={websiteStyles.countdownLabelFont}
-                countdownLabelSize={getResponsiveFontSize(websiteStyles.countdownLabelSize)}
+                countdownLabelSize={getResponsiveFontSize(websiteStyles.countdownLabelSize, undefined, "countdownLabelSize")}
                 countdownLabelColor={websiteStyles.countdownLabelColor}
                 
                 daysLabel={landingTexts.countdownDaysLabel}
@@ -1448,7 +1477,7 @@ export default function App() {
             id="copyright-notice" 
             style={{ 
               fontFamily: websiteStyles.copyrightFont || websiteStyles.bodyFont,
-              fontSize: getResponsiveFontSize(websiteStyles.copyrightSize || "10px"),
+              fontSize: getResponsiveFontSize(websiteStyles.copyrightSize || "10px", undefined, "copyrightSize"),
               color: websiteStyles.copyrightColor || "rgba(255, 255, 255, 0.4)",
             }}
           >
@@ -1480,7 +1509,7 @@ export default function App() {
       <AdminPanel 
         isOpen={isAdminOpen} 
         onClose={() => setIsAdminOpen(false)} 
-        styles={websiteStyles}
+        styles={rawWebsiteStyles}
         onStylesChange={handleStylesChange}
         onResetStyles={handleResetStyles}
         customBlocks={customBlocks}

@@ -1,6 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { BetaReader, WebsiteStyles, CustomBlock, LandingTexts } from "../types";
 import { X, Trash2, Download, Search, Users, Database, Palette, Check, RotateCcw, Sliders, Sparkles, Plus, Layers, LayoutGrid, Trash, Image, FileText, Music, RefreshCw } from "lucide-react";
+
+const isMobileCustomizable = (key: string): boolean => {
+  const nonMobileFields = [
+    "logoType", "logoText", "logoImageUrl", "logoWeight", "logoStyle",
+    "showCountdown", "showBorderFrame", "showCursiveVibe", "audioUrl", "audioTitle", "audioEnabled",
+    "googleSheetsWebhookUrl", "embedIframeEnabled", "embedIframeCode", "embedIframeTitle", "embedIframeWidth", "embedIframeHeight", "embedIframePlayOnly",
+    "footerShowBorder", "tabTitle"
+  ];
+  return !nonMobileFields.includes(key);
+};
 
 interface AdminPanelProps {
   isOpen: boolean;
@@ -18,7 +28,7 @@ interface AdminPanelProps {
 export default function AdminPanel({ 
   isOpen, 
   onClose, 
-  styles, 
+  styles: rawStyles, 
   onStylesChange, 
   onResetStyles,
   customBlocks,
@@ -30,6 +40,23 @@ export default function AdminPanel({
   const [readers, setReaders] = useState<BetaReader[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [activeTab, setActiveTab] = useState<"readers" | "design" | "blocks">("readers");
+  const [deviceTarget, setDeviceTarget] = useState<"desktop" | "mobile">("desktop");
+
+  const styles = useMemo(() => {
+    const resolved = { ...rawStyles };
+    if (deviceTarget === "mobile") {
+      Object.keys(rawStyles).forEach((k) => {
+        const key = k as keyof WebsiteStyles;
+        if (isMobileCustomizable(key as string)) {
+          const mobileKey = `mobile${key.charAt(0).toUpperCase()}${key.slice(1)}` as keyof WebsiteStyles;
+          if (rawStyles[mobileKey] !== undefined) {
+            (resolved as any)[key] = rawStyles[mobileKey];
+          }
+        }
+      });
+    }
+    return resolved;
+  }, [rawStyles, deviceTarget]);
 
   // Custom alerts & confirms states
   const [confirmDialog, setConfirmDialog] = useState<{
@@ -151,11 +178,29 @@ export default function AdminPanel({
     }
   };
 
+  const getStyleValue = (key: keyof WebsiteStyles) => {
+    if (deviceTarget === "mobile" && isMobileCustomizable(key as string)) {
+      const mobileKey = `mobile${(key as string).charAt(0).toUpperCase()}${(key as string).slice(1)}` as keyof WebsiteStyles;
+      if (rawStyles[mobileKey] !== undefined) {
+        return rawStyles[mobileKey];
+      }
+    }
+    return rawStyles[key];
+  };
+
   const handleStyleFieldChange = (key: keyof WebsiteStyles, value: any) => {
-    onStylesChange({
-      ...styles,
-      [key]: value
-    });
+    if (deviceTarget === "mobile" && isMobileCustomizable(key as string)) {
+      const mobileKey = `mobile${(key as string).charAt(0).toUpperCase()}${(key as string).slice(1)}` as keyof WebsiteStyles;
+      onStylesChange({
+        ...rawStyles,
+        [mobileKey]: value
+      });
+    } else {
+      onStylesChange({
+        ...rawStyles,
+        [key]: value
+      });
+    }
   };
 
   const fontOptions = [
@@ -730,6 +775,51 @@ export default function AdminPanel({
               </div>
             )}
 
+            {/* Target Device Selection (Komputer & Tablet vs Telefon) */}
+            <div className="bg-black/45 p-4 rounded-xl border border-[#d7b9b9]/25 flex flex-col gap-3 text-left">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div className="space-y-1">
+                  <h4 className="text-sm font-serif font-medium text-white flex items-center gap-1.5">
+                    <Sliders size={15} className="text-[#d7b9b9]" />
+                    Peranti Sasaran Penyuntingan
+                  </h4>
+                  <p className="text-[11px] text-[#d7b9b9]/75 font-serif leading-normal">
+                    Pilih peranti untuk mengubah suai saiz tajuk, teks, gambar, dan elemen khusus untuk skrin tersebut.
+                  </p>
+                </div>
+                <div className="flex p-0.5 bg-black/40 border border-white/10 rounded-lg self-stretch sm:self-auto justify-center">
+                  <button
+                    type="button"
+                    onClick={() => setDeviceTarget("desktop")}
+                    className={`px-3 py-1.5 rounded-md font-serif text-xs transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
+                      deviceTarget === "desktop"
+                        ? "bg-[#d7b9b9] text-[#1c0200] font-semibold"
+                        : "text-white/60 hover:text-white"
+                    }`}
+                  >
+                    <span>💻 Komputer & Tablet</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setDeviceTarget("mobile")}
+                    className={`px-3 py-1.5 rounded-md font-serif text-xs transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
+                      deviceTarget === "mobile"
+                        ? "bg-[#d7b9b9] text-[#1c0200] font-semibold"
+                        : "text-white/60 hover:text-white"
+                    }`}
+                  >
+                    <span>📱 Telefon</span>
+                  </button>
+                </div>
+              </div>
+              
+              {deviceTarget === "mobile" && (
+                <div className="text-[10px] text-[#d7b9b9]/90 bg-[#5a0600]/30 px-3 py-2 rounded border border-amber-500/10 italic leading-relaxed">
+                  * NOTA: Anda kini menyunting konfigurasi khusus untuk <strong>Skrin Telefon</strong>. Saiz teks, jarak elemen, dan saiz imej yang anda ubah di bawah akan direkodkan khas untuk paparan telefon pintar sahaja tanpa mengganggu paparan komputer.
+                </div>
+              )}
+            </div>
+
             {/* Quick Color Presets */}
             <div>
               <h3 className="text-xs uppercase tracking-[0.2em] font-bold text-[#d7b9b9] mb-3 flex items-center gap-1.5">
@@ -778,6 +868,21 @@ export default function AdminPanel({
               <div className="space-y-4">
                 <h4 className="text-xs font-semibold uppercase tracking-wider text-[#d7b9b9]/80 border-b border-[#d7b9b9]/10 pb-1.5">Tipografi & Saiz</h4>
                 
+                {/* Tab Browser Title */}
+                <div className="flex flex-col gap-1 bg-black/10 p-2 rounded border border-[#d7b9b9]/5">
+                  <label className="text-[11px] uppercase tracking-wider text-[#d7b9b9]/70">Nama / Tajuk Tab Pelayar (Browser Tab Title)</label>
+                  <input
+                    type="text"
+                    value={styles.tabTitle || ""}
+                    onChange={(e) => handleStyleFieldChange("tabTitle", e.target.value)}
+                    placeholder="Cth: Iman. Cinta. Sastera."
+                    className="w-full font-serif text-xs px-3 py-2 bg-black/45 border border-[#d7b9b9]/25 rounded text-white focus:outline-none focus:border-[#d7b9b9]"
+                  />
+                  <span className="text-[9px] text-[#d7b9b9]/60 leading-normal">
+                    * Nota: Ini akan mengubah suai teks tajuk yang dipaparkan pada tab pelayar web.
+                  </span>
+                </div>
+
                 {/* Serif Font */}
                 <div className="flex flex-col gap-1">
                   <label className="text-[11px] uppercase tracking-wider text-[#d7b9b9]/70">Jenis Font Utama (Tajuk / Warkah)</label>

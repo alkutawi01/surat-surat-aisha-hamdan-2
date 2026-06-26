@@ -175,7 +175,9 @@ export default function TeaserText({
           return (
             <p className={`${isCustomQuoteSize ? "" : quoteSize} leading-relaxed tracking-wide italic font-light drop-shadow-sm select-text whitespace-pre-wrap`} style={finalQuoteStyle}>
               <span>{part1}</span>
-              <span className="cursor-blink inline-block w-[2px] h-[1.1em] mx-0.5 align-middle animate-blink" style={{ backgroundColor: accentColor }} />
+              <span className="relative" style={{ display: 'inline-block', width: 0, height: 0, verticalAlign: 'baseline' }}>
+                <span className="absolute cursor-blink inline-block w-[2px] h-[1.15em] animate-blink" style={{ backgroundColor: accentColor, left: '1px', bottom: '-0.1em' }} />
+              </span>
               <span className="opacity-0 select-none pointer-events-none" aria-hidden="true">{part2}</span>
             </p>
           );
