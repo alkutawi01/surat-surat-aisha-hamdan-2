@@ -127,7 +127,7 @@ export const DEFAULT_WEBSITE_STYLES: WebsiteStyles = {
   mobileSpacingQuotes: "16px",
   mobileSpacingCursive: "16px",
   mobileSpacingBlocks: "20px",
-  mobileLogoSize: "26px",
+  mobileLogoSize: "195px",
   mobileCursiveSize: "28px",
   mobileFormTitleSize: "20px",
   mobileFormDescSize: "12px",
@@ -139,6 +139,12 @@ export const DEFAULT_WEBSITE_STYLES: WebsiteStyles = {
   mobileAboveLogoSize: "12px",
   mobileBelowLogoSize: "13px",
   mobileFooterSize: "11px",
+  mobileLaunchSize: "10px",
+  mobilePublisherSize: "10px",
+  mobileLaunchIconSize: "15px",
+  mobileLaunchIconYOffset: "0px",
+  mobilePublisherIconSize: "20px",
+  mobilePublisherIconYOffset: "-2px",
 };
 
 export const DEFAULT_LANDING_TEXTS: LandingTexts = {

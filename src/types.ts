@@ -213,9 +213,13 @@ export interface WebsiteStyles {
   mobileLaunchFont?: string;
   mobileLaunchSize?: string;
   mobileLaunchColor?: string;
+  mobileLaunchIconSize?: string;
+  mobileLaunchIconYOffset?: string;
   mobilePublisherFont?: string;
   mobilePublisherSize?: string;
   mobilePublisherColor?: string;
+  mobilePublisherIconSize?: string;
+  mobilePublisherIconYOffset?: string;
   mobileHeaderBgColor?: string;
   mobileGlobalAlignment?: 'left' | 'center' | 'right';
   mobileSpacingPageTop?: string;

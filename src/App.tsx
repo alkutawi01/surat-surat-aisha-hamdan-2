@@ -302,7 +302,11 @@ export default function App() {
     const saved = localStorage.getItem("custom_website_styles");
     if (saved) {
       try {
-        return { ...DEFAULT_WEBSITE_STYLES, ...JSON.parse(saved) };
+        const parsed = JSON.parse(saved);
+        if (parsed.mobileLogoSize === "26px") {
+          parsed.mobileLogoSize = "195px";
+        }
+        return { ...DEFAULT_WEBSITE_STYLES, ...parsed };
       } catch (e) {}
     }
     if (backupConfig?.websiteStyles) {
@@ -1739,10 +1743,19 @@ export default function App() {
         const currentSpacing = spacingKey ? (websiteStyles[spacingKey] as string) || "" : "";
 
         const handleFieldChange = (field: keyof WebsiteStyles, value: any) => {
-          handleStylesChange({
-            ...websiteStyles,
-            [field]: value
-          });
+          const isMobile = windowSize.width < 640;
+          if (isMobile) {
+            const mobileKey = `mobile${(field as string).charAt(0).toUpperCase()}${(field as string).slice(1)}` as keyof WebsiteStyles;
+            handleStylesChange({
+              ...rawWebsiteStyles,
+              [mobileKey]: value
+            });
+          } else {
+            handleStylesChange({
+              ...rawWebsiteStyles,
+              [field]: value
+            });
+          }
         };
 
         const colorPresets = [
