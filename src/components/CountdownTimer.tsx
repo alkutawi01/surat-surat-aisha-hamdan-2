@@ -19,6 +19,9 @@ interface CountdownTimerProps {
   countdownFont?: string;
   countdownSize?: string;
   countdownColor?: string;
+  countdownLabelFont?: string;
+  countdownLabelSize?: string;
+  countdownLabelColor?: string;
   
   // Custom H-J-M-S labels
   daysLabel?: string;
@@ -41,6 +44,9 @@ export default function CountdownTimer({
   countdownFont,
   countdownSize,
   countdownColor,
+  countdownLabelFont,
+  countdownLabelSize,
+  countdownLabelColor,
   
   daysLabel = "hari",
   hoursLabel = "jam",
@@ -100,13 +106,27 @@ export default function CountdownTimer({
             suppressContentEditableWarning
             onBlur={(e) => onLabelChange?.(sanitizeText(e.currentTarget.textContent || ""))}
             className="text-[10px] uppercase tracking-[0.4em] mb-1 opacity-75 border-b border-dashed inline-block hover:bg-white/5 px-0.5 rounded outline-none text-center"
-            style={{ color: accentColor, fontFamily: bodyFont, borderBottomColor: `${accentColor}40` }}
+            style={{ 
+              color: countdownLabelColor || accentColor, 
+              fontFamily: countdownLabelFont || bodyFont, 
+              fontSize: countdownLabelSize || "10px",
+              borderBottomColor: `${accentColor}40` 
+            }}
             title="Klik untuk sunting tajuk unduran"
           >
             {label}
           </p>
         ) : (
-          <p className="text-[10px] uppercase tracking-[0.4em] mb-1 opacity-75 text-center" style={{ color: accentColor, fontFamily: bodyFont }}>{label}</p>
+          <p 
+            className="text-[10px] uppercase tracking-[0.4em] mb-1 opacity-75 text-center" 
+            style={{ 
+              color: countdownLabelColor || accentColor, 
+              fontFamily: countdownLabelFont || bodyFont,
+              fontSize: countdownLabelSize || "10px"
+            }}
+          >
+            {label}
+          </p>
         )}
         {(() => {
           const isCustomCountdownSize = countdownSize && (countdownSize.includes('px') || countdownSize.includes('rem') || countdownSize.includes('em') || countdownSize.includes('pt'));

@@ -28,6 +28,9 @@ export const DEFAULT_WEBSITE_STYLES: WebsiteStyles = {
   countdownFont: "EB Garamond",
   countdownSize: "16px",
   countdownColor: "#ffffff",
+  countdownLabelFont: "Inter",
+  countdownLabelSize: "10px",
+  countdownLabelColor: "#d7b9b9",
   
   logoFont: "EB Garamond",
   logoColor: "#ffffff",
@@ -107,6 +110,11 @@ export const DEFAULT_WEBSITE_STYLES: WebsiteStyles = {
   embedIframeWidth: "max-w-2xl",
   embedIframeHeight: "480px",
   embedIframePlayOnly: false,
+  footerBgColor: "#000000",
+  footerShowBorder: true,
+  copyrightFont: "Inter",
+  copyrightSize: "10px",
+  copyrightColor: "rgba(255, 255, 255, 0.4)",
 };
 
 export const DEFAULT_LANDING_TEXTS: LandingTexts = {

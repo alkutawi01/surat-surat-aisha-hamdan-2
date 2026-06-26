@@ -1295,7 +1295,7 @@ export default function AdminPanel({
                         />
                       </div>
                       <div className="flex flex-col gap-1">
-                        <span className="text-[10px] text-white/50 font-serif">Warna</span>
+                        <span className="text-[10px] text-white/50 font-serif">Warna Angka</span>
                         <div className="flex gap-1 items-center">
                           <input
                             type="color"
@@ -1312,6 +1312,52 @@ export default function AdminPanel({
                         </div>
                       </div>
                     </div>
+
+                    {/* Label Styling */}
+                    <div className="border-t border-white/5 pt-2 mt-2 space-y-2">
+                      <div className="text-[10px] font-bold text-[#d7b9b9] font-serif uppercase tracking-wider">Gaya Label (Cth: "Mahakarya dalam pembinaan")</div>
+                      <div className="flex flex-col gap-1">
+                        <span className="text-[10px] text-white/50 font-serif">Font Label</span>
+                        <select
+                          value={styles.countdownLabelFont || "Inter"}
+                          onChange={(e) => handleStyleFieldChange("countdownLabelFont", e.target.value)}
+                          className="w-full font-serif text-[11px] px-2 py-1 bg-black/40 border border-[#d7b9b9]/20 rounded text-white focus:outline-none"
+                        >
+                          {allAvailableFonts.map((opt) => (
+                            <option key={opt.value} value={opt.value} className="bg-[#1c0200]">{opt.label}</option>
+                          ))}
+                        </select>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2">
+                        <div className="flex flex-col gap-1">
+                          <span className="text-[10px] text-white/50 font-serif">Saiz Label</span>
+                          <input
+                            type="text"
+                            value={styles.countdownLabelSize || "10px"}
+                            onChange={(e) => handleStyleFieldChange("countdownLabelSize", e.target.value)}
+                            className="w-full font-mono text-[11px] px-2 py-1 bg-black/40 border border-[#d7b9b9]/20 rounded text-white focus:outline-none"
+                          />
+                        </div>
+                        <div className="flex flex-col gap-1">
+                          <span className="text-[10px] text-white/50 font-serif">Warna Label</span>
+                          <div className="flex gap-1 items-center">
+                            <input
+                              type="color"
+                              value={styles.countdownLabelColor || "#d7b9b9"}
+                              onChange={(e) => handleStyleFieldChange("countdownLabelColor", e.target.value)}
+                              className="w-6 h-6 rounded border border-[#d7b9b9]/20 bg-transparent p-0 cursor-pointer"
+                            />
+                            <input
+                              type="text"
+                              value={styles.countdownLabelColor || "#d7b9b9"}
+                              onChange={(e) => handleStyleFieldChange("countdownLabelColor", e.target.value)}
+                              className="w-full font-mono text-[9px] px-1 py-1 bg-black/40 border border-[#d7b9b9]/20 rounded text-white focus:outline-none"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
                   </div>
                 </div>
 
@@ -1592,6 +1638,92 @@ export default function AdminPanel({
                             className="w-full font-mono text-[9px] px-1 py-1 bg-black/40 border border-[#d7b9b9]/20 rounded text-white focus:outline-none"
                           />
                         </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 9. Blok Footer & Hak Cipta */}
+                <div className="bg-[#120101]/40 p-3 rounded border border-white/5 space-y-3 col-span-1 md:col-span-2">
+                  <div className="text-[11px] font-bold text-[#d7b9b9] font-serif uppercase tracking-wider">Blok Kaki & Gaya Hak Cipta (Footer & Copyright Styling)</div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-b border-white/5 pb-3">
+                    {/* Footer Block Color */}
+                    <div className="flex flex-col gap-1">
+                      <span className="text-[10px] text-white/50 font-serif">Warna Blok Footer</span>
+                      <div className="flex gap-1 items-center">
+                        <input
+                          type="color"
+                          value={styles.footerBgColor || "#000000"}
+                          onChange={(e) => handleStyleFieldChange("footerBgColor", e.target.value)}
+                          className="w-6 h-6 rounded border border-[#d7b9b9]/20 bg-transparent p-0 cursor-pointer"
+                        />
+                        <input
+                          type="text"
+                          value={styles.footerBgColor || "#000000"}
+                          onChange={(e) => handleStyleFieldChange("footerBgColor", e.target.value)}
+                          className="w-full font-mono text-[9px] px-1 py-1 bg-black/40 border border-[#d7b9b9]/20 rounded text-white focus:outline-none"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Footer Show Border */}
+                    <div className="flex flex-col justify-center">
+                      <label className="text-[10px] text-white/50 font-serif mb-1.5">Bingkai/Sempadan Atas Footer</label>
+                      <button
+                        type="button"
+                        onClick={() => handleStyleFieldChange("footerShowBorder", styles.footerShowBorder === false ? true : false)}
+                        className={`w-full py-1 px-3 text-[10px] uppercase font-bold tracking-wider rounded transition-all border ${
+                          styles.footerShowBorder !== false 
+                            ? "bg-amber-500/10 text-amber-300 border-amber-500/30" 
+                            : "bg-black/40 text-white/40 border-white/10"
+                        }`}
+                      >
+                        {styles.footerShowBorder !== false ? "Sempadan Aktif (Ada Garisan)" : "Sempadan Padam (Tiada Garisan)"}
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Copyright typography styles */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
+                    <div className="flex flex-col gap-1">
+                      <span className="text-[10px] text-white/50 font-serif font-semibold">Font Hak Cipta</span>
+                      <select
+                        value={styles.copyrightFont || "Inter"}
+                        onChange={(e) => handleStyleFieldChange("copyrightFont", e.target.value)}
+                        className="w-full font-serif text-[11px] px-2 py-1 bg-black/40 border border-[#d7b9b9]/20 rounded text-white focus:outline-none"
+                      >
+                        {allAvailableFonts.map((opt) => (
+                          <option key={opt.value} value={opt.value} className="bg-[#1c0200]">{opt.label}</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div className="flex flex-col gap-1">
+                      <span className="text-[10px] text-white/50 font-serif font-semibold">Saiz Font Hak Cipta</span>
+                      <input
+                        type="text"
+                        value={styles.copyrightSize || "10px"}
+                        onChange={(e) => handleStyleFieldChange("copyrightSize", e.target.value)}
+                        className="w-full font-mono text-[11px] px-2 py-1 bg-black/40 border border-[#d7b9b9]/20 rounded text-white focus:outline-none"
+                      />
+                    </div>
+
+                    <div className="flex flex-col gap-1">
+                      <span className="text-[10px] text-white/50 font-serif font-semibold">Warna Hak Cipta</span>
+                      <div className="flex gap-1 items-center">
+                        <input
+                          type="color"
+                          value={styles.copyrightColor || "rgba(255, 255, 255, 0.4)"}
+                          onChange={(e) => handleStyleFieldChange("copyrightColor", e.target.value)}
+                          className="w-6 h-6 rounded border border-[#d7b9b9]/20 bg-transparent p-0 cursor-pointer"
+                        />
+                        <input
+                          type="text"
+                          value={styles.copyrightColor || "rgba(255, 255, 255, 0.4)"}
+                          onChange={(e) => handleStyleFieldChange("copyrightColor", e.target.value)}
+                          className="w-full font-mono text-[9px] px-1 py-1 bg-black/40 border border-[#d7b9b9]/20 rounded text-white focus:outline-none"
+                        />
                       </div>
                     </div>
                   </div>
@@ -2174,6 +2306,151 @@ export default function AdminPanel({
                             <option value="p-8" className="bg-[#1c0200]">Sangat Luas (p-8)</option>
                           </select>
                         </div>
+
+                        {/* Title Font, Size & Color Styling (Only if block has title) */}
+                        {block.title && (
+                          <div className="col-span-2 border-t border-white/5 pt-2 mt-1 grid grid-cols-1 sm:grid-cols-3 gap-2">
+                            <div className="flex flex-col gap-1">
+                              <label className="text-[9px] uppercase tracking-wider text-[#d7b9b9]/60">Font Tajuk</label>
+                              <select
+                                value={block.titleFont || ""}
+                                onChange={(e) => {
+                                  const updated = customBlocks.map(b => b.id === block.id ? { ...b, titleFont: e.target.value } : b);
+                                  onCustomBlocksChange(updated);
+                                }}
+                                className="w-full font-serif text-[10px] px-1.5 py-1 bg-black/40 border border-[#d7b9b9]/20 rounded text-white focus:outline-none"
+                              >
+                                <option value="" className="bg-[#1c0200]">Utama (Serif)</option>
+                                {allAvailableFonts.map((opt) => (
+                                  <option key={opt.value} value={opt.value} className="bg-[#1c0200]">{opt.label}</option>
+                                ))}
+                              </select>
+                            </div>
+                            <div className="flex flex-col gap-1">
+                              <label className="text-[9px] uppercase tracking-wider text-[#d7b9b9]/60">Saiz Tajuk</label>
+                              <input
+                                type="text"
+                                value={block.titleSize || ""}
+                                onChange={(e) => {
+                                  const updated = customBlocks.map(b => b.id === block.id ? { ...b, titleSize: e.target.value } : b);
+                                  onCustomBlocksChange(updated);
+                                }}
+                                placeholder="Cth: 18px"
+                                className="w-full font-mono text-[10px] px-1.5 py-1 bg-black/40 border border-[#d7b9b9]/20 rounded text-white focus:outline-none"
+                              />
+                            </div>
+                            <div className="flex flex-col gap-1">
+                              <label className="text-[9px] uppercase tracking-wider text-[#d7b9b9]/60">Warna Tajuk</label>
+                              <div className="flex gap-1 items-center">
+                                <input
+                                  type="color"
+                                  value={block.titleColor || block.textColor || "#ffffff"}
+                                  onChange={(e) => {
+                                    const updated = customBlocks.map(b => b.id === block.id ? { ...b, titleColor: e.target.value } : b);
+                                    onCustomBlocksChange(updated);
+                                  }}
+                                  className="w-5 h-5 rounded border border-[#d7b9b9]/10 bg-transparent p-0 cursor-pointer"
+                                />
+                                <input
+                                  type="text"
+                                  value={block.titleColor || ""}
+                                  onChange={(e) => {
+                                    const updated = customBlocks.map(b => b.id === block.id ? { ...b, titleColor: e.target.value } : b);
+                                    onCustomBlocksChange(updated);
+                                  }}
+                                  placeholder="#ffffff"
+                                  className="w-full font-mono text-[9px] px-1 py-0.5 bg-black/40 border border-[#d7b9b9]/20 rounded text-white focus:outline-none"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Content Font & Size Styling (Only if type is text or both) */}
+                        {block.type !== 'image' && (
+                          <div className="col-span-2 border-t border-white/5 pt-2 mt-1 space-y-2">
+                            <div className="grid grid-cols-2 gap-2">
+                              <div className="flex flex-col gap-1">
+                                <label className="text-[9px] uppercase tracking-wider text-[#d7b9b9]/60">Font Kandungan</label>
+                                <select
+                                  value={block.contentFont || ""}
+                                  onChange={(e) => {
+                                    const updated = customBlocks.map(b => b.id === block.id ? { ...b, contentFont: e.target.value } : b);
+                                    onCustomBlocksChange(updated);
+                                  }}
+                                  className="w-full font-serif text-[10px] px-1.5 py-1 bg-black/40 border border-[#d7b9b9]/20 rounded text-white focus:outline-none"
+                                >
+                                  <option value="" className="bg-[#1c0200]">Utama (Siri/Body)</option>
+                                  {allAvailableFonts.map((opt) => (
+                                    <option key={opt.value} value={opt.value} className="bg-[#1c0200]">{opt.label}</option>
+                                  ))}
+                                </select>
+                              </div>
+                              <div className="flex flex-col gap-1">
+                                <label className="text-[9px] uppercase tracking-wider text-[#d7b9b9]/60">Saiz Kandungan</label>
+                                <input
+                                  type="text"
+                                  value={block.contentSize || ""}
+                                  onChange={(e) => {
+                                    const updated = customBlocks.map(b => b.id === block.id ? { ...b, contentSize: e.target.value } : b);
+                                    onCustomBlocksChange(updated);
+                                  }}
+                                  placeholder="Cth: 14px"
+                                  className="w-full font-mono text-[10px] px-1.5 py-1 bg-black/40 border border-[#d7b9b9]/20 rounded text-white focus:outline-none"
+                                />
+                              </div>
+                            </div>
+
+                            {/* Slider / Carousel configuration */}
+                            <div className="bg-black/30 border border-white/5 p-2 rounded space-y-2 mt-1">
+                              <div className="flex items-center justify-between">
+                                <span className="text-[9px] uppercase tracking-wider text-[#d7b9b9]/75 font-semibold">Aktifkan Karousel / Slaid</span>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    const updated = customBlocks.map(b => b.id === block.id ? { ...b, isSlider: !b.isSlider } : b);
+                                    onCustomBlocksChange(updated);
+                                  }}
+                                  className={`px-2 py-0.5 rounded text-[9px] uppercase font-bold tracking-wider border transition-all ${
+                                    block.isSlider
+                                      ? "bg-amber-500/20 text-amber-300 border-amber-500/30"
+                                      : "bg-black/40 text-white/40 border-white/10"
+                                  }`}
+                                >
+                                  {block.isSlider ? "Aktif (Slaid)" : "Mati (Teks Biasa)"}
+                                </button>
+                              </div>
+
+                              {block.isSlider && (
+                                <div className="grid grid-cols-2 gap-2 pt-1 border-t border-white/5 items-center">
+                                  <div className="flex flex-col gap-0.5">
+                                    <span className="text-[8px] uppercase text-white/50">Selang Masa Slaid (saat)</span>
+                                    <span className="text-[8px] text-white/30 italic font-sans">Tempoh pertukaran perenggan</span>
+                                  </div>
+                                  <input
+                                    type="number"
+                                    value={block.sliderInterval ? block.sliderInterval / 1000 : 5}
+                                    onChange={(e) => {
+                                      const sec = parseFloat(e.target.value) || 5;
+                                      const updated = customBlocks.map(b => b.id === block.id ? { ...b, sliderInterval: Math.round(sec * 1000) } : b);
+                                      onCustomBlocksChange(updated);
+                                    }}
+                                    placeholder="Cth: 5"
+                                    min="1"
+                                    max="60"
+                                    className="w-full font-mono text-[10px] px-1.5 py-1 bg-black/40 border border-[#d7b9b9]/20 rounded text-white focus:outline-none text-right"
+                                  />
+                                </div>
+                              )}
+
+                              {block.isSlider && (
+                                <div className="text-[8px] text-[#d7b9b9]/65 italic leading-normal bg-black/20 p-1.5 rounded font-sans">
+                                  * Nota: Tulis kandungan teks di atas dengan memisahkan setiap slaid menggunakan simbol tiga sempang <strong>---</strong> pada baris baru (Contoh: <br/>Ulasan Buku Pertama<br/>---<br/>Ulasan Buku Kedua).
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>

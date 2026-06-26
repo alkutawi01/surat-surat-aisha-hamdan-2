@@ -5,6 +5,7 @@ import TeaserText from "./components/TeaserText";
 import BetaRegistration from "./components/BetaRegistration";
 import AmbientAudioPlayer from "./components/AmbientAudioPlayer";
 import AdminPanel from "./components/AdminPanel";
+import { CustomBlockRenderer } from "./components/CustomBlockRenderer";
 import { Scroll, KeyRound, Sparkles, Cloud, Database, RefreshCw, Check, RotateCcw, X, Settings, Palette, Sliders, BookOpen, Library, Book, Bookmark, Compass, Feather, Globe, Heart, Award, PenTool } from "lucide-react";
 import { DEFAULT_LANDING_TEXTS, NOVEL_QUOTES, DEFAULT_WEBSITE_STYLES } from "./data";
 import { LandingTexts, Quote, WebsiteStyles, CustomBlock } from "./types";
@@ -79,7 +80,7 @@ const renderBrandIcon = (
 };
 
 // Base64 backup configuration provided by the user from Admin Panel
-const BACKUP_CONFIG_B64 = "eyJjdXN0b21fbGFuZGluZ190ZXh0cyI6IntcInVwcGVyVGFnXCI6XCJcIixcInNlY3JldFRpdGxlXCI6XCJTZWJ1YWggUmFoc2lhIFlhbmcgQmVsdW0gQmVybmFtYVwiLFwibWFpbkhvb2tMaW5lMVwiOlwiU2V0aWFwIGxlbWJhcmFuIGFkYWxhaFwiLFwibWFpbkhvb2tJdGFsaWNcIjpcImppd2FcIixcIm1haW5Ib29rTGluZTJcIjpcInlhbmcgZGlwaW5qYW1rYW4uXCIsXCJjdXJzaXZlVmliZVwiOlwiSW1hbi4gQ2ludGEuIFNhc3RlcmEuXCIsXCJiZXRhVGl0bGVcIjpcInNlcnRhaSBwZW1iaWtpbmFuXCIsXCJiZXRhRGVzY1wiOlwiRGFmdGFyIHVudHVrIG1lbmRhcGF0IGtlbWFzIGtpbmkgbWVuZ2VuYWkgcHJvamVrIGluaSBkYW4gYmVycGVsdWFuZyB1bnR1ayBtZW5qYWRpIHNlYmFoYWdpYW4ga29tdW5pdGkgcGVtYmFjYSBiZXRhLlwiLFwibGF1bmNoVGV4dFwiOlwic2FoLm1hbGlhbnMuZ3JvdXBcIixcInB1Ymxpc2hlck5hbWVcIjpcIk1ha3RhYmFoIEt1dGF3aXl5YWhcIixcImZvcm1OYW1lTGFiZWxcIjpcIk5hbWEgUGVudWhcIixcImZvcm1FbWFpbExhYmVsXCI6XCJBbGFtYXQgRS1tZWxcIixcImZvcm1QaG9uZUxhYmVsXCI6XCJOby4gVGVsZWZvblwiLFwiZm9ybVJlYXNvbkxhYmVsXCI6XCJIYXNyYXQgUGVtYmFjYVwiLFwiZm9ybUJ0blRleHRcIjpcIlNlcnRhaSBLYW1pXCIsXCJjb3VudGRvd25MYWJlbFwiOlwibWFoYWthcnlhIGRhbGFtIHBlbWJpbmFhblwiLFwiaW5zeWFsbGFoVGV4dFwiOlwiSW5zeWFoLUFsbGFoXCIsXCJjb3VudGRvd25EYXlzTGFiZWxcIjpcImhhcmlcIixcImNvdW50ZG93bkhvdXJzTGFiZWxcIjpcImphbVwiLFwiY291bnRkb3duTWludXRlc0xhYmVsXCI6XCJtaW5pdFwiLFwiY291bnRkb3duU2Vjb25kc0xhYmVsXCI6XCJzYWF0XCIsXCJhYm92ZUxvZ29UZXh0XCI6XCJcIixcImFib3ZlTG9nb0ltYWdlVXJsXCI6XCJcIixcImJlbG93TG9nb1RleHRcIjpcIlwiLFwiYmVsb3dMb2dvSW1hZ2VVcmxcIjpcIlwifSIsImN1c3RvbV9ub3ZlbF9xdW90ZXMiOiJbe1wiaWRcIjoxLFwidGV4dFwiOlwiU2ViZWx1bSBpdHUsIGFuYSBwaW50YSBzdXJhdCBpbmkgdGlkYWsgZGliYWNhIG1lbGFpbmthbiBrZXRpa2EgdXN0YXogZGFsYW0ga2VhZGFhbiBkYW1haSwgbGFwYW5nIGRhbiBiZXJzZW9yYW5nLi4uXCIsXCJjb250ZXh0XCI6XCJTdXJhdCBQZXJ0YW1hIOKAoiBBaXNoYSBIYW1kYW5cIn0se1wiaWRcIjoyLFwidGV4dFwiOlwia2VyYW5hIHNlc3VsaXQtc3VsaXQgbWF0YSB5YW5nIGN1YmEgbWVtZXJoYXRpIGtldGlrYSBzZWRhbmcgc2lsYXUsIGxlYmloIHN1bGl0IGhhdGkgeWFuZyBjdWJhIG1lbmdlcnRpIGtldGlrYSBzZWRhbmcgZ2FsYXUuXCIsXCJjb250ZXh0XCI6XCJTdXJhdCAjMSDigKIgQmljYXJhIHRlbnRhbmcgSGF0aVwifSx7XCJpZFwiOjMsXCJ0ZXh0XCI6XCJCYWdhaW1hbmFrYWggY2FyYSB1bnR1ayBtZW1wZXJsaWhhdGthbiBrZWNhbnRpa2FuIHRhbnBhIG1lbmRlZGFoa2FubnlhP1wiLFwiY29udGV4dFwiOlwiU3VyYXQgIzEg4oCiIFBlcnRhbnlhYW4gQ2VwdW1hc1wifSx7XCJpZFwiOjQsXCJ0ZXh0XCI6XCJTYXN0ZXJhIGFkYWxhaCBzdWF0dSBhbGF0IHlhbmcgYm9sZWggbWVuZ2d1YmFoIGFpciBtYXRhIG1lbmphZGkgY2VyaXRhIGRhbiBtZW5ndWJhaCBjZXJpdGEgbWVuamFkaSBhaXIgbWF0YS5cIixcImNvbnRleHRcIjpcIlN1cmF0ICM1IOKAoiBDaXRhLWNpdGEgS2VkdWFcIn0se1wiaWRcIjo1LFwidGV4dFwiOlwiU2VzdWF0dSB5YW5nIGRpYmluYSBkaSBhdGFzIGtlcGFsc3VhbiB0aWRhayBkaWJlcmthdGksIGRhbiBzZXN1YXR1IHlhbmcgdGlkYWsgZGliZXJrYXRpIHRpZGFrIGFrYW4gYmVydGFoYW4gbGFtYS4uLlwiLFwiY29udGV4dFwiOlwiU3VyYXQgIzcg4oCiIExhbXBpcmFuIEtlYmVuYXJhblwifSx7XCJpZFwiOjYsXCJ0ZXh0XCI6XCJTZWJhZ2FpbWFuYSBraXRhIG1lbWVybHVrYW4gc2VkaWtpdCBqYXJhayB1bnR1ayBtZW1haGFtaSBzZWJ1YWggbHVraXNhbiwgYmVnaXR1bGFoIGtpdGEgbWVtZXJsdWthbiBzZWRpa2l0IG1hc2EgdW50dWsgbWVtYWhhbWkgc2VidWFoIGtldGVudHVhbi5cIixcImNvbnRleHRcIjpcIlN1cmF0ICM3IOKAoiBUaXRpYW4gVGFrZGlyXCJ9LHtcImlkXCI6NyxcInRleHRcIjpcIkRhbiBiaWxhbWFuYSBwZXJ0ZW11YW4gZGFuIHBlcnBpc2FoYW4gaW5pIGRpYXR1ciBvbGVoIEFsbGFoIHNlY2FyYSAnamFnYScgZGFuICdzZW5nYWphJywgbWFrYSBraXRhIGhhbnlhIHBlcmx1IGplZGEgZGFuIHJlZGEgdW50dWsgbWVtYWhhbWkgaGlrbWFoLU55YS5cIixcImNvbnRleHRcIjpcIlN1cmF0ICMyIOKAoiBKZWRhIGRhbiBSZWRhXCJ9LHtcImlkXCI6OCxcInRleHRcIjpcIlNldGlhcCBtYW51c2lhIGJlcmphbGFuIGRpIGF0YXMgdGl0aWFuIHRha2RpciB0YW5wYSBtZW5nZXRhaHVpIGFwYSBkaSBodWp1bmdueWEuIFRldGFwaSBraXRhIGhhcnVzIHRldGFwIGJlcmphbGFuLlwiLFwiY29udGV4dFwiOlwiU3VyYXQgIzcg4oCiIFNlYnVhaCBQZW51dHVwXCJ9XSIsImN1c3RvbV93ZWJzaXRlX3N0eWxlcyI6IntcInNlcmlmRm9udFwiOlwiRUIgR2FyYW1vbmRcIixcImJvZHlGb250XCI6XCJJbnRlclwiLFwiYmdDb2xvclwiOlwiIzQzMDQwMFwiLFwidGV4dENvbG9yXCI6XCIjZmZmZmZmXCIsXCJhY2NlbnRDb2xvclwiOlwiI2Q3YjliOVwiLFwiZm9ybUJnQ29sb3JcIjpcIiM1YTA2MDBcIixcInF1b3RlU2l6ZVwiOlwidGV4dC14bCBzbTp0ZXh0LTJ4bCBsZzp0ZXh0LTN4bFwiLFwiaG9va1NpemVcIjpcInRleHQtMnhsIHNtOnRleHQtM3hsXCIsXCJzaG93Q291bnRkb3duXCI6dHJ1ZSxcInNob3dCb3JkZXJGcmFtZVwiOnRydWUsXCJzaG93Q3Vyc2l2ZVZpYmVcIjp0cnVlLFwiYm9yZGVyVGhpY2tuZXNzXCI6XCIwcHhcIixcImxvZ29UZXh0XCI6XCJNYWt0YWJhaCBBbGt1dGF3aVwiLFwibG9nb1R5cGVcIjpcImltYWdlXCIsXCJsb2dvSW1hZ2VVcmxcIjpcImh0dHBzOi8vaS5wb3N0aW1nLmNjLzY1Q0JkYkxDL1VudGl0bGVkLWRlc2lnbjIucG5nXCIsXCJsb2dvU2l6ZVwiOlwiMTQwcHhcIixcImxvZ29XZWlnaHRcIjpcInNlbWlib2xkXCIsXCJsb2dvU3R5bGVcIjpcIm5vcm1hbFwiLFwidXBwZXJUYWdGb250XCI6XCJFQiBHYXJhbW9uZFwiLFwidXBwZXJUYWdTaXplXCI6XCIxMXB4XCIsXCJ1cHBlclRhZ0NvbG9yXCI6XCIjZDdiOWI5XCIsXCJjb3VudGRvd25Gb250XCI6XCJFQiBHYXJhbW9uZFwiLFwiY291bnRkb3duU2l6ZVwiOlwiMTZweFwiLFwiY291bnRkb3duQ29sb3JcIjpcIiNmZmZmZmZcIixcImxvZ29Gb250XCI6XCJFQiBHYXJhbW9uZFwiLFwibG9nb0NvbG9yXCI6XCIjZmZmZmZmXCIsXCJxdW90ZUZvbnRcIjpcIkVCIEdhcmFtb25kXCIsXCJxdW90ZUNvbG9yXCI6XCIjZmZmZmZmXCIsXCJjdXJzaXZlRm9udFwiOlwiQWxsaXNvblwiLFwiY3Vyc2l2ZVNpemVcIjpcIjUycHhcIixcImN1cnNpdmVDb2xvclwiOlwiI2Q3YjliOVwiLFwiZm9ybVRpdGxlRm9udFwiOlwiRUIgR2FyYW1vbmRcIixcImZvcm1UaXRsZVNpemVcIjpcIjI0cHhcIixcImZvcm1UaXRsZUNvbG9yXCI6XCIjZmZmZmZmXCIsXCJmb3JtRGVzY0ZvbnRcIjpcIlNwYWNlIEdyb3Rlc2tcIixcImZvcm1EZXNjU2l6ZVwiOlwiMTRweFwiLFwiZm9ybURlc2NDb2xvclwiOlwiI2VjYzNiZlwiLFwiZm9vdGVyRm9udFwiOlwiRUIgR2FyYW1vbmRcIixcImZvb3RlclNpemVcIjpcIjEycHhcIixcImZvb3RlckNvbG9yXCI6XCIjZmZmZmZmXCIsXCJhYm92ZUxvZ29Gb250XCI6XCJFQiBHYXJhbW9uZFwiLFwiYWJvdmVMb2dvU2l6ZVwiOlwiMTRweFwiLFwiYWJvdmVMb2dvQ29sb3JcIjpcIiNmZmZmZmZcIixcImJlbG93TG9nb0ZvbnRcIjpcIkVCIEdhcmFtb25kXCIsXCJiZWxvd0xvZ29TaXplXCI6XCI4cHhcIixcImJlbG93TG9nb0NvbG9yXCI6XCIjZmZmZmZmXCIsXCJsYXVuY2hGb250XCI6XCJQbGF5ZmFpciBEaXNwbGF5XCIsXCJsYXVuY2hTaXplXCI6XCIxNXB4XCIsXCJsYXVuY2hDb2xvclwiOlwiI2ZmZmZmZlwiLFwibGF1bmNoSWNvblwiOlwiR2xvYmVcIixcImxhdW5jaEljb25VcmxcIjpcIlwiLFwibGF1bmNoSWNvblNpemVcIjpcIjEzcHhcIixcImxhdW5jaEljb25ZT2Zmc2V0XCI6XCIwcHhcIixcInB1Ymxpc2hlckZvbnRcIjpcIlBsYXlmYWlyIERpc3BsYXlcIixcInB1Ymxpc2hlclNpemVcIjpcIjE1cHhcIixcInB1Ymxpc2hlckNvbG9yXCI6XCIjZmZmZmZmXCIsXCJwdWJsaXNoZXJJY29uXCI6XCJMaWJyYXJ5XCIsXCJwdWJsaXNoZXJJY29uVXJsXCI6XCJodHRwczovL2kucG9zdGltZy5jYy82NUNCZGJMQy9VbnRpdGxlZC1kZXNpZ24yLnBuZ1wiLFwicHVibGlzaGVySWNvblNpemVcIjpcIjI0cHhcIixcInB1Ymxpc2hlckljb25ZT2Zmc2V0XCI6XCIwcHhcIixcImhlYWRlckJnQ29sb3JcIjpcIiMwNDAzMDJcIixcImdsb2JhbEFsaWdubWVudFwiOlwiY2VudGVyXCIsXCJzcGFjaW5nUGFnZVRvcFwiOlwiNTJweFwiLFwic3BhY2luZ0Fib3ZlTG9nb1wiOlwiOHB4XCIsXCJzcGFjaW5nTG9nb1wiOlwiMTlweFwiLFwic3BhY2luZ0JlbG93TG9nb1wiOlwiMHB4XCIsXCJzcGFjaW5nUXVvdGVzXCI6XCI0cHhcIixcInNwYWNpbmdDdXJzaXZlXCI6XCI3cHhcIixcInNwYWNpbmdCbG9ja3NcIjpcIjMycHhcIixcImxvZ29VbmRlckN1cnNpdmVVcmxcIjpcImh0dHBzOi8vaS5wb3N0aW1nLmNjL0hMdDhmSE50L1VudGl0bGVkLWRlc2lnbi0oMikucG5nXCIsXCJsb2dvVW5kZXJDdXJzaXZlU2l6ZVwiOlwiNjRweFwiLFwiYXVkaW9VcmxcIjpcIlwiLFwiYXVkaW9UaXRsZVwiOlwiTGF0YXIgU3Vhc2FuYSAoQW1iaWVudCBBdWRpbylcIixcImF1ZGlvRW5hYmxlZFwiOmZhbHNlLFwiZ29vZ2xlU2hlZXRzV2ViaG9va1VybFwiOlwiXCIsXCJlbWJlZElmcmFtZUVuYWJsZWRcIjp0cnVlLFwiZW1iZWRJZnJhbWVDb2RlXCI6XCI8aWZyYW1lIHNyYz1cXFwiaHR0cHM6Ly9kcml2ZS5nb29nbGUuY29tL2ZpbGUvZC8xN1lWa3VkNnVBcUU4Y3dOaU5ZNU8ydlE2alAzcXFSWWYvcHJldmlld1xcXCIgd2lkdGg9XFxcIjY0MFxcXCIgaGVpZ2h0PVxcXCI0ODBcXFwiPjwvaWZyYW1lPlwiLFwiZW1iZWRJZnJhbWVUaXRsZVwiOlwiU2VtdXNpbSBDaW50YSBkaSBNdSd0YWggKE9TVClcIixcImVtYmVkSWZyYW1lV2lkdGhcIjpcIm1heC13LTJ4bFwiLFwiZW1iZWRJZnJhbWVIZWlnaHRcIjpcIjM1cHhcIixcImVtYmVkSWZyYW1lUGxheU9ubHlcIjpmYWxzZX0iLCJjdXN0b21fd2Vic2l0ZV9ibG9ja3MiOiJbXSJ9";
+const BACKUP_CONFIG_B64 = "eyJjdXN0b21fbGFuZGluZ190ZXh0cyI6IntcInVwcGVyVGFnXCI6XCJcIixcInNlY3JldFRpdGxlXCI6XCJTZWJ1YWggUmFoc2lhIFlhbmcgQmVsdW0gQmVybmFtYVwiLFwibWFpbkhvb2tMaW5lMVwiOlwiU2V0aWFwIGxlbWJhcmFuIGFkYWxhaFwiLFwibWFpbkhvb2tJdGFsaWNcIjpcImppd2FcIixcIm1haW5Ib29rTGluZTJcIjpcInlhbmcgZGlwaW5qYW1rYW4uXCIsXCJjdXJzaXZlVmliZVwiOlwiSW1hbi4gQ2ludGEuIFNhc3RlcmEuXCIsXCJiZXRhVGl0bGVcIjpcInNlcnRhaSBwZW1iaWtpbmFuXCIsXCJiZXRhRGVzY1wiOlwiRGFmdGFyIHVudHVrIG1lbmRhcGF0IGtlbWFzIGtpbmkgbWVuZ2VuYWkgcHJvamVrIGluaSBkYW4gYmVycGVsdWFuZyB1bnR1ayBtZW5qYWRpIHNlYmFoYWdpYW4ga29tdW5pdGkgcGVtYmFjYSBiZXRhLlwiLFwibGF1bmNoVGV4dFwiOlwic2FoLm1hbGlhbnMuZ3JvdXBcIixcInB1Ymxpc2hlck5hbWVcIjpcIk1ha3RhYmFoIEt1dGF3aXl5YWhcIixcImZvcm1OYW1lTGFiZWxcIjpcIk5hbWEgUGVudWhcIixcImZvcm1FbWFpbExhYmVsXCI6XCJBbGFtYXQgRS1tZWxcIixcImZvcm1QaG9uZUxhYmVsXCI6XCJOby4gVGVsZWZvblwiLFwiZm9ybVJlYXNvbkxhYmVsXCI6XCJIYXNyYXQgUGVtYmFjYVwiLFwiZm9ybUJ0blRleHRcIjpcIlNlcnRhaSBLYW1pXCIsXCJjb3VudGRvd25MYWJlbFwiOlwiTUFIQUtBUllBIERBTEFNIFBFTUJJS0lOQU5cIixcImluc3lhbGxhaFRleHRcIjpcIkluc3lhaC1BbGxhaFwiLFwiY291bnRkb3duRGF5c0xhYmVsXCI6XCJoYXJpXCIsXCJjb3VudGRvd25Ib3Vyc0xhYmVsXCI6XCJqYW1cIixcImNvdW50ZG93bk1pbnV0ZXNMYWJlbFwiOlwibWluaXRcIixcImNvdW50ZG93blNlY29uZHNMYWJlbFwiOlwic2FhdFwiLFwiYWJvdmVMb2dvVGV4dFwiOlwiTk9WRUwgU0FTVEVSQSBFUElTVE9MQVJJIFJFQUxJU01FXCIsXCJhYm92ZUxvZ29JbWFnZVVybFwiOlwiXCIsXCJiZWxvd0xvZ29UZXh0XCI6XCJcIixcImJlbG93TG9nb0ltYWdlVXJsXCI6XCJcIn0iLCJjdXN0b21fbm92ZWxfcXVvdGVzIjoiW3tcImlkXCI6MSxcInRleHRcIjpcIlNlYmVsdW0gaXR1LCBhbmEgcGludGEgc3VyYXQgaW5pIHRpZGFrIGRpYmFjYSBtZWxhaW5rYW4ga2V0aWthIHVzdGF6IGRhbGFtIGtlYWRhYW4gZGFtYWksIGxhcGFuZyBkYW4gYmVyc2VvcmFuZy4uLlwiLFwiY29udGV4dFwiOlwiU3VyYXQgUGVydGFtYSDigKIgQWlzaGEgSGFtZGFuXCJ9LHtcImlkXCI6MixcInRleHRcIjpcImtlcmFuYSBzZXN1bGl0LXN1bGl0IG1hdGEgeWFuZyBjdWJhIG1lbWVyaGF0aSBrZXRpa2Egc2VkYW5nIHNpbGF1LCBsZWJpaCBzdWxpdCBoYXRpIHlhbmcgY3ViYSBtZW5nZXJ0aSBrZXRpa2Egc2VkYW5nIGdhbGF1LlwiLFwiY29udGV4dFwiOlwiU3VyYXQgIzEg4oCiIEJpY2FyYSB0ZW50YW5nIEhhdGlcIn0se1wiaWRcIjozLFwidGV4dFwiOlwiQmFnYWltYW5ha2FoIGNhcmEgdW50dWsgbWVtcGVybGloYXRrYW4ga2VjYW50aWthbiB0YW5wYSBtZW5kZWRhaGthbm55YT9cIixcImNvbnRleHRcIjpcIlN1cmF0ICMxIOKAoiBQZXJ0YW55YWFuIENlcHVtYXNcIn0se1wiaWRcIjo0LFwidGV4dFwiOlwiU2FzdGVyYSBhZGFsYWggc3VhdHUgYWxhdCB5YW5nIGJvbGVoIG1lbmdndWJhaCBhaXIgbWF0YSBtZW5qYWRpIGNlcml0YSBkYW4gbWVuZ3ViYWggY2VyaXRhIG1lbmphZGkgYWlyIG1hdGEuXCIsXCJjb250ZXh0XCI6XCJTdXJhdCAjNSDigKIgQ2l0YS1jaXRhIEtlZHVhXCJ9LHtcImlkXCI6NSxcInRleHRcIjpcIlNlc3VhdHUgeWFuZyBkaWJpbmEgZGkgYXRhcyBrZXBhbHN1YW4gdGlkYWsgZGliZXJrYXRpLCBkYW4gc2VzdWF0dSB5YW5nIHRpZGFrIGRpYmVya2F0aSB0aWRhayBha2FuIGJlcnRhaGFuIGxhbWEuLi5cIixcImNvbnRleHRcIjpcIlN1cmF0ICM3IOKAoiBMYW1waXJhbiBLZWJlbmFyYW5cIn0se1wiaWRcIjo2LFwidGV4dFwiOlwiU2ViYWdhaW1hbmEga2l0YSBtZW1lcmx1a2FuIHNlZGlraXQgamFyYWsgdW50dWsgbWVtYWhhbWkgc2VidWFoIGx1a2lzYW4sIGJlZ2l0dWxhaCBraXRhIG1lbWVybHVrYW4gc2VkaWtpdCBtYXNhIHVudHVrIG1lbWFoYW1pIHNlYnVhaCBrZXRlbnR1YW4uXCIsXCJjb250ZXh0XCI6XCJTdXJhdCAjNyDigKIgVGl0aWFuIFRha2RpclwifSx7XCJpZFwiOjcsXCJ0ZXh0XCI6XCJEYW4gYmlsYW1hbmEgcGVydGVtdWFuIGRhbiBwZXJwaXNhaGFuIGluaSBkaWF0dXIgb2xlaCBBbGxhaCBzZWNhcmEgJ2phZ2EnIGRhbiAnc2VuZ2FqYScsIG1ha2Ega2l0YSBoYW55YSBwZXJsdSBqZWRhIGRhbiByZWRhIHVudHVrIG1lbWFoYW1pIGhpa21haC1OeWEuXCIsXCJjb250ZXh0XCI6XCJTdXJhdCAjMiDigKIgSmVkYSBkYW4gUmVkYVwifSx7XCJpZFwiOjgsXCJ0ZXh0XCI6XCJTZXRpYXAgbWFudXNpYSBiZXJqYWxhbiBkaSBhdGFzIHRpdGlhbiB0YWtkaXIgdGFucGEgbWVuZ2V0YWh1aSBhcGEgZGkgaHVqdW5nbnlhLiBUZXRhcGkga2l0YSBoYXJ1cyB0ZXRhcCBiZXJqYWxhbi5cIixcImNvbnRleHRcIjpcIlN1cmF0ICM3IOKAoiBTZWJ1YWggUGVudXR1cFwifV0iLCJjdXN0b21fd2Vic2l0ZV9zdHlsZXMiOiJ7XCJzZXJpZkZvbnRcIjpcIkVCIEdhcmFtb25kXCIsXCJib2R5Rm9udFwiOlwiSW50ZXJcIixcImJnQ29sb3JcIjpcIiM0MzA0MDBcIixcInRleHRDb2xvclwiOlwiI2ZmZmZmZlwiLFwiYWNjZW50Q29sb3JcIjpcIiNkN2I5YjlcIixcImZvcm1CZ0NvbG9yXCI6XCIjNWEwNjAwXCIsXCJxdW90ZVNpemVcIjpcIjMwcHhcIixcImhvb2tTaXplXCI6XCJ0ZXh0LTJ4bCBzbTp0ZXh0LTN4bFwiLFwic2hvd0NvdW50ZG93blwiOnRydWUsXCJzaG93Qm9yZGVyRnJhbWVcIjp0cnVlLFwic2hvd0N1cnNpdmVWaWJlXCI6dHJ1ZSxcImJvcmRlclRoaWNrbmVzc1wiOlwiMHB4XCIsXCJsb2dvVGV4dFwiOlwiTWFrdGFiYWggQWxrdXRhd2lcIixcImxvZ29UeXBlXCI6XCJpbWFnZVwiLFwibG9nb0ltYWdlVXJsXCI6XCJodHRwczovL2kucG9zdGltZy5jYy82NUNCZGJMQy9VbnRpdGxlZC1kZXNpZ24yLnBuZ1wiLFwibG9nb1NpemVcIjpcIjE0MHB4XCIsXCJsb2dvV2VpZ2h0XCI6XCJzZW1pYm9sZFwiLFwibG9nb1N0eWxlXCI6XCJub3JtYWxcIixcInVwcGVyVGFnRm9udFwiOlwiSW50ZXJcIixcInVwcGVyVGFnU2l6ZVwiOlwiMTFweFwiLFwidXBwZXJUYWdDb2xvclwiOlwiI2ZmZmZmZlwiLFwiY291bnRkb3duRm9udFwiOlwiRUIgR2FyYW1vbmRcIixcImNvdW50ZG93blNpemVcIjpcIjE2cHhcIixcImNvdW50ZG93bkNvbG9yXCI6XCIjZmZmZmZmXCIsXCJjb3VudGRvd25MYWJlbEZvbnRcIjpcIkludGVyXCIsXCJjb3VudGRvd25MYWJlbFNpemVcIjpcIjEwcHhcIixcImNvdW50ZG93bkxhYmVsQ29sb3JcIjpcIiNkN2I5YjlcIixcImxvZ29Gb250XCI6XCJFQiBHYXJhbW9uZFwiLFwibG9nb0NvbG9yXCI6XCIjZmZmZmZmXCIsXCJxdW90ZUZvbnRcIjpcIkVCIEdhcmFtb25kXCIsXCJxdW90ZUNvbG9yXCI6XCIjZmZmZmZmXCIsXCJjdXJzaXZlRm9udFwiOlwiQWxsaXNvblwiLFwiY3Vyc2l2ZVNpemVcIjpcIjUycHhcIixcImN1cnNpdmVDb2xvclwiOlwiI2VjYzNiZlwiLFwiZm9ybVRpdGxlRm9udFwiOlwiRUIgR2FyYW1vbmRcIixcImZvcm1UaXRsZVNpemVcIjpcIjI0cHhcIixcImZvcm1UaXRsZUNvbG9yXCI6XCIjZmZmZmZmXCIsXCJmb3JtRGVzY0ZvbnRcIjpcIlNwYWNlIEdyb3Rlc2tcIixcImZvcm1EZXNjU2l6ZVwiOlwiMTRweFwiLFwiZm9ybURlc2NDb2xvclwiOlwiI2VjYzNiZlwiLFwiZm9vdGVyRm9udFwiOlwiRUIgR2FyYW1vbmRcIixcImZvb3RlclNpemVcIjpcIjEycHhcIixcImZvb3RlckNvbG9yXCI6XCIjZmZmZmZmXCIsXCJhYm92ZUxvZ29Gb250XCI6XCJDaW56ZWxcIixcImFib3ZlTG9nb1NpemVcIjpcIjE0cHhcIixcImFib3ZlTG9nb0NvbG9yXCI6XCIjZWNjM2JmXCIsXCJiZWxvd0xvZ29Gb250XCI6XCJFQiBHYXJhbW9uZFwiLFwiYmVsb3dMb2dvU2l6ZVwiOlwiOHB4XCIsXCJiZWxvd0xvZ29Db2xvclwiOlwiI2ZmZmZmZlwiLFwibGF1bmNoRm9udFwiOlwiUGxheWZhaXIgRGlzcGxheVwiLFwibGF1bmNoU2l6ZVwiOlwiMTVweFwiLFwibGF1bmNoQ29sb3JcIjpcIiNmNWViZTZcIixcImxhdW5jaEljb25cIjpcIkdsb2JlXCIsXCJsYXVuY2hJY29uVXJsXCI6XCJcIixcImxhdW5jaEljb25TaXplXCI6XCIxM3B4XCIsXCJsYXVuY2hJY29uWU9mZnNldFwiOlwiMHB4XCIsXCJwdWJsaXNoZXJGb250XCI6XCJQbGF5ZmFpciBEaXNwbGF5XCIsXCJwdWJsaXNoZXJTaXplXCI6XCIxNXB4XCIsXCJwdWJsaXNoZXJDb2xvclwiOlwiI2Y1ZWJlNlwiLFwicHVibGlzaGVySWNvblwiOlwiTGlicmFyeVwiLFwicHVibGlzaGVySWNvblVybFwiOlwiaHR0cHM6Ly9pLnBvc3RpbWcuY2MvNjVDQmRiTEMvVW50aXRsZWQtZGVzaWduMi5wbmdcIixcInB1Ymxpc2hlckljb25TaXplXCI6XCIyNHB4XCIsXCJwdWJsaXNoZXJJY29uWU9mZnNldFwiOlwiMHB4XCIsXCJoZWFkZXJCZ0NvbG9yXCI6XCIjMDQwMzAyXCIsXCJnbG9iYWxBbGlnbm1lbnRcIjpcImNlbnRlclwiLFwic3BhY2luZ1BhZ2VUb3BcIjpcIjUycHhcIixcInNwYWNpbmdBYm92ZUxvZ29cIjpcIjhweFwiLFwic3BhY2luZ0xvZ29cIjpcIjE5cHhcIixcInNwYWNpbmdCZWxvd0xvZ29cIjpcIjBweFwiLFwic3BhY2luZ1F1b3Rlc1wiOlwiNHB4XCIsXCJzcGFjaW5nQ3Vyc2l2ZVwiOlwiN3B4XCIsXCJzcGFjaW5nQmxvY2tzXCI6XCIzMnB4XCIsXCJsb2dvVW5kZXJDdXJzaXZlVXJsXCI6XCJodHRwczovL2kucG9zdGltZy5jYy9ITHQ4ZkhOdC9VbnRpdGxlZC1kZXNpZ24tKDIpLnBuZ1wiLFwibG9nb1VuZGVyQ3Vyc2l2ZVNpemVcIjpcIjY0cHhcIixcImF1ZGlvVXJsXCI6XCJcIixcImF1ZGlvVGl0bGVcIjpcIkxhdGFyIFN1YXNhbmEgKEFtYmllbnQgQXVkaW8pXCIsXCJhdWRpb0VuYWJsZWRcIjpmYWxzZSxcImdvb2dsZVNoZWV0c1dlYmhvb2tVcmxcIjpcIlwiLFwiZW1iZWRJZnJhbWVFbmFibGVkXCI6dHJ1ZSxcImVtYmVkSWZyYW1lQ29kZVwiOlwiPGlmcmFtZSBzcmM9XFxcImh0dHBzOi8vZHJpdmUuZ29vZ2xlLmNvbS9maWxlL2QvMU5xUVNnWHExM0NyUGNsY2Y2Y2M5TkxjS0piOHZEdFZML3ZpZXdcXFwiIHdpZHRoPVxcXCI2NDBcXFwiIGhlaWdodD1cXFwiNDgwXFxcIj48L2lmcmFtZT5cIixcImVtYmVkSWZyYW1lVGl0bGVcIjpcIlNlbXVzaW0gQ2ludGEgZGkgTXUndGFoIChEcmFmIE9TVClcIixcImVtYmVkSWZyYW1lV2lkdGhcIjpcIm1heC13LTJ4bFwiLFwiZW1iZWRJZnJhbWVIZWlnaHRcIjpcIjM1cHhcIixcImVtYmVkSWZyYW1lUGxheU9ubHlcIjpmYWxzZX0iLCJjdXN0b21fd2Vic2l0ZV9ibG9ja3MiOiJbXSJ9";
 
 let backupConfig: {
   landingTexts: any;
@@ -236,6 +237,23 @@ export default function App() {
     return rawValue;
   };
 
+  // Helper to dynamically scale custom font sizes down by 25% on mobile screens (width < 640px)
+  const getResponsiveFontSize = (sizeValue: string | undefined, defaultValue?: string) => {
+    const rawValue = sizeValue || defaultValue;
+    if (!rawValue) return undefined;
+    if (windowSize.width >= 640) return rawValue;
+
+    // Reduce by 25% (multiply by 0.75) on mobile, keeping minimum at 10px (or 8px for labels)
+    const match = rawValue.match(/^([\d.]+)([a-zA-Z%]*)$/);
+    if (match) {
+      const num = parseFloat(match[1]);
+      const unit = match[2];
+      const reducedNum = Math.max(8, Math.round(num * 0.75));
+      return `${reducedNum}${unit}`;
+    }
+    return rawValue;
+  };
+
   // States for scroll-triggered beta registration popup
   const [isBetaPopupOpen, setIsBetaPopupOpen] = useState(false);
   const [hasAutoOpened, setHasAutoOpened] = useState(false);
@@ -363,9 +381,8 @@ export default function App() {
   }, [hasAutoOpened]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+    const x = e.clientX;
+    const y = e.clientY;
     setMousePos({ x, y });
     if (!isInside) {
       setSmoothMousePos({ x, y });
@@ -376,9 +393,8 @@ export default function App() {
   const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
     if (e.touches.length > 0) {
       const touch = e.touches[0];
-      const rect = e.currentTarget.getBoundingClientRect();
-      const x = touch.clientX - rect.left;
-      const y = touch.clientY - rect.top;
+      const x = touch.clientX;
+      const y = touch.clientY;
       setMousePos({ x, y });
       if (!isInside) {
         setSmoothMousePos({ x, y });
@@ -514,9 +530,8 @@ export default function App() {
         WebkitMaskImage: `radial-gradient(circle 220px at ${smoothMousePos.x}px ${smoothMousePos.y}px, transparent 12%, rgba(0,0,0,0.85) 60%, black 100%)`,
       }
     : {
-        // Spotlight starts beautifully centered above the quotes area to entice users
-        maskImage: `radial-gradient(circle 160px at 50% 35%, transparent 12%, rgba(0,0,0,0.85) 60%, black 100%)`,
-        WebkitMaskImage: `radial-gradient(circle 160px at 50% 35%, transparent 12%, rgba(0,0,0,0.85) 60%, black 100%)`,
+        maskImage: "none",
+        WebkitMaskImage: "none",
       };
 
   // Parallax calculations for the drifting mist layers based on smooth mouse movement relative to screen center
@@ -546,6 +561,8 @@ export default function App() {
     <div 
       onMouseMove={handleMouseMove}
       onTouchMove={handleTouchMove}
+      onTouchEnd={() => setIsInside(false)}
+      onTouchCancel={() => setIsInside(false)}
       onMouseLeave={() => setIsInside(false)}
       className="relative min-h-screen flex flex-col justify-between overflow-x-hidden transition-colors duration-500 selection:bg-[#d7b9b9] selection:text-black" 
       style={{ 
@@ -654,7 +671,7 @@ export default function App() {
                   className="tracking-[0.3em] font-semibold text-white/95 border-b border-dashed outline-none cursor-pointer inline-block whitespace-pre-wrap"
                   style={{ 
                     fontFamily: websiteStyles.upperTagFont || websiteStyles.serifFont,
-                    fontSize: websiteStyles.upperTagSize || "11px",
+                    fontSize: getResponsiveFontSize(websiteStyles.upperTagSize || "11px"),
                     color: websiteStyles.upperTagColor || websiteStyles.accentColor,
                     borderBottomColor: `${websiteStyles.accentColor}50`
                   }}
@@ -676,7 +693,7 @@ export default function App() {
                 className="tracking-[0.3em] font-semibold inline-block whitespace-pre-wrap"
                 style={{
                   fontFamily: websiteStyles.upperTagFont || websiteStyles.serifFont,
-                  fontSize: websiteStyles.upperTagSize || "11px",
+                  fontSize: getResponsiveFontSize(websiteStyles.upperTagSize || "11px"),
                   color: websiteStyles.upperTagColor || websiteStyles.accentColor
                 }}
               >
@@ -696,8 +713,11 @@ export default function App() {
                 isEditMode={isEditMode}
                 onLabelChange={(val) => handleTextChange("countdownLabel", val)}
                 countdownFont={websiteStyles.countdownFont}
-                countdownSize={websiteStyles.countdownSize}
+                countdownSize={getResponsiveFontSize(websiteStyles.countdownSize)}
                 countdownColor={websiteStyles.countdownColor}
+                countdownLabelFont={websiteStyles.countdownLabelFont}
+                countdownLabelSize={getResponsiveFontSize(websiteStyles.countdownLabelSize)}
+                countdownLabelColor={websiteStyles.countdownLabelColor}
                 
                 daysLabel={landingTexts.countdownDaysLabel}
                 hoursLabel={landingTexts.countdownHoursLabel}
@@ -1038,94 +1058,25 @@ export default function App() {
           )}
         </div>
 
-        {/* Cursive Vibe Indicator */}
-        {websiteStyles.showCursiveVibe && (() => {
-          const isCustomCursiveSize = websiteStyles.cursiveSize && (websiteStyles.cursiveSize.includes('px') || websiteStyles.cursiveSize.includes('rem') || websiteStyles.cursiveSize.includes('em') || websiteStyles.cursiveSize.includes('pt'));
-          const finalCursiveClass = isCustomCursiveSize ? "" : (websiteStyles.cursiveSize || "text-5xl sm:text-6xl");
-          return (
-            <div 
-              className={`animate-fade-in opacity-0 ${alignTextClass}`} 
-              style={{ 
-                animationDelay: "600ms",
-                marginBottom: getResponsiveSpacing(websiteStyles.spacingCursive, "24px")
-              }} 
-              id="cursive-vibe"
-            >
-              {isEditMode ? (
-                <div className="flex items-center justify-center gap-2" style={{ paddingLeft: "0px", paddingTop: "45px" }}>
-                  <div
-                    contentEditable
-                    suppressContentEditableWarning
-                    onBlur={(e) => handleTextChange("cursiveVibe", sanitizeText(e.currentTarget.innerText || ""))}
-                    className={`tracking-wide border-b border-dashed hover:bg-white/5 px-1 rounded focus:outline-none inline-block outline-none whitespace-pre-wrap ${finalCursiveClass}`}
-                    style={{ 
-                      fontFamily: websiteStyles.cursiveFont || "Allison",
-                      fontSize: isCustomCursiveSize ? websiteStyles.cursiveSize : undefined,
-                      color: websiteStyles.cursiveColor || websiteStyles.accentColor,
-                      borderBottomColor: `${websiteStyles.accentColor}60`
-                    }}
-                    title="Klik untuk sunting getaran puitis"
-                  >
-                    {landingTexts.cursiveVibe}
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => setEditingStyleElement({ key: "cursive", name: "Getaran Puitis" })}
-                    className="p-1 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/40 hover:text-white transition-all cursor-pointer shadow select-none"
-                    title="Sunting Gaya Getaran Puitis"
-                  >
-                    <Palette size={10} />
-                  </button>
-                </div>
-              ) : (
-                <div 
-                  className={`tracking-wide select-none inline-block whitespace-pre-wrap ${finalCursiveClass}`}
-                  style={{ 
-                    fontFamily: websiteStyles.cursiveFont || "Allison",
-                    fontSize: isCustomCursiveSize ? websiteStyles.cursiveSize : undefined,
-                    color: websiteStyles.cursiveColor || websiteStyles.accentColor,
-                    paddingLeft: "0px",
-                    paddingTop: "45px"
-                  }}
-                >
-                  {landingTexts.cursiveVibe}
-                </div>
-              )}
-            </div>
-          );
-        })()}
-
-        {/* Logo/Lambang di bawah teks 'Iman. Cinta. Sastera' */}
-        {(websiteStyles.logoUnderCursiveUrl || isEditMode) && websiteStyles.showCursiveVibe && (
+        {/* Custom Boxes / Elements section */}
+        {customBlocks && customBlocks.length > 0 && (
           <div 
-            className={`w-full flex flex-col items-center justify-center z-20 animate-fade-in`}
+            className="w-full max-w-2xl space-y-6 z-20 animate-fade-in" 
             style={{ 
-              animationDelay: "650ms",
-              marginBottom: "32px",
-              marginTop: "-8px",
-              paddingTop: "20px",
-              paddingBottom: "20px"
-            }}
-            id="cursive-logo-container"
+              animationDelay: "500ms",
+              marginTop: websiteStyles.spacingBlocks || "32px",
+              marginBottom: websiteStyles.spacingBlocks || "32px"
+            }} 
+            id="custom-blocks-list"
           >
-            {websiteStyles.logoUnderCursiveUrl ? (
-              <div className="relative group inline-block cursor-pointer" onClick={() => isEditMode && setEditingStyleElement({ key: "cursiveLogo", name: "Lambang Teks Puitis" })}>
-                <img 
-                  src={websiteStyles.logoUnderCursiveUrl} 
-                  alt="Lambang Getaran Puitis" 
-                  style={{ height: websiteStyles.logoUnderCursiveSize || "64px" }}
-                  className={`object-contain max-w-full transition-all mx-auto ${isEditMode ? 'hover:scale-[1.02] border border-dashed border-[#d7b9b9]/25 hover:border-[#d7b9b9]/60 rounded p-1 bg-black/25' : ''}`}
-                  referrerPolicy="no-referrer"
-                />
-              </div>
-            ) : isEditMode ? (
-              <div 
-                onClick={() => setEditingStyleElement({ key: "cursiveLogo", name: "Lambang Teks Puitis" })}
-                className="border border-dashed border-[#d7b9b9]/35 hover:border-[#d7b9b9]/60 hover:bg-white/5 rounded-lg p-3 font-serif text-[11px] text-white/50 max-w-xs text-center mx-auto cursor-pointer transition-all"
-              >
-                + Letakkan URL logo/lambang di bawah teks puitis di sini (Klik)
-              </div>
-            ) : null}
+            {customBlocks.map((block) => (
+              <CustomBlockRenderer
+                key={block.id}
+                block={block}
+                websiteStyles={websiteStyles}
+                getResponsiveFontSize={getResponsiveFontSize}
+              />
+            ))}
           </div>
         )}
 
@@ -1134,7 +1085,7 @@ export default function App() {
           <div 
             className={`w-full ${websiteStyles.embedIframeWidth || "max-w-2xl"} px-4 mx-auto z-20 animate-fade-in flex flex-col items-center justify-center text-center gap-3`}
             style={{ 
-              animationDelay: "680ms",
+              animationDelay: "550ms",
               marginTop: websiteStyles.spacingBlocks || "32px",
               marginBottom: websiteStyles.spacingBlocks || "32px"
             }}
@@ -1230,77 +1181,94 @@ export default function App() {
           </div>
         )}
 
-        {/* Custom Boxes / Elements section */}
-        {customBlocks && customBlocks.length > 0 && (
-          <div 
-            className="w-full max-w-2xl space-y-6 z-20 animate-fade-in" 
-            style={{ 
-              animationDelay: "700ms",
-              marginTop: websiteStyles.spacingBlocks || "32px",
-              marginBottom: websiteStyles.spacingBlocks || "32px"
-            }} 
-            id="custom-blocks-list"
-          >
-            {customBlocks.map((block) => {
-              const borderStyle = block.borderThickness && block.borderThickness !== "0px"
-                ? `${block.borderThickness} solid ${block.borderColor || websiteStyles.accentColor}`
-                : "none";
-              
-              const blockAlignClass = block.alignment === "left" 
-                ? "text-left items-start" 
-                : block.alignment === "right" 
-                  ? "text-right items-end" 
-                  : "text-center items-center";
-
-              const borderRadiusClass = block.borderRadius === "none"
-                ? "rounded-none"
-                : block.borderRadius === "sm"
-                  ? "rounded-sm"
-                  : block.borderRadius === "lg"
-                    ? "rounded-lg"
-                    : block.borderRadius === "full"
-                      ? "rounded-full"
-                      : "rounded-md"; // default md
-
-              return (
-                <div
-                  key={block.id}
-                  className={`w-full flex flex-col ${blockAlignClass} ${borderRadiusClass} ${block.padding || 'p-6'} transition-all`}
-                  style={{
-                    backgroundColor: block.bgColor || websiteStyles.formBgColor,
-                    color: block.textColor || websiteStyles.textColor,
-                    border: borderStyle,
+        {/* Cursive Vibe Indicator */}
+        {websiteStyles.showCursiveVibe && (() => {
+          const isCustomCursiveSize = websiteStyles.cursiveSize && (websiteStyles.cursiveSize.includes('px') || websiteStyles.cursiveSize.includes('rem') || websiteStyles.cursiveSize.includes('em') || websiteStyles.cursiveSize.includes('pt'));
+          const finalCursiveClass = isCustomCursiveSize ? "" : (websiteStyles.cursiveSize || "text-5xl sm:text-6xl");
+          return (
+            <div 
+              className={`animate-fade-in opacity-0 ${alignTextClass}`} 
+              style={{ 
+                animationDelay: "650ms",
+                marginBottom: getResponsiveSpacing(websiteStyles.spacingCursive, "24px")
+              }} 
+              id="cursive-vibe"
+            >
+              {isEditMode ? (
+                <div className="flex items-center justify-center gap-2" style={{ paddingLeft: "0px", paddingTop: "45px" }}>
+                  <div
+                    contentEditable
+                    suppressContentEditableWarning
+                    onBlur={(e) => handleTextChange("cursiveVibe", sanitizeText(e.currentTarget.innerText || ""))}
+                    className={`tracking-wide border-b border-dashed hover:bg-white/5 px-1 rounded focus:outline-none inline-block outline-none whitespace-pre-wrap ${finalCursiveClass}`}
+                    style={{ 
+                      fontFamily: websiteStyles.cursiveFont || "Allison",
+                      fontSize: isCustomCursiveSize ? websiteStyles.cursiveSize : undefined,
+                      color: websiteStyles.cursiveColor || websiteStyles.accentColor,
+                      borderBottomColor: `${websiteStyles.accentColor}60`
+                    }}
+                    title="Klik untuk sunting getaran puitis"
+                  >
+                    {landingTexts.cursiveVibe}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setEditingStyleElement({ key: "cursive", name: "Getaran Puitis" })}
+                    className="p-1 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/40 hover:text-white transition-all cursor-pointer shadow select-none"
+                    title="Sunting Gaya Getaran Puitis"
+                  >
+                    <Palette size={10} />
+                  </button>
+                </div>
+              ) : (
+                <div 
+                  className={`tracking-wide select-none inline-block whitespace-pre-wrap ${finalCursiveClass}`}
+                  style={{ 
+                    fontFamily: websiteStyles.cursiveFont || "Allison",
+                    fontSize: isCustomCursiveSize ? websiteStyles.cursiveSize : undefined,
+                    color: websiteStyles.cursiveColor || websiteStyles.accentColor,
+                    paddingLeft: "0px",
+                    paddingTop: "45px"
                   }}
                 >
-                  {block.title && (
-                    <h3
-                      className="font-serif text-lg font-semibold mb-3 tracking-wide"
-                      style={{ color: block.textColor || websiteStyles.textColor }}
-                    >
-                      {block.title}
-                    </h3>
-                  )}
-
-                  {block.type !== "image" && block.content && (
-                    <p
-                      className="font-serif text-sm leading-relaxed whitespace-pre-line opacity-90"
-                      style={{ color: block.textColor || websiteStyles.textColor }}
-                    >
-                      {block.content}
-                    </p>
-                  )}
-
-                  {block.type !== "text" && block.imageUrl && (
-                    <img
-                      src={block.imageUrl}
-                      alt={block.title || "Imej tambahan"}
-                      className={`max-w-full h-auto mt-4 object-contain shadow-lg ${borderRadiusClass} mx-auto`}
-                      referrerPolicy="no-referrer"
-                    />
-                  )}
+                  {landingTexts.cursiveVibe}
                 </div>
-              );
-            })}
+              )}
+            </div>
+          );
+        })()}
+
+        {/* Logo/Lambang di bawah teks 'Iman. Cinta. Sastera' */}
+        {(websiteStyles.logoUnderCursiveUrl || isEditMode) && websiteStyles.showCursiveVibe && (
+          <div 
+            className={`w-full flex flex-col items-center justify-center z-20 animate-fade-in`}
+            style={{ 
+              animationDelay: "700ms",
+              marginBottom: "32px",
+              marginTop: "-8px",
+              paddingTop: "20px",
+              paddingBottom: "20px"
+            }}
+            id="cursive-logo-container"
+          >
+            {websiteStyles.logoUnderCursiveUrl ? (
+              <div className="relative group inline-block cursor-pointer" onClick={() => isEditMode && setEditingStyleElement({ key: "cursiveLogo", name: "Lambang Teks Puitis" })}>
+                <img 
+                  src={websiteStyles.logoUnderCursiveUrl} 
+                  alt="Lambang Getaran Puitis" 
+                  style={{ height: websiteStyles.logoUnderCursiveSize || "64px" }}
+                  className={`object-contain max-w-full transition-all mx-auto ${isEditMode ? 'hover:scale-[1.02] border border-dashed border-[#d7b9b9]/25 hover:border-[#d7b9b9]/60 rounded p-1 bg-black/25' : ''}`}
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+            ) : isEditMode ? (
+              <div 
+                onClick={() => setEditingStyleElement({ key: "cursiveLogo", name: "Lambang Teks Puitis" })}
+                className="border border-dashed border-[#d7b9b9]/35 hover:border-[#d7b9b9]/60 hover:bg-white/5 rounded-lg p-3 font-serif text-[11px] text-white/50 max-w-xs text-center mx-auto cursor-pointer transition-all"
+              >
+                + Letakkan URL logo/lambang di bawah teks puitis di sini (Klik)
+              </div>
+            ) : null}
           </div>
         )}
 
@@ -1309,18 +1277,23 @@ export default function App() {
       {/* Footer */}
       {/* Footer */}
       <footer 
-        className="relative w-full max-w-7xl mx-auto px-6 sm:px-12 py-8 border-t z-40 flex flex-col items-center justify-center gap-6 text-xs text-white/60 animate-fade-in text-center" 
+        className={`relative w-full z-40 text-xs text-white/60 animate-fade-in text-center ${websiteStyles.footerShowBorder !== false ? 'border-t' : ''}`} 
         style={{ 
-          borderTopColor: `${websiteStyles.accentColor}18`, 
+          borderTopColor: websiteStyles.footerShowBorder !== false ? `${websiteStyles.accentColor}18` : undefined, 
           fontFamily: websiteStyles.serifFont,
-          paddingTop: "31px",
-          paddingBottom: "31px",
-          backgroundColor: "#000000"
+          backgroundColor: websiteStyles.footerBgColor || "#000000"
         }}
         id="landing-footer"
       >
-        <div className="flex flex-col sm:flex-row items-center justify-between w-full gap-6">
-          <div className="flex items-center gap-2" id="footer-launch-info">
+        <div 
+          className="w-full max-w-7xl mx-auto px-6 sm:px-12 flex flex-col items-center justify-center gap-6"
+          style={{
+            paddingTop: "31px",
+            paddingBottom: "31px",
+          }}
+        >
+          <div className="flex flex-col sm:flex-row items-center justify-between w-full gap-6">
+          <div className="flex items-center justify-center sm:justify-start gap-2 w-full sm:w-auto" id="footer-launch-info">
             {renderBrandIcon(
               websiteStyles.launchIcon, 
               "Scroll", 
@@ -1370,96 +1343,126 @@ export default function App() {
             )}
           </div>
 
-          <div className="flex items-center gap-4" id="footer-actions">
+          <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-end gap-4 sm:gap-4 w-full sm:w-auto" id="footer-actions">
             
-            {/* Fog Manual Toggle - ONLY show if isAdmin */}
-            {isAdmin && (
-              <button
-                onClick={() => setFogEnabled(!fogEnabled)}
-                className="flex items-center justify-center p-1.5 transition-colors cursor-pointer opacity-60 hover:opacity-100 hover:text-white rounded-full hover:bg-white/5"
-                style={{ color: websiteStyles.accentColor }}
-                title={fogEnabled ? "Singkirkan Kabus Misteri (Sapu Kabus)" : "Kembalikan Kabus Misteri (Pasang Kabus)"}
-                id="btn-visitor-fog-toggle"
+            {/* Publisher Brand container */}
+            <div className="flex items-center justify-center gap-2 order-1 sm:order-3" id="footer-publisher-wrapper">
+              <div 
+                onDoubleClick={handleAdminAccess}
+                className="flex items-center gap-2 cursor-pointer hover:text-white transition-colors select-none"
+                title="Dwi-klik untuk akses pentadbir"
+                id="brand-publisher"
               >
-                <Cloud size={12} />
-              </button>
-            )}
-
-            {isAdmin && <span className="opacity-20 text-white/30">•</span>}
-
-            {/* Discreet Admin Lock Button */}
-            <button 
-              onClick={handleAdminAccess}
-              className="flex items-center justify-center p-1.5 hover:text-white transition-colors cursor-pointer opacity-60 hover:opacity-100 rounded-full hover:bg-white/5"
-              title="Akses Urus Data"
-              id="btn-admin-access"
-            >
-              <KeyRound size={12} className="opacity-80" style={{ color: websiteStyles.accentColor }} />
-            </button>
-
-            <span className="opacity-20 text-white/30">|</span>
-
-            {/* Publisher Brand with hidden admin trigger */}
-            <div 
-              onDoubleClick={handleAdminAccess}
-              className="flex items-center gap-2 cursor-pointer hover:text-white transition-colors select-none"
-              title="Dwi-klik untuk akses pentadbir"
-              id="brand-publisher"
-            >
-              {renderBrandIcon(
-                websiteStyles.publisherIcon, 
-                "Library", 
-                12, 
-                websiteStyles.publisherColor || websiteStyles.accentColor, 
-                "opacity-75 shrink-0", 
-                websiteStyles.publisherIconUrl,
-                websiteStyles.publisherIconSize,
-                websiteStyles.publisherIconYOffset
-              )}
-              {isEditMode ? (
-                <div className="flex items-center gap-1.5">
-                  <div
-                    contentEditable
-                    suppressContentEditableWarning
-                    onBlur={(e) => handleTextChange("publisherName", sanitizeText(e.currentTarget.innerText || ""))}
-                    className="font-semibold tracking-widest border-b border-dashed hover:bg-white/5 px-1 rounded focus:outline-none inline-block outline-none whitespace-pre-wrap"
+                {renderBrandIcon(
+                  websiteStyles.publisherIcon, 
+                  "Library", 
+                  12, 
+                  websiteStyles.publisherColor || websiteStyles.accentColor, 
+                  "opacity-75 shrink-0", 
+                  websiteStyles.publisherIconUrl,
+                  websiteStyles.publisherIconSize,
+                  websiteStyles.publisherIconYOffset
+                )}
+                {isEditMode ? (
+                  <div className="flex items-center gap-1.5">
+                    <div
+                      contentEditable
+                      suppressContentEditableWarning
+                      onBlur={(e) => handleTextChange("publisherName", sanitizeText(e.currentTarget.innerText || ""))}
+                      className="font-medium border-b border-dashed hover:bg-white/5 px-1 rounded focus:outline-none inline-block outline-none whitespace-pre-wrap"
+                      style={{ 
+                        fontFamily: websiteStyles.publisherFont || websiteStyles.serifFont,
+                        fontSize: websiteStyles.publisherSize || "11px",
+                        color: websiteStyles.publisherColor || websiteStyles.accentColor,
+                        borderBottomColor: `${websiteStyles.accentColor}50` 
+                      }}
+                    >
+                      {landingTexts.publisherName}
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setEditingStyleElement({ key: "publisher", name: "Penerbit" })}
+                      className="p-1 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/40 hover:text-white transition-all cursor-pointer shadow select-none"
+                      title="Sunting Gaya Penerbit"
+                    >
+                      <Palette size={10} />
+                    </button>
+                  </div>
+                ) : (
+                  <div 
+                    className="font-medium inline-block whitespace-pre-wrap"
                     style={{ 
                       fontFamily: websiteStyles.publisherFont || websiteStyles.serifFont,
                       fontSize: websiteStyles.publisherSize || "11px",
-                      color: websiteStyles.publisherColor || websiteStyles.accentColor,
-                      borderBottomColor: `${websiteStyles.accentColor}50` 
+                      color: websiteStyles.publisherColor || websiteStyles.accentColor
                     }}
                   >
                     {landingTexts.publisherName}
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => setEditingStyleElement({ key: "publisher", name: "Penerbit" })}
-                    className="p-1 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/40 hover:text-white transition-all cursor-pointer shadow select-none"
-                    title="Sunting Gaya Penerbit"
-                  >
-                    <Palette size={10} />
-                  </button>
-                </div>
-              ) : (
-                <div 
-                  className="font-semibold tracking-widest inline-block whitespace-pre-wrap"
-                  style={{ 
-                    fontFamily: websiteStyles.publisherFont || websiteStyles.serifFont,
-                    fontSize: websiteStyles.publisherSize || "11px",
-                    color: websiteStyles.publisherColor || websiteStyles.accentColor
-                  }}
-                >
-                  {landingTexts.publisherName}
-                </div>
-              )}
+                )}
+              </div>
             </div>
+
+            {/* Separator - ONLY visible on desktop */}
+            <span className="hidden sm:inline opacity-20 text-white/30 order-2">|</span>
+
+            {/* Admin Controls container - Symmetrical Row */}
+            <div className="flex items-center justify-center gap-3 order-2 sm:order-1" id="footer-admin-controls">
+              {/* Fog Manual Toggle - ONLY show if isAdmin */}
+              {isAdmin && (
+                <>
+                  <button
+                    onClick={() => setFogEnabled(!fogEnabled)}
+                    className="flex items-center justify-center p-1.5 transition-colors cursor-pointer opacity-60 hover:opacity-100 hover:text-white rounded-full hover:bg-white/5"
+                    style={{ color: websiteStyles.accentColor }}
+                    title={fogEnabled ? "Singkirkan Kabus Misteri (Sapu Kabus)" : "Kembalikan Kabus Misteri (Pasang Kabus)"}
+                    id="btn-visitor-fog-toggle"
+                  >
+                    <Cloud size={12} />
+                  </button>
+                  <span className="opacity-20 text-white/30 text-[9px]">•</span>
+                </>
+              )}
+
+              {/* Discreet Admin Lock Button */}
+              <button 
+                onClick={handleAdminAccess}
+                className="flex items-center justify-center p-1.5 hover:text-white transition-colors cursor-pointer opacity-60 hover:opacity-100 rounded-full hover:bg-white/5"
+                title="Akses Urus Data"
+                id="btn-admin-access"
+              >
+                <KeyRound size={12} className="opacity-80" style={{ color: websiteStyles.accentColor }} />
+              </button>
+            </div>
+
           </div>
         </div>
 
         {/* Clear and explicit centered copyright notice */}
-        <div className="text-[10px] text-white/40 tracking-wider text-center w-full pt-4 border-t border-white/5" id="copyright-notice" style={{ fontFamily: websiteStyles.bodyFont }}>
-          Hak Cipta Terpelihara © 2026 {landingTexts.publisherName}        </div>
+        <div className="flex flex-col items-center justify-center gap-1.5 w-full pt-4 border-t" style={{ borderTopColor: websiteStyles.footerShowBorder !== false ? 'rgba(255, 255, 255, 0.05)' : 'transparent' }}>
+          <div 
+            className="tracking-wider text-center flex items-center justify-center gap-2 select-none" 
+            id="copyright-notice" 
+            style={{ 
+              fontFamily: websiteStyles.copyrightFont || websiteStyles.bodyFont,
+              fontSize: getResponsiveFontSize(websiteStyles.copyrightSize || "10px"),
+              color: websiteStyles.copyrightColor || "rgba(255, 255, 255, 0.4)",
+            }}
+          >
+            <span>Hak Cipta Terpelihara © 2026 {landingTexts.publisherName}</span>
+            {isEditMode && (
+              <button
+                type="button"
+                onClick={() => setEditingStyleElement({ key: "copyright", name: "Hak Cipta Terpelihara" })}
+                className="p-1 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/40 hover:text-white transition-all cursor-pointer shadow select-none"
+                title="Sunting Gaya Hak Cipta"
+              >
+                <Palette size={10} />
+              </button>
+            )}
+          </div>
+        </div>
+        </div>
       </footer>
 
       {/* Custom layout frame border to give high-end editorial book cover aesthetic */}
@@ -1694,6 +1697,8 @@ export default function App() {
           fontKey = 'formTitleFont'; sizeKey = 'formTitleSize'; colorKey = 'formTitleColor';
         } else if (key === 'formDesc') {
           fontKey = 'formDescFont'; sizeKey = 'formDescSize'; colorKey = 'formDescColor';
+        } else if (key === 'copyright') {
+          fontKey = 'copyrightFont'; sizeKey = 'copyrightSize'; colorKey = 'copyrightColor';
         }
 
         const currentFont = fontKey ? (websiteStyles[fontKey] as string) || "" : "";

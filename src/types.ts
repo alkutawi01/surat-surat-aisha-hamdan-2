@@ -74,6 +74,9 @@ export interface WebsiteStyles {
   countdownFont: string;
   countdownSize: string;
   countdownColor: string;
+  countdownLabelFont?: string;
+  countdownLabelSize?: string;
+  countdownLabelColor?: string;
   
   logoFont: string;
   logoColor: string;
@@ -154,6 +157,13 @@ export interface WebsiteStyles {
   embedIframeWidth?: string; // e.g., 'max-w-md', 'max-w-lg', 'max-w-xl', 'max-w-2xl', 'max-w-3xl', 'max-w-full'
   embedIframeHeight?: string; // e.g., '320px', '400px', '480px', '600px'
   embedIframePlayOnly?: boolean;
+
+  // Footer and Copyright styling
+  footerBgColor?: string;
+  footerShowBorder?: boolean;
+  copyrightFont?: string;
+  copyrightSize?: string;
+  copyrightColor?: string;
 }
 
 export interface CustomBlock {
@@ -169,4 +179,11 @@ export interface CustomBlock {
   borderRadius?: string;    // 'none' | 'sm' | 'md' | 'lg' | 'full'
   padding?: string;         // 'p-2' | 'p-4' | 'p-6' | 'p-8'
   alignment?: 'left' | 'center' | 'right';
+  titleFont?: string;
+  titleSize?: string;
+  titleColor?: string;
+  contentFont?: string;
+  contentSize?: string;
+  isSlider?: boolean;
+  sliderInterval?: number; // e.g. 5000 for 5 seconds
 }
