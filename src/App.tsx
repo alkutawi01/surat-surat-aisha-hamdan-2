@@ -309,6 +309,24 @@ export default function App() {
         if (parsed.logoSize === "36px" || parsed.logoSize === "140px") {
           parsed.logoSize = "250px";
         }
+        if (parsed.cursiveSize === "36px") {
+          parsed.cursiveSize = "40px";
+        }
+        if (parsed.quoteSize === "text-xl sm:text-2xl lg:text-3xl") {
+          parsed.quoteSize = "23px";
+        }
+        if (parsed.upperTagSize === "11px") {
+          parsed.upperTagSize = "35px";
+        }
+        if (parsed.mobileUpperTagSize === "10px") {
+          parsed.mobileUpperTagSize = "35px";
+        }
+        if (parsed.countdownLabelSize === "35px") {
+          parsed.countdownLabelSize = "10px";
+        }
+        if (parsed.mobileCountdownLabelSize === "8px" || parsed.mobileCountdownLabelSize === "35px") {
+          parsed.mobileCountdownLabelSize = "10px";
+        }
         return { ...DEFAULT_WEBSITE_STYLES, ...parsed };
       } catch (e) {}
     }
@@ -319,6 +337,24 @@ export default function App() {
       }
       if (bStyles.mobileLogoSize === "26px") {
         bStyles.mobileLogoSize = "195px";
+      }
+      if (bStyles.cursiveSize === "36px") {
+        bStyles.cursiveSize = "40px";
+      }
+      if (bStyles.quoteSize === "text-xl sm:text-2xl lg:text-3xl") {
+        bStyles.quoteSize = "23px";
+      }
+      if (bStyles.upperTagSize === "11px") {
+        bStyles.upperTagSize = "35px";
+      }
+      if (bStyles.mobileUpperTagSize === "10px") {
+        bStyles.mobileUpperTagSize = "35px";
+      }
+      if (bStyles.countdownLabelSize === "35px") {
+        bStyles.countdownLabelSize = "10px";
+      }
+      if (bStyles.mobileCountdownLabelSize === "8px" || bStyles.mobileCountdownLabelSize === "35px") {
+        bStyles.mobileCountdownLabelSize = "10px";
       }
       return { ...DEFAULT_WEBSITE_STYLES, ...bStyles };
     }

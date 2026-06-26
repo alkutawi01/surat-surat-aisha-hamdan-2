@@ -166,11 +166,14 @@ export default function AmbientAudioPlayer({
         />
       </div>
 
-      <div className="flex flex-col select-none max-w-[110px] sm:max-w-[140px] leading-tight">
+      <div className="flex flex-col select-none max-w-[160px] sm:max-w-[140px] leading-tight">
         <span className="text-[10px] text-[#d7b9b9]/60 uppercase tracking-widest font-semibold flex items-center gap-1 font-mono">
           <Music size={8} /> Suasana
         </span>
-        <span className="text-[11px] text-white/95 truncate font-medium font-serif" title={audioTitle}>
+        <span 
+          className={`${(audioTitle?.includes("Semusim Cinta") || audioTitle?.includes("OST")) ? "text-[15px] sm:text-[11px]" : "text-[11px]"} text-white/95 truncate font-medium font-serif`} 
+          title={audioTitle}
+        >
           {audioTitle || "Muzik Latar"}
         </span>
       </div>

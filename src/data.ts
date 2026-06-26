@@ -7,7 +7,7 @@ export const DEFAULT_WEBSITE_STYLES: WebsiteStyles = {
   textColor: "#ffffff",
   accentColor: "#d7b9b9",
   formBgColor: "#5a0600",
-  quoteSize: "text-xl sm:text-2xl lg:text-3xl",
+  quoteSize: "23px",
   hookSize: "text-2xl sm:text-3xl",
   showCountdown: true,
   showBorderFrame: true,
@@ -22,7 +22,7 @@ export const DEFAULT_WEBSITE_STYLES: WebsiteStyles = {
   
   // New granular styles default to empty strings to fall back on core values, or explicitly defined
   upperTagFont: "EB Garamond",
-  upperTagSize: "11px",
+  upperTagSize: "35px",
   upperTagColor: "#d7b9b9",
   
   countdownFont: "EB Garamond",
@@ -39,7 +39,7 @@ export const DEFAULT_WEBSITE_STYLES: WebsiteStyles = {
   quoteColor: "#ffffff",
   
   cursiveFont: "Allison",
-  cursiveSize: "36px",
+  cursiveSize: "40px",
   cursiveColor: "#d7b9b9",
   
   formTitleFont: "EB Garamond",
@@ -131,9 +131,9 @@ export const DEFAULT_WEBSITE_STYLES: WebsiteStyles = {
   mobileCursiveSize: "28px",
   mobileFormTitleSize: "20px",
   mobileFormDescSize: "12px",
-  mobileUpperTagSize: "10px",
+  mobileUpperTagSize: "35px",
   mobileCountdownSize: "14px",
-  mobileCountdownLabelSize: "8px",
+  mobileCountdownLabelSize: "10px",
   mobileQuoteSize: "text-lg",
   mobileHookSize: "text-lg sm:text-xl",
   mobileAboveLogoSize: "12px",
