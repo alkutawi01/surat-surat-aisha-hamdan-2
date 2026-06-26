@@ -306,11 +306,21 @@ export default function App() {
         if (parsed.mobileLogoSize === "26px") {
           parsed.mobileLogoSize = "195px";
         }
+        if (parsed.logoSize === "36px" || parsed.logoSize === "140px") {
+          parsed.logoSize = "250px";
+        }
         return { ...DEFAULT_WEBSITE_STYLES, ...parsed };
       } catch (e) {}
     }
     if (backupConfig?.websiteStyles) {
-      return { ...DEFAULT_WEBSITE_STYLES, ...backupConfig.websiteStyles };
+      const bStyles = { ...backupConfig.websiteStyles };
+      if (bStyles.logoSize === "36px" || bStyles.logoSize === "140px") {
+        bStyles.logoSize = "250px";
+      }
+      if (bStyles.mobileLogoSize === "26px") {
+        bStyles.mobileLogoSize = "195px";
+      }
+      return { ...DEFAULT_WEBSITE_STYLES, ...bStyles };
     }
     return DEFAULT_WEBSITE_STYLES;
   });

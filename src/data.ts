@@ -16,7 +16,7 @@ export const DEFAULT_WEBSITE_STYLES: WebsiteStyles = {
   logoText: "Maktabah Kutawiyyah",
   logoType: 'text',
   logoImageUrl: "",
-  logoSize: "36px",
+  logoSize: "250px",
   logoWeight: "semibold",
   logoStyle: "normal",
   
