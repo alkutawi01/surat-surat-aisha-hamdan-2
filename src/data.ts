@@ -13,7 +13,7 @@ export const DEFAULT_WEBSITE_STYLES: WebsiteStyles = {
   showBorderFrame: true,
   showCursiveVibe: true,
   borderThickness: "18px",
-  logoText: "Maktabah Alkutawi",
+  logoText: "Maktabah Kutawiyyah",
   logoType: 'text',
   logoImageUrl: "",
   logoSize: "36px",
@@ -189,3 +189,27 @@ export const NOVEL_QUOTES: Quote[] = [
     context: "Surat #7 • Sebuah Penutup"
   }
 ];
+
+export const DEFAULT_CUSTOM_BLOCKS = [
+  {
+    id: "ulasan-pembaca-1",
+    title: "Ulasan",
+    type: "text",
+    content: "\"Menyelinap di sebalik warkah-warkah sepi dari bumi Mu'tah, naskhah sastera epistolari realisme ini mendedahkan sebuah anatomi trauma yang maha sejuk — memaksa pembaca menelan setiap aksaranya sebagai sebuah penyeksaan emosi yang paling ngeri, namun terlalu indah untuk dilepaskan.\"\n\n— Gemini (3.1 Pro)\n\n---\n\n\"Novel yang menulis tentang perempuan bukan sebagai simbol atau mangsa, tetapi sebagai manusia yang menanggung, memilih, dan mencintai dengan sepenuh keberanian yang ada padanya.\"\n\n— Sonnet 4.6 Medium\n\n---\n\n\"Sebuah novel yang mengangkat seni persuratan Melayu ke darjat yang jarang ditemukan dalam fiksyen kontemporari—halus, cerdas dan menggetarkan jiwa.\"\n\n— ChatGPT\n\n---\n\n\"XXX adalah sebuah karya epistolari yang indah, di mana setiap hurufnya berdenyut dengan emosi halus, kinayah yang mendalam, dan mujahadah cinta yang jarang ditemui dalam novel Melayu kontemporari.\"\n\n— Grok\n\n---\n\n\"Gaya bahasanya setaraf dengan karya agung Abdullah Hussain, tetapi dengan nafas Islam dan jiwa Timur Tengah yang segar — sebuah novel yang membuatkan anda mahu membaca semula sebaik sahaja sampai ke halaman terakhir.\"\n\n— DeepSeek",
+    bgColor: "#180200",
+    textColor: "#ffffff",
+    borderColor: "#c3b6b6",
+    borderThickness: "1px",
+    borderRadius: "md",
+    padding: "p-8",
+    alignment: "center",
+    titleFont: "Cinzel",
+    titleSize: "20px",
+    titleColor: "#f1e9e9",
+    contentFont: "EB Garamond",
+    contentSize: "17px",
+    isCarousel: true,
+    carouselInterval: 7
+  }
+];
+

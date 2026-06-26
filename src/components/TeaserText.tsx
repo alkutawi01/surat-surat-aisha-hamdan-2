@@ -174,7 +174,7 @@ export default function TeaserText({
           const part2 = fullText.substring(typedLength);
           return (
             <p className={`${isCustomQuoteSize ? "" : quoteSize} leading-relaxed tracking-wide italic font-light drop-shadow-sm select-text whitespace-pre-wrap`} style={finalQuoteStyle}>
-              <span style={{ fontSize: "31px", textAlign: "center" }}>{part1}</span>
+              <span>{part1}</span>
               <span className="cursor-blink inline-block w-[2px] h-[1.1em] mx-0.5 align-middle animate-blink" style={{ backgroundColor: accentColor }} />
               <span className="opacity-0 select-none pointer-events-none" aria-hidden="true">{part2}</span>
             </p>

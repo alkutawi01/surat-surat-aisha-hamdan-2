@@ -186,4 +186,6 @@ export interface CustomBlock {
   contentSize?: string;
   isSlider?: boolean;
   sliderInterval?: number; // e.g. 5000 for 5 seconds
+  isCarousel?: boolean;
+  carouselInterval?: number; // e.g. 7 for 7 seconds
 }

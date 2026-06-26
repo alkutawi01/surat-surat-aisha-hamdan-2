@@ -2408,20 +2408,21 @@ export default function AdminPanel({
                                 <button
                                   type="button"
                                   onClick={() => {
-                                    const updated = customBlocks.map(b => b.id === block.id ? { ...b, isSlider: !b.isSlider } : b);
+                                    const nextVal = !(block.isSlider || block.isCarousel);
+                                    const updated = customBlocks.map(b => b.id === block.id ? { ...b, isSlider: nextVal, isCarousel: nextVal } : b);
                                     onCustomBlocksChange(updated);
                                   }}
                                   className={`px-2 py-0.5 rounded text-[9px] uppercase font-bold tracking-wider border transition-all ${
-                                    block.isSlider
+                                    (block.isSlider || block.isCarousel)
                                       ? "bg-amber-500/20 text-amber-300 border-amber-500/30"
                                       : "bg-black/40 text-white/40 border-white/10"
                                   }`}
                                 >
-                                  {block.isSlider ? "Aktif (Slaid)" : "Mati (Teks Biasa)"}
+                                  {(block.isSlider || block.isCarousel) ? "Aktif (Slaid)" : "Mati (Teks Biasa)"}
                                 </button>
                               </div>
 
-                              {block.isSlider && (
+                              {(block.isSlider || block.isCarousel) && (
                                 <div className="grid grid-cols-2 gap-2 pt-1 border-t border-white/5 items-center">
                                   <div className="flex flex-col gap-0.5">
                                     <span className="text-[8px] uppercase text-white/50">Selang Masa Slaid (saat)</span>
@@ -2429,10 +2430,10 @@ export default function AdminPanel({
                                   </div>
                                   <input
                                     type="number"
-                                    value={block.sliderInterval ? block.sliderInterval / 1000 : 5}
+                                    value={block.sliderInterval ? block.sliderInterval / 1000 : (block.carouselInterval ? block.carouselInterval : 5)}
                                     onChange={(e) => {
                                       const sec = parseFloat(e.target.value) || 5;
-                                      const updated = customBlocks.map(b => b.id === block.id ? { ...b, sliderInterval: Math.round(sec * 1000) } : b);
+                                      const updated = customBlocks.map(b => b.id === block.id ? { ...b, sliderInterval: Math.round(sec * 1000), carouselInterval: sec } : b);
                                       onCustomBlocksChange(updated);
                                     }}
                                     placeholder="Cth: 5"
@@ -2443,7 +2444,7 @@ export default function AdminPanel({
                                 </div>
                               )}
 
-                              {block.isSlider && (
+                              {(block.isSlider || block.isCarousel) && (
                                 <div className="text-[8px] text-[#d7b9b9]/65 italic leading-normal bg-black/20 p-1.5 rounded font-sans">
                                   * Nota: Tulis kandungan teks di atas dengan memisahkan setiap slaid menggunakan simbol tiga sempang <strong>---</strong> pada baris baru (Contoh: <br/>Ulasan Buku Pertama<br/>---<br/>Ulasan Buku Kedua).
                                 </div>
