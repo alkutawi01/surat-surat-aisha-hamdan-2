@@ -124,19 +124,19 @@ export const DEFAULT_WEBSITE_STYLES: WebsiteStyles = {
 
 export const DEFAULT_LANDING_TEXTS: LandingTexts = {
   "upperTag": "",
-  "secretTitle": "Sebuah Rahsia Yang Belum Bernama",
+  "secretTitle": "Surat-surat Aisha Hamdan",
   "mainHookLine1": "Setiap lembaran adalah",
   "mainHookItalic": "jiwa",
   "mainHookLine2": "yang dipinjamkan.",
   "cursiveVibe": "Iman. Cinta. Sastera.",
-  "betaTitle": "sertai pembikinan",
+  "betaTitle": "Sertai Pembikinan",
   "betaDesc": "Daftar untuk mendapat kemas kini mengenai projek ini dan berpeluang untuk menjadi sebahagian komuniti pembaca beta.",
   "launchText": "sah.malians.group",
   "publisherName": "Maktabah Kutawiyyah",
   "formNameLabel": "Nama Penuh",
   "formEmailLabel": "Alamat E-mel",
   "formPhoneLabel": "No. Telefon",
-  "formReasonLabel": "catatan",
+  "formReasonLabel": "Catatan",
   "formBtnText": "Sertai Kami",
   "countdownLabel": "MAHAKARYA DALAM PEMBIKINAN",
   "insyallahText": "Insyah-Allah",
@@ -147,7 +147,10 @@ export const DEFAULT_LANDING_TEXTS: LandingTexts = {
   "aboveLogoText": "Sebuah Novel Sastera Epistolari Realisme",
   "aboveLogoImageUrl": "",
   "belowLogoText": "Di bumi Mu'tah yang dingin, lahirlah sekumpulan surat yang tidak pernah diminta, namun mustahil diabaikan. Bermula dengan teguran yang lembut, setiap helaian perlahan-lahan membuka perbualan tentang ilmu, adab, cinta, ego, dan perjalanan menjadi manusia. Dalam dunia yang sering menghukum sebelum memahami, seorang penulis surat memilih kata-kata sebagai jalan mendekati hati. Tetapi benarkah setiap surat sekadar surat, atau sebenarnya sedang mengubah kehidupan dua insan yang tidak pernah menyangka takdir mereka akan bersilang? Sebuah novel epistolari yang menggabungkan keindahan bahasa, renungan intelektual, dan getar emosi dalam satu perjalanan yang sukar dilupakan.",
-  "belowLogoImageUrl": ""
+  "belowLogoImageUrl": "",
+  "successTitle": "Terima Kasih",
+  "successDesc": "Nama anda telah dicatat dalam senarai kami. Insya-Allah, kami akan menghubungi anda melalui e-mel sekiranya anda terpilih untuk menerima draf awal naskhah ini.",
+  "successBtnText": "Daftar Nama Lain"
 };
 
 export const NOVEL_QUOTES: Quote[] = [

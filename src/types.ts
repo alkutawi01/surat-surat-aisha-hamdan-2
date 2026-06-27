@@ -44,6 +44,9 @@ export interface LandingTexts {
   aboveLogoImageUrl?: string;
   belowLogoText?: string;
   belowLogoImageUrl?: string;
+  successTitle?: string;
+  successDesc?: string;
+  successBtnText?: string;
 }
 
 export interface WebsiteStyles {

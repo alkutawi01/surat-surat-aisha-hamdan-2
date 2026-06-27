@@ -1739,6 +1739,12 @@ export default function App() {
                 onPhoneLabelChange={(val) => handleTextChange("formPhoneLabel", val)}
                 onReasonLabelChange={(val) => handleTextChange("formReasonLabel", val)}
                 onBtnTextChange={(val) => handleTextChange("formBtnText", val)}
+                successTitle={landingTexts.successTitle}
+                successDesc={landingTexts.successDesc}
+                successBtnText={landingTexts.successBtnText}
+                onSuccessTitleChange={(val) => handleTextChange("successTitle", val)}
+                onSuccessDescChange={(val) => handleTextChange("successDesc", val)}
+                onSuccessBtnTextChange={(val) => handleTextChange("successBtnText", val)}
                 formTitleFont={websiteStyles.formTitleFont}
                 formTitleSize={websiteStyles.formTitleSize}
                 formTitleColor={websiteStyles.formTitleColor}

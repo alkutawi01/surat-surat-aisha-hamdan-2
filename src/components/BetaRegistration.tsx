@@ -33,6 +33,12 @@ interface BetaRegistrationProps {
   onTitleStyleClick?: () => void;
   onDescStyleClick?: () => void;
   googleSheetsWebhookUrl?: string;
+  successTitle?: string;
+  successDesc?: string;
+  successBtnText?: string;
+  onSuccessTitleChange?: (val: string) => void;
+  onSuccessDescChange?: (val: string) => void;
+  onSuccessBtnTextChange?: (val: string) => void;
 }
 
 export default function BetaRegistration({
@@ -63,7 +69,13 @@ export default function BetaRegistration({
   formDescColor,
   onTitleStyleClick,
   onDescStyleClick,
-  googleSheetsWebhookUrl
+  googleSheetsWebhookUrl,
+  successTitle = "Warkah Anda Diterima",
+  successDesc = "“Alhamdulillah, nama anda telah dicatat dalam warkah kami. Kami akan menghubungi anda melalui e-mel sekiranya anda terpilih untuk menerima draf awal naskhah ini.”",
+  successBtnText = "Daftar Nama Lain",
+  onSuccessTitleChange,
+  onSuccessDescChange,
+  onSuccessBtnTextChange
 }: BetaRegistrationProps) {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -194,9 +206,37 @@ export default function BetaRegistration({
           <div className="flex justify-center mb-5" style={{ color: accentColor }}>
             <CheckCircle2 size={44} strokeWidth={1} className="animate-bounce" />
           </div>
-          <h3 className="text-xl sm:text-2xl text-white mb-4 tracking-wide font-medium" style={customTitleStyle}>Warkah Anda Diterima</h3>
+          <h3 className="text-xl sm:text-2xl text-white mb-4 tracking-wide font-medium" style={customTitleStyle}>
+            {isEditMode ? (
+              <span
+                contentEditable
+                suppressContentEditableWarning
+                onBlur={(e) => onSuccessTitleChange?.(sanitizeText(e.currentTarget.textContent || ""))}
+                className="border-b border-dashed hover:bg-white/5 px-0.5 rounded outline-none"
+                style={{ borderBottomColor: `${accentColor}50` }}
+                title="Klik untuk sunting tajuk kejayaan"
+              >
+                {successTitle}
+              </span>
+            ) : (
+              <span>{successTitle}</span>
+            )}
+          </h3>
           <p className="text-sm leading-relaxed max-w-sm mx-auto mb-8 font-light italic" style={customDescStyle}>
-            “Alhamdulillah, nama anda telah dicatat dalam warkah kami. Kami akan menghubungi anda melalui e-mel sekiranya anda terpilih untuk menerima draf awal naskhah ini.”
+            {isEditMode ? (
+              <span
+                contentEditable
+                suppressContentEditableWarning
+                onBlur={(e) => onSuccessDescChange?.(sanitizeText(e.currentTarget.textContent || ""))}
+                className="border-b border-dashed hover:bg-white/5 px-0.5 rounded outline-none block"
+                style={{ borderBottomColor: `${accentColor}50` }}
+                title="Klik untuk sunting penerangan kejayaan"
+              >
+                {successDesc}
+              </span>
+            ) : (
+              <span>{successDesc}</span>
+            )}
           </p>
           <button
             onClick={() => setIsSuccess(false)}
@@ -204,7 +244,21 @@ export default function BetaRegistration({
             style={{ color: accentColor, fontSize: "10px" }}
             id="btn-register-another"
           >
-            Daftar Nama Lain
+            {isEditMode ? (
+              <span
+                contentEditable
+                suppressContentEditableWarning
+                onBlur={(e) => onSuccessBtnTextChange?.(sanitizeText(e.currentTarget.textContent || ""))}
+                onClick={(e) => e.stopPropagation()}
+                className="border-b border-dashed hover:bg-white/5 px-0.5 rounded outline-none"
+                style={{ borderBottomColor: `${accentColor}50` }}
+                title="Klik untuk sunting teks butang semula"
+              >
+                {successBtnText}
+              </span>
+            ) : (
+              <span>{successBtnText}</span>
+            )}
           </button>
         </div>
       ) : (
