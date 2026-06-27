@@ -335,6 +335,9 @@ export default function App() {
         if (!merged.headerBgColor) {
           merged.headerBgColor = "#c4a7a6";
         }
+        if (!merged.googleSheetsWebhookUrl || merged.googleSheetsWebhookUrl.trim() === "" || merged.googleSheetsWebhookUrl.includes("/library/") || merged.googleSheetsWebhookUrl.includes("macros/library")) {
+          merged.googleSheetsWebhookUrl = DEFAULT_WEBSITE_STYLES.googleSheetsWebhookUrl;
+        }
         return merged;
       } catch (e) {}
     }
@@ -364,7 +367,11 @@ export default function App() {
       if (bStyles.mobileCountdownLabelSize === "8px" || bStyles.mobileCountdownLabelSize === "35px") {
         bStyles.mobileCountdownLabelSize = "10px";
       }
-      return { ...DEFAULT_WEBSITE_STYLES, ...bStyles };
+      const merged = { ...DEFAULT_WEBSITE_STYLES, ...bStyles };
+      if (!merged.googleSheetsWebhookUrl || merged.googleSheetsWebhookUrl.trim() === "" || merged.googleSheetsWebhookUrl.includes("/library/") || merged.googleSheetsWebhookUrl.includes("macros/library")) {
+        merged.googleSheetsWebhookUrl = DEFAULT_WEBSITE_STYLES.googleSheetsWebhookUrl;
+      }
+      return merged;
     }
     return DEFAULT_WEBSITE_STYLES;
   });

@@ -78,7 +78,7 @@ export const DEFAULT_WEBSITE_STYLES: WebsiteStyles = {
   "audioUrl": "",
   "audioTitle": "Latar Suasana (Ambient Audio)",
   "audioEnabled": false,
-  "googleSheetsWebhookUrl": "",
+  "googleSheetsWebhookUrl": "https://script.google.com/macros/s/AKfycbzRJtAuncZTZAmPCrUFiPQLlf0y53w0rrbQQY2Aj9PXxwXkJBXIL8Uw-R5C3eFX8sqiPw/exec",
   "embedIframeEnabled": true,
   "embedIframeCode": "<iframe src=\"https://drive.google.com/file/d/1NqQSgXq13CrPclcf6cc9NLcKJb8vDtVL/view\" width=\"640\" height=\"480\"></iframe>",
   "embedIframeTitle": "Semusim Cinta di Mu'tah (Draf OST)",
