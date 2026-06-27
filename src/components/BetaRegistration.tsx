@@ -357,10 +357,10 @@ export default function BetaRegistration({
               type="text"
               id="full-name"
               required
-              placeholder="AISHA HAMDAN"
+              placeholder="Aisha Hamdan"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full text-sm py-2 bg-transparent text-white border-b focus:outline-none focus:border-white transition-colors uppercase tracking-wider placeholder:opacity-20"
+              className="w-full text-sm py-2 bg-transparent text-white border-b focus:outline-none focus:border-white transition-colors tracking-wider placeholder:opacity-20"
               style={inputStyle}
             />
           </div>
@@ -387,10 +387,10 @@ export default function BetaRegistration({
               type="email"
               id="email-address"
               required
-              placeholder="AISHA@MADRASAH.EDU"
+              placeholder="aisha@madrasah.edu"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full text-sm py-2 bg-transparent text-white border-b focus:outline-none focus:border-white transition-colors uppercase tracking-wider placeholder:opacity-20"
+              className="w-full text-sm py-2 bg-transparent text-white border-b focus:outline-none focus:border-white transition-colors tracking-wider placeholder:opacity-20"
               style={inputStyle}
             />
           </div>

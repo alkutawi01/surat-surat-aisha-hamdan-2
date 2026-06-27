@@ -9,7 +9,7 @@ import { CustomBlockRenderer } from "./components/CustomBlockRenderer";
 import { Scroll, KeyRound, Sparkles, Cloud, Database, RefreshCw, Check, RotateCcw, X, Settings, Palette, Sliders, BookOpen, Library, Book, Bookmark, Compass, Feather, Globe, Heart, Award, PenTool } from "lucide-react";
 import { DEFAULT_LANDING_TEXTS, NOVEL_QUOTES, DEFAULT_WEBSITE_STYLES, DEFAULT_CUSTOM_BLOCKS } from "./data";
 import { LandingTexts, Quote, WebsiteStyles, CustomBlock } from "./types";
-import { sanitizeText } from "./utils/sanitize";
+import { sanitizeText, healMojibakeDeep } from "./utils/sanitize";
 
 const AVAILABLE_FONTS = [
   { name: "EB Garamond (Klasik)", value: "EB Garamond" },
@@ -95,10 +95,10 @@ try {
     : "{}";
   const parsed = JSON.parse(decodedStr);
   backupConfig = {
-    landingTexts: parsed.custom_landing_texts ? JSON.parse(parsed.custom_landing_texts) : null,
-    novelQuotes: parsed.custom_novel_quotes ? JSON.parse(parsed.custom_novel_quotes) : null,
-    websiteStyles: parsed.custom_website_styles ? JSON.parse(parsed.custom_website_styles) : null,
-    websiteBlocks: parsed.custom_website_blocks ? JSON.parse(parsed.custom_website_blocks) : null,
+    landingTexts: parsed.custom_landing_texts ? healMojibakeDeep(JSON.parse(parsed.custom_landing_texts)) : null,
+    novelQuotes: parsed.custom_novel_quotes ? healMojibakeDeep(JSON.parse(parsed.custom_novel_quotes)) : null,
+    websiteStyles: parsed.custom_website_styles ? healMojibakeDeep(JSON.parse(parsed.custom_website_styles)) : null,
+    websiteBlocks: parsed.custom_website_blocks ? healMojibakeDeep(JSON.parse(parsed.custom_website_blocks)) : null,
   };
 } catch (e) {
   console.error("Gagal menyahkod konfigurasi sandaran:", e);
@@ -111,10 +111,10 @@ if (typeof window !== "undefined") {
       const decodedStr = decodeURIComponent(escape(window.atob(newB64)));
       const parsed = JSON.parse(decodedStr);
       backupConfig = {
-        landingTexts: parsed.custom_landing_texts ? JSON.parse(parsed.custom_landing_texts) : null,
-        novelQuotes: parsed.custom_novel_quotes ? JSON.parse(parsed.custom_novel_quotes) : null,
-        websiteStyles: parsed.custom_website_styles ? JSON.parse(parsed.custom_website_styles) : null,
-        websiteBlocks: parsed.custom_website_blocks ? JSON.parse(parsed.custom_website_blocks) : null,
+        landingTexts: parsed.custom_landing_texts ? healMojibakeDeep(JSON.parse(parsed.custom_landing_texts)) : null,
+        novelQuotes: parsed.custom_novel_quotes ? healMojibakeDeep(JSON.parse(parsed.custom_novel_quotes)) : null,
+        websiteStyles: parsed.custom_website_styles ? healMojibakeDeep(JSON.parse(parsed.custom_website_styles)) : null,
+        websiteBlocks: parsed.custom_website_blocks ? healMojibakeDeep(JSON.parse(parsed.custom_website_blocks)) : null,
       };
       console.log("backupConfig dynamically updated in memory!");
     } catch (e) {
@@ -271,7 +271,7 @@ export default function App() {
     const saved = localStorage.getItem("custom_landing_texts");
     if (saved) {
       try {
-        const parsed = JSON.parse(saved);
+        const parsed = healMojibakeDeep(JSON.parse(saved));
         const merged = { ...DEFAULT_LANDING_TEXTS, ...parsed };
         if (!merged.belowLogoText) {
           merged.belowLogoText = DEFAULT_LANDING_TEXTS.belowLogoText;
@@ -292,7 +292,7 @@ export default function App() {
     const saved = localStorage.getItem("custom_novel_quotes");
     if (saved) {
       try {
-        return JSON.parse(saved);
+        return healMojibakeDeep(JSON.parse(saved));
       } catch (e) {}
     }
     if (backupConfig?.novelQuotes) {
@@ -306,7 +306,7 @@ export default function App() {
     const saved = localStorage.getItem("custom_website_styles");
     if (saved) {
       try {
-        const parsed = JSON.parse(saved);
+        const parsed = healMojibakeDeep(JSON.parse(saved));
         if (parsed.mobileLogoSize === "26px") {
           parsed.mobileLogoSize = "195px";
         }
@@ -395,7 +395,7 @@ export default function App() {
     const saved = localStorage.getItem("custom_website_blocks");
     if (saved) {
       try {
-        return JSON.parse(saved);
+        return healMojibakeDeep(JSON.parse(saved));
       } catch (e) {}
     }
     if (backupConfig?.websiteBlocks) {
