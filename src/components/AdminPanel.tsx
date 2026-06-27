@@ -314,66 +314,67 @@ export default function AdminPanel({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-2 sm:p-4 animate-fade-in" id="admin-modal-overlay">
-      <div className="bg-[#1c0200] w-full max-w-4xl rounded-xl border border-[#d7b9b9]/25 shadow-2xl flex flex-col max-h-[90vh] overflow-hidden" id="admin-modal">
-        
-        {/* Modal Header */}
-        <div className="p-4 sm:p-5 border-b border-[#d7b9b9]/15 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-[#d7b9b9]/10 rounded text-[#d7b9b9]">
-              <Database size={20} />
-            </div>
-            <div>
-              <h2 className="font-serif text-base sm:text-lg text-white font-medium tracking-wide">Peti & Kawalan Pentadbir {styles.logoText || "Naskhah"}</h2>
-              <p className="font-serif text-xs text-[#d7b9b9]/75">Urus pendaftar pembaca beta dan ubah suai penampilan {styles.logoText || "web"} secara dinamik</p>
-            </div>
+    <div 
+      className="fixed inset-y-0 right-0 z-50 bg-[#1c0200]/98 backdrop-blur-md w-full sm:w-[480px] border-l border-[#d7b9b9]/20 shadow-2xl flex flex-col h-full overflow-hidden animate-slide-in-right" 
+      id="admin-sidebar"
+    >
+      {/* Modal Header */}
+      <div className="p-4 sm:p-5 border-b border-[#d7b9b9]/15 flex items-center justify-between gap-3 bg-black/10">
+        <div className="flex items-center gap-3">
+          <div className="p-2 bg-[#d7b9b9]/10 rounded text-[#d7b9b9]">
+            <Sliders size={18} />
           </div>
-          <button 
-            onClick={onClose}
-            className="absolute top-4 right-4 sm:relative sm:top-0 sm:right-0 p-1.5 hover:bg-white/5 rounded-full text-[#d7b9b9] hover:text-white transition-colors cursor-pointer"
-            title="Tutup Panel"
-            id="admin-close-btn"
-          >
-            <X size={20} />
-          </button>
+          <div>
+            <h2 className="font-serif text-xs uppercase tracking-wider font-semibold text-[#d7b9b9]">Panel Kawalan Laman</h2>
+            <p className="font-serif text-[10px] text-white/50">Urus pembaca & penampilan secara terus</p>
+          </div>
         </div>
+        <button 
+          onClick={onClose}
+          className="p-1.5 hover:bg-white/5 rounded-full text-[#d7b9b9] hover:text-white transition-colors cursor-pointer"
+          title="Tutup Panel"
+          id="admin-close-btn"
+        >
+          <X size={18} />
+        </button>
+      </div>
 
-        {/* Tab Selector */}
-        <div className="flex border-b border-[#d7b9b9]/10 bg-black/15 px-4 sm:px-5">
-          <button
-            onClick={() => setActiveTab("readers")}
-            className={`py-3 px-4 text-xs font-serif uppercase tracking-wider font-semibold border-b-2 flex items-center gap-2 transition-all cursor-pointer ${
-              activeTab === "readers"
-                ? "border-[#d7b9b9] text-[#d7b9b9] bg-white/5"
-                : "border-transparent text-[#d7b9b9]/60 hover:text-white hover:bg-white/2"
-            }`}
-          >
-            <Users size={14} />
-            Peti Pembaca ({readers.length})
-          </button>
-          <button
-            onClick={() => setActiveTab("design")}
-            className={`py-3 px-4 text-xs font-serif uppercase tracking-wider font-semibold border-b-2 flex items-center gap-2 transition-all cursor-pointer ${
-              activeTab === "design"
-                ? "border-[#d7b9b9] text-[#d7b9b9] bg-white/5"
-                : "border-transparent text-[#d7b9b9]/60 hover:text-white hover:bg-white/2"
-            }`}
-          >
-            <Palette size={14} />
-            Rekabentuk & Gaya Laman
-          </button>
-          <button
-            onClick={() => setActiveTab("blocks")}
-            className={`py-3 px-4 text-xs font-serif uppercase tracking-wider font-semibold border-b-2 flex items-center gap-2 transition-all cursor-pointer ${
-              activeTab === "blocks"
-                ? "border-[#d7b9b9] text-[#d7b9b9] bg-white/5"
-                : "border-transparent text-[#d7b9b9]/60 hover:text-white hover:bg-white/2"
-            }`}
-          >
-            <Layers size={14} />
-            Elemen Tambahan ({customBlocks.length})
-          </button>
-        </div>
+      {/* Tab Selector */}
+      <div className="grid grid-cols-3 border-b border-[#d7b9b9]/10 bg-black/15 text-center">
+        <button
+          onClick={() => setActiveTab("readers")}
+          className={`py-3.5 text-[10px] sm:text-xs font-serif uppercase tracking-wider font-semibold border-b-2 flex flex-col sm:flex-row items-center justify-center gap-1.5 transition-all cursor-pointer ${
+            activeTab === "readers"
+              ? "border-[#d7b9b9] text-[#d7b9b9] bg-white/5"
+              : "border-transparent text-[#d7b9b9]/60 hover:text-white hover:bg-white/2"
+          }`}
+        >
+          <Users size={12} />
+          <span>Peti ({readers.length})</span>
+        </button>
+        <button
+          onClick={() => setActiveTab("design")}
+          className={`py-3.5 text-[10px] sm:text-xs font-serif uppercase tracking-wider font-semibold border-b-2 flex flex-col sm:flex-row items-center justify-center gap-1.5 transition-all cursor-pointer ${
+            activeTab === "design"
+              ? "border-[#d7b9b9] text-[#d7b9b9] bg-white/5"
+              : "border-transparent text-[#d7b9b9]/60 hover:text-white hover:bg-white/2"
+          }`}
+        >
+          <Palette size={12} />
+          <span>Rias Gaya</span>
+        </button>
+        <button
+          onClick={() => setActiveTab("blocks")}
+          className={`py-3.5 text-[10px] sm:text-xs font-serif uppercase tracking-wider font-semibold border-b-2 flex flex-col sm:flex-row items-center justify-center gap-1.5 transition-all cursor-pointer ${
+            activeTab === "blocks"
+              ? "border-[#d7b9b9] text-[#d7b9b9] bg-white/5"
+              : "border-transparent text-[#d7b9b9]/60 hover:text-white hover:bg-white/2"
+          }`}
+        >
+          <Layers size={12} />
+          <span>Tambahan ({customBlocks.length})</span>
+        </button>
+      </div>
 
         {/* Tab 1: Readers Database */}
         {activeTab === "readers" && (
@@ -2579,7 +2580,6 @@ export default function AdminPanel({
             Maktabah Alkutawi © 2026
           </div>
         </div>
-      </div>
 
       {/* Custom Confirmation Sub-modal */}
       {confirmDialog && confirmDialog.isOpen && (

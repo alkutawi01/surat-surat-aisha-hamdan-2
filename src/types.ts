@@ -234,6 +234,9 @@ export interface WebsiteStyles {
   mobileCopyrightFont?: string;
   mobileCopyrightSize?: string;
   mobileCopyrightColor?: string;
+  mobileSpotlightEnabled?: boolean;
+  mobileOverlayOpacity?: number;
+  mobileCarouselSpeed?: number;
 }
 
 export interface CustomBlock {
