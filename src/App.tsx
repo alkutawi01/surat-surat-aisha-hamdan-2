@@ -614,10 +614,11 @@ export default function App() {
   const isFogVisible = fogEnabled;
 
   // Mask calculation for the dynamic fog lantern reveal (using smoothMousePos for cinematic delay/inertia)
+  // Adjusted by +50px (X) and +150px (Y) to offset the expanded boundaries of the fixed container
   const fogMaskStyle = isInside
     ? {
-        maskImage: `radial-gradient(circle 220px at ${smoothMousePos.x}px ${smoothMousePos.y}px, transparent 12%, rgba(0,0,0,0.85) 60%, black 100%)`,
-        WebkitMaskImage: `radial-gradient(circle 220px at ${smoothMousePos.x}px ${smoothMousePos.y}px, transparent 12%, rgba(0,0,0,0.85) 60%, black 100%)`,
+        maskImage: `radial-gradient(circle 220px at ${smoothMousePos.x + 50}px ${smoothMousePos.y + 150}px, transparent 12%, rgba(0,0,0,0.85) 60%, black 100%)`,
+        WebkitMaskImage: `radial-gradient(circle 220px at ${smoothMousePos.x + 50}px ${smoothMousePos.y + 150}px, transparent 12%, rgba(0,0,0,0.85) 60%, black 100%)`,
       }
     : {
         maskImage: "none",
@@ -836,7 +837,7 @@ export default function App() {
       {/* Dynamic Lantern Fog Cover */}
       {isFogVisible && (
         <div 
-          className="fixed inset-0 z-30 pointer-events-none transition-all duration-500 select-none"
+          className="fixed -top-[150px] -bottom-[150px] -left-[50px] -right-[50px] z-30 pointer-events-none transition-all duration-500 select-none"
           style={{
             opacity: fogOpacity,
           }}
